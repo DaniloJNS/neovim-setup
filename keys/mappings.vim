@@ -17,9 +17,14 @@ nmap <C-p> :RnvimrToggle<CR>
 " Tags NAV
 nmap  <F8> : TagbarToggle <CR>
 
+" set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
 " ruby {{
+  nnoremap <F6> :AsyncRun -mode=term -pos=bottom -rows=20 rspec<CR>
   nnoremap <F5> :AsyncRun -mode=term -pos=bottom -rows=10 ruby "$(VIM_FILEPATH)"<CR>
   nnoremap <F4> :VimuxOpenRunner<CR>
+  nnoremap <F3> :AsyncRun -mode=term -pos=bottom -rows=10 git add . && git commit -am "Solution" && git push origin master<CR>
+
+  nnoremap <F2> :AsyncRun -mode=term -pos=bottom -rows=10 bin/setup<CR>
 " }}
 " alternate way to save
 nnoremap <c-s> :w<cr>
