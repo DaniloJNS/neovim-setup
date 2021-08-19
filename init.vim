@@ -1,5 +1,5 @@
 source $HOME/.config/nvim/smartquit.vim
-
+" general
 source $HOME/.config/nvim/general/settings.vim
 source $HOME/.config/nvim/keys/mappings.vim
 
