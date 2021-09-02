@@ -18,14 +18,47 @@ nmap <C-p> :RnvimrToggle<CR>
 nmap  <F8> : TagbarToggle <CR>
 
 " set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
+" Run the current file with rspec
+ map <Leader>rb :call VimuxRunCommand("clear; nvim " . bufname("%"))<CR>
+
+ " Prompt for a command to run
+ map <Leader>vp :VimuxPromptCommand<CR>
+
+ " Run last command executed by VimuxRunCommand
+ map <Leader>vl :VimuxRunLastCommand<CR>
+
+ " Inspect runner pane
+ map <Leader>vi :VimuxInspectRunner<CR>
+
+ " Close vim tmux runner opened by VimuxRunCommand
+ map <Leader>vq :VimuxCloseRunner<CR>
+
+ " Interrupt any command running in the runner pane
+ map <Leader>vx :VimuxInterruptRunner<CR>
+
+ " Zoom the runner pane (use <bind-key> z to restore runner pane)
+ map <Leader>vz :call VimuxZoomRunner()<CR>
+
+ " Clear the terminal screen of the runner pane.
+ map <Leader>v<C-l> :VimuxClearTerminalScreen<CR>
+
+function! VimuxSlime()
+  call VimuxRunCommand(@v, 0)
+ endfunction
+
+ " If text is selected, save it in the v buffer and send that buffer it to tmux
+ vmap <LocalLeader>vs "vy :call VimuxSlime()<CR>
+
 " ruby {{
   nnoremap <F6> :AsyncRun -mode=term -pos=bottom -rows=20 rspec<CR>
   nnoremap <F5> :AsyncRun -mode=term -pos=bottom -rows=10 ruby "$(VIM_FILEPATH)"<CR>
+  nnoremap <F7> :AsyncRun -mode=term -pos=bottom -rows=10 node "$(VIM_FILEPATH)"<CR>
+  nnoremap <F9> :AsyncRun -mode=term -pos=bottom -rows=10 g++ -o exec "$(VIM_FILEPATH)" && ./exec<CR>
   nnoremap <F4> :VimuxOpenRunner<CR>
   nnoremap <F3> :AsyncRun -mode=term -pos=bottom -rows=10 git add . && git commit -am "Solution" && git push origin master<CR>
-
   nnoremap <F2> :AsyncRun -mode=term -pos=bottom -rows=10 bin/setup<CR>
 " }}
+
 " alternate way to save
 nnoremap <c-s> :w<cr>
 " Use alt + hjkl to resize windows
@@ -33,7 +66,6 @@ nnoremap <M-j>    :resize -2<CR>
 nnoremap <M-k>    :resize +2<CR>
 nnoremap <M-h>    :vertical resize -2<CR>
 nnoremap <M-l>    :vertical resize +2<CR>
-
 " Escape redraws the screen and removes any search highlighting.
 nnoremap <esc> :noh<return><esc>
 
