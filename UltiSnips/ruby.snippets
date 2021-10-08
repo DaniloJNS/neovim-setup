@@ -1,0 +1,35 @@
+
+# rspec system
+
+snippet fill_in "preenche campo"
+fill_in "${label}", with: "data"
+endsnippet
+snippet check "Aperta checkbox" 
+check "${label}"
+endsnippet
+snippet click_on "Clica no botão" 
+click_on "${name button}"
+endsnippet
+snippet have_content "texto na tela" 
+have_content("${0}")
+endsnippet
+snippet not_to_have_content "verifica se não aparece" 
+not_to_have_content("${0}")
+endsnippet
+snippet have_link "Verifica existencia de links" 
+have_link('${0}')
+endsnippet
+
+
+# rspec requests
+snippet redi "Verifica a mudança de rota" 
+redirect_to(${0})
+endsnippet
+
+
+# rspec devise
+
+snippet login "Realiza o login" 
+login_as ${0}, scope: :model
+endsnippet
+

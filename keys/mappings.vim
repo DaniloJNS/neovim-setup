@@ -50,10 +50,11 @@ function! VimuxSlime()
  vmap <LocalLeader>vs "vy :call VimuxSlime()<CR>
 
 " ruby {{
-  nnoremap <F6> :AsyncRun -mode=term -pos=bottom -rows=20 rspec<CR>
+  nnoremap <F6> :AsyncRun -mode=term -pos=bottom -rows=20 rspec \| more <CR>
   nnoremap <F5> :AsyncRun -mode=term -pos=bottom -rows=10 ruby "$(VIM_FILEPATH)"<CR>
   nnoremap <F7> :AsyncRun -mode=term -pos=bottom -rows=10 node "$(VIM_FILEPATH)"<CR>
   nnoremap <F9> :AsyncRun -mode=term -pos=bottom -rows=10 g++ -o exec "$(VIM_FILEPATH)" && ./exec<CR>
+  nnoremap <F10> :AsyncRun -mode=term -pos=bottom -rows=10 g++ -o exec "$(VIM_FILEPATH)"<CR>
   nnoremap <F4> :VimuxOpenRunner<CR>
   nnoremap <F3> :AsyncRun -mode=term -pos=bottom -rows=10 git add . && git commit -am "Solution" && git push origin master<CR>
   nnoremap <F2> :AsyncRun -mode=term -pos=bottom -rows=10 bin/setup<CR>
@@ -76,7 +77,7 @@ inoremap <c-u> <ESC>viwUi
 nnoremap <TAB> :bnext<CR>
 " SHIFT-TAB will go back
 nnoremap <S-TAB> :bprevious<CR>
-
+nnoremap <M-TAB> :tabn<CR>
 " Better tabbing
 vnoremap < <gv
 vnoremap > >gv
@@ -153,7 +154,7 @@ inoremap <C-BS> <C-\><C-o>db
     nnoremap ˚ :m .-2<cr>==
     inoremap ∆ <Esc>:m .+1<cr>==gi
     inoremap ˚ <Esc>:m .-2<cr>==gi
-    vnoremap ∆ :m '>+1<cr>gv=gv
+    vnoremap ∆ :m >+1<cr>gv=gv
     vnoremap ˚ :m '<-2<cr>gv=gv
 
     vnoremap $( <esc>`>a)<esc>`<i(<esc>

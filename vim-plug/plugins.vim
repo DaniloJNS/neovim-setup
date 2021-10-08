@@ -5,6 +5,8 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/autoload/plugged')
+    Plug 'puremourning/vimspector'
+    Plug 'easymotion/vim-easymotion'
     " git buffer
     Plug 'jreybert/vimagit'
     " Auto pairs for '(' '[' '{'
@@ -355,11 +357,11 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 
 
     " Styles {{{
-        " Plug 'wavded/vim-stylus', { 'for': ['stylus', 'markdown'] }
-        " Plug 'groenewege/vim-less', { 'for': 'less' }
-        " Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
-        " Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
-        " Plug 'stephenway/postcss.vim', { 'for': 'css' }
+        Plug 'wavded/vim-stylus', { 'for': ['stylus', 'markdown'] }
+        Plug 'groenewege/vim-less', { 'for': 'less' }
+        Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
+        Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
+        Plug 'stephenway/postcss.vim', { 'for': 'css' }
     " " }}}
 
     " markdown {{{

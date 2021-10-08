@@ -13,6 +13,7 @@ source $HOME/.config/nvim/plug-config/coc.vim
 
 source $HOME/.config/nvim/plug-config/lsp-config.vim
 source $HOME/.config/nvim/plug-config/searching.vim
+" source $HOME/.config/nvim/plug-config/vimspect.vim
 " lua
 luafile $HOME/.config/nvim/plug-config/tree-sitter-config.lua
 luafile $HOME/.config/nvim/plug-config/bufferline-config.lua
