@@ -1,6 +1,6 @@
 "let mapleader = "\<space>"
 " meus atalhos de teclado
-nnoremap <leader>; a;<esc>
+nnoremap <leader>; A;<esc>
 nnoremap <leader>ec :vsplit ~/.config/nvim/init.vim<cr>
 nnoremap <leader>we :vsplit <cr>
 nnoremap <leader>ws :split <cr>
@@ -10,6 +10,7 @@ nnoremap <Leader>q :Bdelete<CR>
 nnoremap <space>/ :Commentary<CR>
 vnoremap <space>/ :Commentary<CR>
 
+nmap <space>x <C-Y>,
 " nav files
 nnoremap <c-o> :NERDTreeToggle<cr>
 "nnoremap <c-p> :files<cr>
@@ -40,7 +41,7 @@ nmap  <F8> : TagbarToggle <CR>
  map <Leader>vz :call VimuxZoomRunner()<CR>
 
  " Clear the terminal screen of the runner pane.
- map <Leader>v<C-l> :VimuxClearTerminalScreen<CR>
+ map <Leader>v<C-l> VimuxClearTerminalScreen<CR>
 
 function! VimuxSlime()
   call VimuxRunCommand(@v, 0)
@@ -207,5 +208,10 @@ inoremap <C-BS> <C-\><C-o>db
     nmap <leader>6 <Plug>HiInterestingWord6
 
     " open current buffer in a new tab
-    nmap <silent> gTT :tab sb<cr>
+    nmap <silent> <M-'> :tab sb<cr>
+    nmap <silent> <M-esc> :tabclose<cr>
+	nmap <silent> <M-1> :tabprevious<cr>
+    nmap <silent> <M-2> :tabfirst<cr>
+    nmap <silent> <M-3> :tablast<cr>
+    
 " }}}

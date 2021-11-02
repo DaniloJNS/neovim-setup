@@ -1,6 +1,5 @@
 " Global Plugins
 let g:coc_global_extensions = [
-        \ 'coc-flutter-tools',
         \ 'coc-snippets',
         \ 'coc-css',
         \ 'coc-json',

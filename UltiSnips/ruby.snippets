@@ -8,7 +8,7 @@ snippet check "Aperta checkbox"
 check "${label}"
 endsnippet
 snippet click_on "Clica no botão" 
-click_on "${name button}"
+click_on "${0}"
 endsnippet
 snippet have_content "texto na tela" 
 have_content("${0}")
@@ -19,7 +19,12 @@ endsnippet
 snippet have_link "Verifica existencia de links" 
 have_link('${0}')
 endsnippet
-
+snippet exphave_content "Procura o conteudo na tela"
+expect(page).to have_content('${0}')
+endsnippet
+snippet exphave_link "Procura um link na tela" 
+expect(page).to have_link('${0}')
+endsnippet
 
 # rspec requests
 snippet redi "Verifica a mudança de rota" 
@@ -33,3 +38,26 @@ snippet login "Realiza o login"
 login_as ${0}, scope: :model
 endsnippet
 
+# should machers {
+snippet enum "Valida a macro enum" b
+should define_enum_for(:${0})
+endsnippet
+snippet enum_with "Valida a macro enum with values" b
+should define_enum_for(:${0}).with_values([])
+endsnippet
+snippet has_many "Validação da associção has_many" 
+should have_many(:${0})
+endsnippet
+snippet belongs_to "Validação se pertence a" 
+should belong_to(:${0})
+endsnippet
+snippet has_one "Validação da associação has_one" b
+should have_one(:${0})
+endsnippet
+snippet presence "Valida prenseça" 
+should validate_presence_of(:${0})
+endsnippet
+snippet numericality "Ver se é numerico" 
+should validate_numericality_of(:${0})
+endsnippet
+# }

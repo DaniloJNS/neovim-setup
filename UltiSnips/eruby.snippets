@@ -50,5 +50,14 @@ prompt: "Escolha um tipo"%>
 endsnippet
 
 snippet submit "Envia dados do formulario" b
-<%= ${0}.submit "title"%>
+<%= ${0}.submit "${0}"%>
+endsnippet
+snippet label_tag "Description" b
+<%= label_tag :q, '${0}' %>
+endsnippet
+snippet text_field_tag "Description" b
+<%= text_field_tag :q %>
+endsnippet
+snippet submit_tag "Description" b
+<%= submit_tag '${0}' %>
 endsnippet
