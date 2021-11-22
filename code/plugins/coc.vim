@@ -12,6 +12,7 @@ let g:coc_global_extensions = [
         \ 'coc-vimlsp',
         \ 'coc-emmet',
         \ 'coc-prettier',
+        \ 'coc-ultisnips',
         \ 'coc-diagnostic',
         \ 'coc-highlight',
         \ 'coc-clangd',

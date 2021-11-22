@@ -1,8 +1,45 @@
-
+#api
+snippet have_http_status "Verifca o status http retornado"
+have_http_status(${0})
+endsnippet
+# mail
+snippet mail "gera email" 
+mail(to: ${0}, from: , subject: )
+endsnippet
 # rspec system
+snippet travel_to_include "adicionar suporte ao travel to" 
+include ActiveSupport::Testing::TimeHelpers
+endsnippet
+snippet have_received "Description"
+have_received(:${0})
+endsnippet
+snippet exp_have_received "Description"
+expect(${0})to have_received(${1})
+endsnippet
+snippet creat "factorybot model" b
+${0} = create(:${0})
+endsnippet
+snippet user "cria model"
+create(:user)
+endsnippet
+snippet project "cria model"
+create(:project)
+endsnippet
+snippet proposal "cria model"
+create(:proposal)
+endsnippet
+snippet professional "danilo profissonal template" 
+${1} = create(:professional)
+create(:profile, professional: ${1})
+endsnippet
+snippet professional_with_login "danilo profissonal template com login" 
+${0} = create(:professional)
+create(:profile, professional: ${0})
 
+login_as ${0}, scope: :professional
+endsnippet
 snippet fill_in "preenche campo"
-fill_in "${label}", with: "data"
+fill_in "${1}", with: "${2}"
 endsnippet
 snippet check "Aperta checkbox" 
 check "${label}"

@@ -5,14 +5,20 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/autoload/plugged')
+    Plug 'kdheepak/lazygit.nvim'
     Plug 'pangloss/vim-javascript'
     Plug 'leafgarland/typescript-vim'
     Plug 'peitalin/vim-jsx-typescript'
     Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-    Plug 'jparise/vim-graphql'
-    Plug 'easymotion/vim-easymotion'
+    Plug 'Yggdroot/indentLine'
+    " Plug 'jparise/vim-graphql'
+    " motion {
+        Plug 'justinmk/vim-sneak'
+        map m <Plug>Sneak_;
+        Plug 'easymotion/vim-easymotion'
+      " }
     " git buffer
-    Plug 'jreybert/vimagit'
+    " Plug 'jreybert/vimagit'
     " Auto pairs for '(' '[' '{'
     Plug 'jiangmiao/auto-pairs'
     " Airline
@@ -34,6 +40,10 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     nmap  <F8> : TagbarToggle <CR>
     " Discord
     Plug 'vimsence/vimsence'
+    let g:vimsence_small_text = 'NeoVim'
+    let g:vimsence_small_image = 'neovim'
+    let g:vimsence_file_explorer_text = 'In NERDTree'
+    let g:vimsence_file_explorer_details = 'Looking for files'
     " tree-sitter {{
       Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
       "}}
@@ -170,7 +180,22 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'tpope/vim-sleuth'
     " Startify: Fancy startup screen for vim {{{
         Plug 'mhinz/vim-startify'
-
+        " returns all modified files of the current git repo
+        " `2>/dev/null` makes the command fail quietly, so that when we are not
+        " in a git repo, the list will be empty
+        function! s:gitModified()
+            let files = systemlist('git ls-files -m 2>/dev/null')
+            return map(files, "{'line': v:val, 'path': v:val}")
+        endfunction
+        " same as above, but show untracked files, honouring .gitignore
+        function! s:gitUntracked()
+            let files = systemlist('git ls-files -o --exclude-standard 2>/dev/null')
+            return map(files, "{'line': v:val, 'path': v:val}")
+        endfunction
+        function! s:gitCommits()
+          let commits = systemlist('git log --oneline | head -n10')
+          return map(commits, "{'line': v:val, 'path': v:val}")
+        endfunction
         " Don't change to directory when selecting a file
         let g:startify_files_number = 5
         let g:startify_change_to_dir = 0
@@ -181,7 +206,9 @@ call plug#begin('~/.config/nvim/autoload/plugged')
         " Custom startup list, only show MRU from current directory/project
         let g:startify_lists = [
         \  { 'type': 'dir',       'header': [ 'Files '. getcwd() ] },
-        \  { 'type': function('helpers#startify#listcommits'), 'header': [ 'Recent Commits' ] },
+        \  { 'type': function('s:gitCommits'),  'header': ['   git commits']},
+        \  { 'type': function('s:gitModified'),  'header': ['   git modified']},
+        \  { 'type': function('s:gitUntracked'), 'header': ['   git untracked']},
         \  { 'type': 'sessions',  'header': [ 'Sessions' ]       },
         \  { 'type': 'bookmarks', 'header': [ 'Bookmarks' ]      },
         \  { 'type': 'commands',  'header': [ 'Commands' ]       },
@@ -228,7 +255,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 
         nmap <silent> <leader>s :GFiles?<cr>
 
-        nmap <silent> <leader>r :Buffers<cr>
+        nmap <silent> <leader>b :Buffers<cr>
         nmap <silent> <leader>e :FZF<cr>
         nmap <leader><tab> <plug>(fzf-maps-n)
         xmap <leader><tab> <plug>(fzf-maps-x)
@@ -307,6 +334,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
         Plug 'tpope/vim-rhubarb' " hub extension for fugitive
         Plug 'sodapopcan/vim-twiggy'
         Plug 'rbong/vim-flog'
+        Plug 'junegunn/gv.vim'
     " }}}
 
     " UltiSnips {{{

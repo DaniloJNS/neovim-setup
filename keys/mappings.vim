@@ -20,7 +20,6 @@ nmap  <F8> : TagbarToggle <CR>
 
 " set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
 " Run the current file with rspec
- map <Leader>rb :call VimuxRunCommand("clear; nvim " . bufname("%"))<CR>
 
  " Prompt for a command to run
  map <Leader>vp :VimuxPromptCommand<CR>
@@ -51,16 +50,19 @@ function! VimuxSlime()
  vmap <LocalLeader>vs "vy :call VimuxSlime()<CR>
 
 " ruby {{
-  nnoremap <F6> :AsyncRun -mode=term -pos=bottom -rows=20 rspec \| more <CR>
-  nnoremap <F5> :AsyncRun -mode=term -pos=bottom -rows=10 ruby "$(VIM_FILEPATH)"<CR>
-  nnoremap <F7> :AsyncRun -mode=term -pos=bottom -rows=10 node "$(VIM_FILEPATH)"<CR>
-  nnoremap <F9> :AsyncRun -mode=term -pos=bottom -rows=10 g++ -o exec "$(VIM_FILEPATH)" && ./exec<CR>
-  nnoremap <F10> :AsyncRun -mode=term -pos=bottom -rows=10 g++ -o exec "$(VIM_FILEPATH)"<CR>
-  nnoremap <F4> :VimuxOpenRunner<CR>
-  nnoremap <F3> :AsyncRun -mode=term -pos=bottom -rows=10 git add . && git commit -am "Solution" && git push origin master<CR>
-  nnoremap <F2> :AsyncRun -mode=term -pos=bottom -rows=10 bin/setup<CR>
+  nnoremap <F6> :AsyncRun -mode=term -pos=bottom -rows=30 ruby "$(VIM_FILEPATH)"<CR>
+  map <Leader>rb :AsyncRun -mode=term -pos=bottom -rows=30 rspec "$(VIM_FILEPATH)"\| more <CR>
+  nnoremap <F5> :AsyncRun -mode=term -pos=bottom -rows=30 rspec \| more <CR>
+  nnoremap <F4> :AsyncRun -mode=term -pos=bottom -rows=30 rubocop<CR>
+  map <Leader>rp :AsyncRun -mode=term -pos=bottom -rows=30 rubocop "$(VIM_FILEPATH)"\| more <CR>
+  map <Leader>rc :AsyncRun -mode=term -pos=bottom -rows=30 rubocop -A "$(VIM_FILEPATH)"\| more <CR>
 " }}
 
+nnoremap <F10> :AsyncRun -mode=term -pos=bottom -rows=10 g++ -o exec "$(VIM_FILEPATH)"<CR>
+nnoremap <F9> :AsyncRun -mode=term -pos=bottom -rows=10 g++ -o exec "$(VIM_FILEPATH)" && ./exec<CR>
+nnoremap <F7> :AsyncRun -mode=term -pos=bottom -rows=10 node "$(VIM_FILEPATH)"<CR>
+nnoremap <F3> :VimuxOpenRunner<CR>
+nnoremap <F2> :AsyncRun -mode=term -pos=bottom -rows=10 bin/setup<CR>
 " alternate way to save
 nnoremap <c-s> :w<cr>
 " Use alt + hjkl to resize windows
