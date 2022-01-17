@@ -56,6 +56,7 @@ function! VimuxSlime()
   nnoremap <F4> :AsyncRun -mode=term -pos=bottom -rows=30 rubocop<CR>
   map <Leader>rp :AsyncRun -mode=term -pos=bottom -rows=30 rubocop "$(VIM_FILEPATH)"\| more <CR>
   map <Leader>rc :AsyncRun -mode=term -pos=bottom -rows=30 rubocop -A "$(VIM_FILEPATH)"\| more <CR>
+  map <Leader>rl :AsyncRun -mode=term -pos=bottom -rows=30 rails runner "$(VIM_FILEPATH)"\| more <CR>
 " }}
 
 nnoremap <F10> :AsyncRun -mode=term -pos=bottom -rows=10 g++ -o exec "$(VIM_FILEPATH)"<CR>

@@ -62,6 +62,9 @@ endsnippet
 snippet exphave_link "Procura um link na tela" 
 expect(page).to have_link('${0}')
 endsnippet
+snippet expinclude "Procura um link na tela" 
+expect(page).to include('${0}')
+endsnippet
 
 # rspec requests
 snippet redi "Verifica a mudança de rota" 
