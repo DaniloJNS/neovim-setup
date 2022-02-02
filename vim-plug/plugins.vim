@@ -5,6 +5,7 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/autoload/plugged')
+    Plug 'KabbAmine/zeavim.vim'
     Plug 'kdheepak/lazygit.nvim'
     Plug 'pangloss/vim-javascript'
     Plug 'leafgarland/typescript-vim'

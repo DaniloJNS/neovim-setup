@@ -18,6 +18,11 @@ nmap <C-p> :RnvimrToggle<CR>
 " Tags NAV
 nmap  <F8> : TagbarToggle <CR>
 
+"Zeal Mappings
+nmap <leader>z <Plug>Zeavim
+vmap <leader>z <Plug>ZVVisSelection
+nmap gz <Plug>ZVOperator
+nmap <leader><leader>z <Plug>ZVKeyDocset
 " set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
 " Run the current file with rspec
 
@@ -49,9 +54,13 @@ function! VimuxSlime()
  " If text is selected, save it in the v buffer and send that buffer it to tmux
  vmap <LocalLeader>vs "vy :call VimuxSlime()<CR>
 
+ function Teste() 
+  echo globpath('.', '*')
+ endfunction
 " ruby {{
   nnoremap <F6> :AsyncRun -mode=term -pos=bottom -rows=30 ruby "$(VIM_FILEPATH)"<CR>
   map <Leader>rb :AsyncRun -mode=term -pos=bottom -rows=30 rspec "$(VIM_FILEPATH)"\| more <CR>
+  map <Leader>rs :AsyncRun -mode=term -pos=bottom -rows=30 docker-compose exec web bash -c "rspec"\| more <CR>
   nnoremap <F5> :AsyncRun -mode=term -pos=bottom -rows=30 rspec \| more <CR>
   nnoremap <F4> :AsyncRun -mode=term -pos=bottom -rows=30 rubocop<CR>
   map <Leader>rp :AsyncRun -mode=term -pos=bottom -rows=30 rubocop "$(VIM_FILEPATH)"\| more <CR>
@@ -59,8 +68,8 @@ function! VimuxSlime()
   map <Leader>rl :AsyncRun -mode=term -pos=bottom -rows=30 rails runner "$(VIM_FILEPATH)"\| more <CR>
 " }}
 
-nnoremap <F10> :AsyncRun -mode=term -pos=bottom -rows=10 g++ -o exec "$(VIM_FILEPATH)"<CR>
-nnoremap <F9> :AsyncRun -mode=term -pos=bottom -rows=10 g++ -o exec "$(VIM_FILEPATH)" && ./exec<CR>
+nnoremap <F10> :AsyncRun -mode=term -pos=bottom -rows=10 g++ -o exec "$(VIM_FILEPATH)" && ./exec<CR>
+nnoremap <F9> :AsyncRun -mode=term -pos=bottom -rows=10 gcc -lpthread -o exec "$(VIM_FILEPATH)" && ./exec<CR>
 nnoremap <F7> :AsyncRun -mode=term -pos=bottom -rows=10 node "$(VIM_FILEPATH)"<CR>
 nnoremap <F3> :VimuxOpenRunner<CR>
 nnoremap <F2> :AsyncRun -mode=term -pos=bottom -rows=10 bin/setup<CR>
@@ -81,7 +90,7 @@ inoremap <c-u> <ESC>viwUi
 nnoremap <TAB> :bnext<CR>
 " SHIFT-TAB will go back
 nnoremap <S-TAB> :bprevious<CR>
-nnoremap <M-TAB> :tabn<CR>
+nnoremap <M-w> :tabn<CR>
 " Better tabbing
 vnoremap < <gv
 vnoremap > >gv
@@ -142,12 +151,6 @@ inoremap <C-BS> <C-\><C-o>db
 
     " enable . command in visual mode
     vnoremap . :normal .<cr>
-
-
-    nmap <leader>z <Plug>Zoom
-
-
-
 
     map <leader>wc :wincmd q<cr>
 

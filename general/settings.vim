@@ -24,7 +24,6 @@ set autoindent                          " Good auto indent
 set laststatus=0                        " Always display the status line
 set number                              " Line numbers
 set cursorline                          " Enable highlighting of the current line
-set background=dark                     " tell vim what the background color looks like
 set showtabline=4                       " Always show tabs
 set noshowmode                          " We don't need to see things like -- INSERT -- anymore
 set nobackup                            " This is recommended by coc
@@ -37,7 +36,7 @@ set autochdir                           " Your working directory will always be 
 set termguicolors
 set textwidth=80
 set colorcolumn=80
-
+au ColorScheme * hi Normal ctermbg=none guibg=none
 
 " Appearance {{{
 
