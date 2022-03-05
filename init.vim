@@ -14,15 +14,17 @@ source $HOME/.config/nvim/plug-config/rnvimr.vim
 source $HOME/.config/nvim/plug-config/vim-commentary.vim
 " source $HOME/.config/nvim/plug-config/signify.vim
 source $HOME/.config/nvim/plug-config/nvim-tree.vim
-source $HOME/.config/nvim/plug-config/coc.vim
+" source $HOME/.config/nvim/plug-config/coc.vim
 source $HOME/.config/nvim/plug-config/lazygit.vim
 
-source $HOME/.config/nvim/plug-config/lsp-config.vim
+" " source $HOME/.config/nvim/plug-config/lsp-config.vim;
 source $HOME/.config/nvim/plug-config/searching.vim
-" source $HOME/.config/nvim/plug-config/vimspect.vim
+" " source $HOME/.config/nvim/plug-config/vimspect.vim
 " lua
 luafile $HOME/.config/nvim/plug-config/tree-sitter-config.lua
 luafile $HOME/.config/nvim/plug-config/bufferline-config.lua
+luafile $HOME/.config/nvim/plug-config/lsp-installer.lua
+luafile $HOME/.config/nvim/plug-config/cmp.lua
 " luafile $HOME/.config/nvim/plug-config/lsps-config.lua
 " luafile $HOME/.config/nvim/plug-config/compe-config.lua
 luafile $HOME/.config/nvim/plug-config/telescope.lua

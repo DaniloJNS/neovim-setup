@@ -54,6 +54,14 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'romgrk/fzy-lua-native'
     Plug 'nvim-telescope/telescope-fzy-native.nvim'
     " lsp stuff
+    Plug 'neovim/nvim-lspconfig' 
+    Plug 'williamboman/nvim-lsp-installer'
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/cmp-buffer'
+    Plug 'hrsh7th/cmp-path'
+    Plug 'hrsh7th/cmp-cmdline'
+    Plug 'hrsh7th/nvim-cmp'
+    set completeopt=menu,menuone,noselect
     " Plug 'neovim/nvim-lspconfig'
     " Plug 'hrsh7th/nvim-compe'
     " Plug 'RishabhRD/popfix'
@@ -64,7 +72,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 
     Plug 'skywind3000/asyncrun.vim'
 
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    " Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'terryma/vim-multiple-cursors'
     Plug 'scrooloose/nerdtree'
     " Plug 'preservim/nerdtree' 
@@ -144,12 +152,11 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 " General Functionality {{{
     " better terminal integration
     Plug 'akinsho/toggleterm.nvim'
-    " set
-    let g:toggleterm_terminal_mapping = '<C-t>'
+    let g:toggleterm_terminal_mapping = '<C-W>'
     " mapping to open a specific window.
     " For example: 2<C-t> will open terminal 2
-    nnoremap <expr> <c-t> 'm`<Cmd>' . v:count1 . 'ToggleTerm`<CR>'
-    inoremap <expr> <c-t> 'm`<Esc><Cmd>' . v:count1 . 'ToggleTerm`<CR>'
+    nnoremap <expr> <c-w> 'm`<Cmd>' . v:count1 . 'ToggleTerm`<CR>'
+    inoremap <expr> <c-w> 'm`<Esc><Cmd>' . v:count1 . 'ToggleTerm`<CR>'
 
     nnoremap <expr> oo 'm`' . v:count1 . 'o<Esc>``'
     " substitute, search, and abbreviate multiple variants of a word
@@ -342,6 +349,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 
     " UltiSnips {{{
         Plug 'SirVer/ultisnips' " Snippets plugin
+        Plug 'quangnguyen30192/cmp-nvim-ultisnips' " For cmp engine
         Plug 'honza/vim-snippets'
         let g:UltiSnipsExpandTrigger="<C-l>"
         let g:UltiSnipsJumpForwardTrigger="<C-j>"
