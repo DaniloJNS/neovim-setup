@@ -16,6 +16,7 @@ let g:coc_global_extensions = [
         \ 'coc-highlight',
         \ 'coc-clangd',
         \ 'coc-clang-format-style-options',
+        \ 'coc-solargraph'
         \]
 
         autocmd CursorHold * silent call CocActionAsync('highlight')

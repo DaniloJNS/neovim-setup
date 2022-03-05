@@ -2,6 +2,9 @@
 snippet have_http_status "Verifca o status http retornado"
 have_http_status(${0})
 endsnippet
+snippet rescue_from "declara erro"
+rescue_from ${0}, with: :method
+endsnippet   
 # mail
 snippet mail "gera email" 
 mail(to: ${0}, from: , subject: )
@@ -10,6 +13,10 @@ endsnippet
 snippet travel_to_include "adicionar suporte ao travel to" 
 include ActiveSupport::Testing::TimeHelpers
 endsnippet
+snippet exp_have_http_status "Verificar o codigo da resposta da requisição"
+expect(response).to have_http_status(${0})
+endsnippet
+	
 snippet have_received "Description"
 have_received(:${0})
 endsnippet

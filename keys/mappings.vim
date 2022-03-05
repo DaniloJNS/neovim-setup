@@ -18,6 +18,8 @@ nmap <C-p> :RnvimrToggle<CR>
 " Tags NAV
 nmap  <F8> : TagbarToggle <CR>
 
+" The-silver-search map
+nmap <M-f> :Ag <CR>
 "Zeal Mappings
 nmap <leader>z <Plug>Zeavim
 vmap <leader>z <Plug>ZVVisSelection
@@ -73,6 +75,7 @@ nnoremap <F9> :AsyncRun -mode=term -pos=bottom -rows=10 gcc -lpthread -o exec "$
 nnoremap <F7> :AsyncRun -mode=term -pos=bottom -rows=10 node "$(VIM_FILEPATH)"<CR>
 nnoremap <F3> :VimuxOpenRunner<CR>
 nnoremap <F2> :AsyncRun -mode=term -pos=bottom -rows=10 bin/setup<CR>
+nnoremap <leader>go :AsyncRun -mode=term -pos=bottom -rows=10 go run "$(VIM_FILEPATH)"<CR>
 " alternate way to save
 nnoremap <c-s> :w<cr>
 " Use alt + hjkl to resize windows
@@ -90,7 +93,7 @@ inoremap <c-u> <ESC>viwUi
 nnoremap <TAB> :bnext<CR>
 " SHIFT-TAB will go back
 nnoremap <S-TAB> :bprevious<CR>
-nnoremap <M-w> :tabn<CR>
+nnoremap <M-TAB> :tabn<CR>
 " Better tabbing
 vnoremap < <gv
 vnoremap > >gv

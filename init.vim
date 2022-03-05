@@ -26,6 +26,7 @@ luafile $HOME/.config/nvim/plug-config/bufferline-config.lua
 " luafile $HOME/.config/nvim/plug-config/lsps-config.lua
 " luafile $HOME/.config/nvim/plug-config/compe-config.lua
 luafile $HOME/.config/nvim/plug-config/telescope.lua
+luafile $HOME/.config/nvim/plug-config/toggleterm.lua
 
 colorscheme dracula
 set guifont=FiraCodeNerdFont

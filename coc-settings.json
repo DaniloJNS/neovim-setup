@@ -35,7 +35,6 @@
     "html"
   ],
   "snippets.ultisnips.directories": ["/home/danilo/.config/nvim/snips"],
-  "flutter.provider.hot-reload": true,
   "diagnostic.virtualText": true,
   "coc.preferences.useQuickfixForLocations": true,
   "eslint.autoFixOnSave": false,
@@ -95,5 +94,14 @@
     "typeParameter": "\uf728",
     "default": "\uf29c"
   },
-  "coc.preferences.extensionUpdateCheck": "daily"
+  "coc.preferences.extensionUpdateCheck": "daily",
+  "solargraph.diagnostics": true,
+  "languageserver": {
+    "go": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod"],
+      "trace.server": "verbose",
+      "filetypes": ["go"]
+    }
+  }
 }

@@ -5,12 +5,10 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/autoload/plugged')
+    " Doc in neovim
     Plug 'KabbAmine/zeavim.vim'
+    " Git visualizatiion
     Plug 'kdheepak/lazygit.nvim'
-    Plug 'pangloss/vim-javascript'
-    Plug 'leafgarland/typescript-vim'
-    Plug 'peitalin/vim-jsx-typescript'
-    Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
     Plug 'Yggdroot/indentLine'
     " Plug 'jparise/vim-graphql'
     " motion {
@@ -38,7 +36,6 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'mhinz/vim-signify'
     " Tags
     Plug 'preservim/tagbar'
-    nmap  <F8> : TagbarToggle <CR>
     " Discord
     Plug 'vimsence/vimsence'
     let g:vimsence_small_text = 'NeoVim'
@@ -69,11 +66,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'terryma/vim-multiple-cursors'
-    Plug 'google/vim-maktaba'
     Plug 'scrooloose/nerdtree'
-    Plug 'google/vim-codefmt'
-    Plug 'google/vim-glaive'
-    Plug 'yuezk/vim-js'
     " Plug 'preservim/nerdtree' 
     " Plug 'Xuyuanp/nerdtree-git-plugin'
     " Plug 'ryanoasis/vim-devicons'
@@ -150,6 +143,15 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 " }}}
 " General Functionality {{{
     " better terminal integration
+    Plug 'akinsho/toggleterm.nvim'
+    " set
+    let g:toggleterm_terminal_mapping = '<C-t>'
+    " mapping to open a specific window.
+    " For example: 2<C-t> will open terminal 2
+    nnoremap <expr> <c-t> 'm`<Cmd>' . v:count1 . 'ToggleTerm`<CR>'
+    inoremap <expr> <c-t> 'm`<Esc><Cmd>' . v:count1 . 'ToggleTerm`<CR>'
+
+    nnoremap <expr> oo 'm`' . v:count1 . 'o<Esc>``'
     " substitute, search, and abbreviate multiple variants of a word
     Plug 'tpope/vim-abolish'
 
@@ -376,7 +378,6 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 
     " JavaScript {{{
         Plug 'othree/yajs.vim', { 'for': [ 'javascript', 'javascript.jsx', 'html' ] }
-        " Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx', 'html'] }
         Plug 'moll/vim-node', { 'for': 'javascript' }
         Plug 'ternjs/tern_for_vim', { 'for': ['javascript', 'javascript.jsx'], 'do': 'npm install' }
         Plug 'MaxMEllon/vim-jsx-pretty'
@@ -385,7 +386,6 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 
     " TypeScript {{{
         Plug 'leafgarland/typescript-vim', { 'for': ['typescript', 'typescript.tsx'] }
-        " Plug 'Shougo/vimproc.vim', { 'do': 'make' } TODO what still needs this?
     " }}}
 
 
@@ -398,14 +398,14 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     " " }}}
 
     " markdown {{{
-        " Plug 'tpope/vim-markdown', { 'for': 'markdown' }
-        " let g:markdown_fenced_languages = [ 'tsx=typescript.tsx' ]
+        Plug 'tpope/vim-markdown', { 'for': 'markdown' }
+        let g:markdown_fenced_languages = [ 'tsx=typescript.tsx' ]
 
-        " " Open markdown files in Marked.app - mapped to <leader>m
-        " Plug 'itspriddle/vim-marked', { 'for': 'markdown', 'on': 'MarkedOpen' }
-        " nmap <leader>m :MarkedOpen!<cr>
-        " nmap <leader>mq :MarkedQuit<cr>
-        " nmap <leader>* *<c-o>:%s///gn<cr>
+        " Open markdown files in Marked.app - mapped to <leader>m
+        Plug 'itspriddle/vim-marked', { 'for': 'markdown', 'on': 'MarkedOpen' }
+        nmap <leader>m :MarkedOpen!<cr>
+        nmap <leader>mq :MarkedQuit<cr>
+        nmap <leader>* *<c-o>:%s///gn<cr>
     " }}}
 
     " JSON {{{

@@ -23,3 +23,5 @@ require 'nvim-treesitter.configs'.setup {
         lint_events = {"BufWrite", "CursorHold"},
     },
 }
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
