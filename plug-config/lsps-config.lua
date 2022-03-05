@@ -6,6 +6,27 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 local nvim_lsp = require'lspconfig'
 
+local keymap = vim.api.nvim_set_keymap
+local opts = { noremap = true }
+
+local function nkeymap(key, map)
+    keymap('n', key, map, opts)
+end
+
+nkeymap('gd', ':lua vim.lsp.buf.definition()<cr>')
+nkeymap('gD', ':lua vim.lsp.buf.declaration()<cr>')
+nkeymap('gi', ':lua vim.lsp.buf.implementation()<cr>')
+nkeymap('gw', ':lua vim.lsp.buf.document_symbol()<cr>')
+nkeymap('gw', ':lua vim.lsp.buf.workspace_symbol()<cr>')
+nkeymap('gr', ':lua vim.lsp.buf.references()<cr>')
+nkeymap('gt', ':lua vim.lsp.buf.type_definition()<cr>')
+nkeymap('ge', ':lua lua vim.lsp.diagnostic.goto_next()<cr>')
+nkeymap('gE', ':lua lua vim.lsp.diagnostic.goto_pre()<cr>')
+nkeymap('K', ':lua vim.lsp.buf.hover()<cr>')
+nkeymap('<M-k>', ':lua vim.lsp.buf.signature_help()<cr>')
+nkeymap('<C-space', ':lua vim.lsp.buf.hover()<cr>')
+nkeymap('<leader>a', ':lua vim.lsp.buf.code_action()<cr>')
+nkeymap('<leader>rn', ':lua vim.lsp.buf.rename()<cr>')
 -----------------------
 -- Dart / Flutter
 -----------------------
@@ -21,8 +42,36 @@ pcall(setupFlutterTools)
 nvim_lsp.sumneko_lua.setup{
     cmd = {"lua-language-server"};
     capabilities = capabilities;
+    settings = {
+        Lua = {
+          diagnostics = {
+            -- Get the language server to recognize the `vim` global
+            globals = {'vim'},
+          },
+          -- Do not send telemetry data containing a randomized but unique identifier
+          telemetry = {
+            enable = false,
+          },
+        },
+      },
 }
 
+-----------------------
+-- Ruby
+-----------------------
+require'lspconfig'.solargraph.setup{
+    cmd = { "solargraph", "stdio" },
+    capabilities = capabilities;
+    filetypes = { "ruby" },
+    init_options = {
+      formatting = true
+    },
+    settings = {
+      solargraph = {
+        diagnostics = true
+      }
+    }
+}
 -----------------------
 -- Rust
 -----------------------

@@ -55,7 +55,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'nvim-telescope/telescope-fzy-native.nvim'
     " lsp stuff
     Plug 'neovim/nvim-lspconfig' 
-    Plug 'williamboman/nvim-lsp-installer'
+    " Plug 'williamboman/nvim-lsp-installer'
     Plug 'hrsh7th/cmp-nvim-lsp'
     Plug 'hrsh7th/cmp-buffer'
     Plug 'hrsh7th/cmp-path'
@@ -64,8 +64,8 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     set completeopt=menu,menuone,noselect
     " Plug 'neovim/nvim-lspconfig'
     " Plug 'hrsh7th/nvim-compe'
-    " Plug 'RishabhRD/popfix'
-    " Plug 'RishabhRD/nvim-lsputils'    
+    Plug 'RishabhRD/popfix'
+    Plug 'RishabhRD/nvim-lsputils'    
     " snippets
     Plug 'hrsh7th/vim-vsnip'
 
@@ -152,12 +152,6 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 " General Functionality {{{
     " better terminal integration
     Plug 'akinsho/toggleterm.nvim'
-    let g:toggleterm_terminal_mapping = '<C-W>'
-    " mapping to open a specific window.
-    " For example: 2<C-t> will open terminal 2
-    nnoremap <expr> <c-w> 'm`<Cmd>' . v:count1 . 'ToggleTerm`<CR>'
-    inoremap <expr> <c-w> 'm`<Esc><Cmd>' . v:count1 . 'ToggleTerm`<CR>'
-
     nnoremap <expr> oo 'm`' . v:count1 . 'o<Esc>``'
     " substitute, search, and abbreviate multiple variants of a word
     Plug 'tpope/vim-abolish'
