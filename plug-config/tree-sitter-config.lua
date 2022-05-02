@@ -11,6 +11,7 @@ require 'nvim-treesitter.configs'.setup {
             -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
             ["property"] = "TSFunction",
         },
+        additional_vim_regex_highlighting = false,
     },
     playground = {
         enable = true,
@@ -23,5 +24,6 @@ require 'nvim-treesitter.configs'.setup {
         lint_events = {"BufWrite", "CursorHold"},
     },
 }
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+
+-- vim.opt.foldmethod = "expr"
+-- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"

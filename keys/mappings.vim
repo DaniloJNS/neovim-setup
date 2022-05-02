@@ -63,7 +63,8 @@ vmap <LocalLeader>vs "vy :call VimuxSlime()<CR>
 "" }}
 
 nnoremap <F10> :AsyncRun -mode=term -pos=bottom -rows=10 g++ -o exec "$(VIM_FILEPATH)" && ./exec<CR>
-nnoremap <F9> :AsyncRun -mode=term -pos=bottom -rows=10 gcc -lpthread -o exec "$(VIM_FILEPATH)" && ./exec<CR>
+nnoremap <F9> :AsyncRun -mode=term -pos=bottom -rows=10 gcc -o exec "$(VIM_FILEPATH)" && ./exec<CR>
+nnoremap <Leader>mk :AsyncRun -mode=term -pos=bottom -rows=10 make main<CR>
 nnoremap <F7> :AsyncRun -mode=term -pos=bottom -rows=10 node "$(VIM_FILEPATH)"<CR>
 nnoremap <F3> :VimuxOpenRunner<CR>
 nnoremap <F2> :AsyncRun -mode=term -pos=bottom -rows=10 bin/setup<CR>
@@ -77,7 +78,10 @@ nnoremap <M-h>    :vertical resize -2<CR>
 nnoremap <M-l>    :vertical resize +2<CR>
 " Escape redraws the screen and removes any search highlighting.
 nnoremap <esc> :noh<return><esc>
-
+nnoremap <M-r>    zR
+nnoremap <M-m>    zM
+nnoremap <M-a>    zA
+" folder close and up
 " Easy CAPS
 inoremap <c-u> <ESC>viwUi
 

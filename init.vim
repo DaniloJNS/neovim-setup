@@ -3,18 +3,19 @@ if exists('g:vscode')
     source $HOME/.config/nvim/code/code.vim
 else
  source $HOME/.config/nvim/smartquit.vim
+source $HOME/.config/nvim/smartwindown.vim
 
 " general
 source $HOME/.config/nvim/general/settings.vim
 source $HOME/.config/nvim/keys/mappings.vim
 
+set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
+
 source $HOME/.config/nvim/vim-plug/plugins.vim
 source $HOME/.config/nvim/plug-config/airline.vim
 source $HOME/.config/nvim/plug-config/rnvimr.vim
 source $HOME/.config/nvim/plug-config/vim-commentary.vim
-" source $HOME/.config/nvim/plug-config/signify.vim
 source $HOME/.config/nvim/plug-config/nvim-tree.vim
-" source $HOME/.config/nvim/plug-config/coc.vim
 source $HOME/.config/nvim/plug-config/lazygit.vim
 
 " " source $HOME/.config/nvim/plug-config/lsp-config.vim;
@@ -34,4 +35,3 @@ colorscheme dracula
 set guifont=FiraCodeNerdFont
 let g:neovide_transparency=1
 endif
-
