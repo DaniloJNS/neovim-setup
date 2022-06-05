@@ -23,7 +23,7 @@ source $HOME/.config/nvim/plug-config/searching.vim
 " " source $HOME/.config/nvim/plug-config/vimspect.vim
 " lua
 luafile $HOME/.config/nvim/plug-config/tree-sitter-config.lua
-luafile $HOME/.config/nvim/plug-config/bufferline-config.lua
+" luafile $HOME/.config/nvim/plug-config/bufferline-config.lua
 " luafile $HOME/.config/nvim/plug-config/lsp-installer.lua
 luafile $HOME/.config/nvim/plug-config/cmp.lua
 luafile $HOME/.config/nvim/plug-config/lsps-config.lua
@@ -31,7 +31,7 @@ luafile $HOME/.config/nvim/plug-config/lsps-config.lua
 luafile $HOME/.config/nvim/plug-config/telescope.lua
 luafile $HOME/.config/nvim/plug-config/toggleterm.lua
 
-colorscheme dracula
+colorscheme base16-synth-midnight-dark
 set guifont=FiraCodeNerdFont
 let g:neovide_transparency=1
 endif

@@ -24,7 +24,7 @@ nkeymap('gE', ':lua vim.lsp.diagnostic.goto_prev()<cr>')
 nkeymap('<M-w>', ':Telescope diagnostics<cr>')
 nkeymap('K', ':lua vim.lsp.buf.hover()<cr>')
 nkeymap('<space>k>', ':lua vim.lsp.buf.signature_help()<cr>')
-nkeymap('<C-space', ':lua vim.lsp.buf.hover()<cr>')
+nkeymap('<M-space>', ':lua vim.lsp.buf.hover()<cr>')
 nkeymap('<leader>a', ':lua vim.lsp.buf.code_action()<cr>')
 nkeymap('<leader>rn', ':lua vim.lsp.buf.rename()<cr>')
 

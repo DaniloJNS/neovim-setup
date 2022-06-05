@@ -5,6 +5,15 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/autoload/plugged')
+    Plug 'danymat/neogen'
+    " Gitbug copilot
+    Plug 'github/copilot.vim'
+    imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
+    let g:copilot_no_tab_map = v:true
+    " A personal wiki for vim
+    Plug 'vimwiki/vimwiki'
+    " For metrics of code
+    Plug 'wakatime/vim-wakatime'
     " Doc in neovim
     Plug 'KabbAmine/zeavim.vim'
     " Git visualizatiion
@@ -20,12 +29,17 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     " Plug 'jreybert/vimagit'
     " Auto pairs for '(' '[' '{'
     Plug 'jiangmiao/auto-pairs'
+    " Maneger tabs and buffers
+    Plug 'vim-ctrlspace/vim-ctrlspace'
+    let g:CtrlSpaceDefaultMappingKey = "<C-space> "
+    nnoremap <silent><M-o> :CtrlSpace O<CR>
     " Airline
     Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
     " Ranger
     Plug 'kevinhwang91/rnvimr', {'do': 'make sync'}
     " Top buffer/tab line
-    Plug 'akinsho/nvim-bufferline.lua'
+    " Plug 'akinsho/nvim-bufferline.lua'
     " Comment stuff out
     Plug 'tpope/vim-commentary'
     " Dracula
@@ -69,67 +83,22 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     " snippets
     Plug 'hrsh7th/vim-vsnip'
 
-
+    " Run Assync terminal commands
     Plug 'skywind3000/asyncrun.vim'
 
     " Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'terryma/vim-multiple-cursors'
-    Plug 'scrooloose/nerdtree'
-    " Plug 'preservim/nerdtree' 
-    " Plug 'Xuyuanp/nerdtree-git-plugin'
-    " Plug 'ryanoasis/vim-devicons'
-    " Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+    " Plug 'scrooloose/nerdtree'
+    Plug 'preservim/nerdtree' 
+    Plug 'Xuyuanp/nerdtree-git-plugin'
+    Plug 'ryanoasis/vim-devicons'
+    Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
     " Plug 'scrooloose/nerdtree-project-plugin'
-    " Plug 'PhilRunninger/nerdtree-visual-selection'
+    Plug 'PhilRunninger/nerdtree-visual-selection'
     " Load colorschemes
     Plug 'chriskempson/base16-vim'
     Plug 'joshdick/onedark.vim'
   
-    " LightLine {{{
-        Plug 'itchyny/lightline.vim'
-        Plug 'nicknisi/vim-base16-lightline'
-        let g:lightline = {
-            \   'colorscheme': 'base16',
-            \   'active': {
-            \       'left': [ [ 'mode', 'paste' ],
-            \               [ 'gitbranch' ],
-            \               [ 'readonly', 'filetype', 'filename' ]],
-            \       'right': [ [ 'percent' ], [ 'lineinfo' ],
-            \               [ 'fileformat', 'fileencoding' ],
-            \               [ 'gitblame', 'currentfunction',  'cocstatus', 'linter_errors', 'linter_warnings' ]]
-            \   },
-            \   'component_expand': {
-            \   },
-            \   'component_type': {
-            \       'readonly': 'error',
-            \       'linter_warnings': 'warning',
-            \       'linter_errors': 'error'
-            \   },
-            \   'component_function': {
-            \       'fileencoding': 'helpers#lightline#fileEncoding',
-            \       'filename': 'helpers#lightline#fileName',
-            \       'fileformat': 'helpers#lightline#fileFormat',
-            \       'filetype': 'helpers#lightline#fileType',
-            \       'gitbranch': 'helpers#lightline#gitBranch',
-            \       'cocstatus': 'coc#status',
-            \       'currentfunction': 'helpers#lightline#currentFunction',
-            \       'gitblame': 'helpers#lightline#gitBlame'
-            \   },
-            \   'tab_component_function': {
-            \       'filetype': 'helpers#lightline#tabFileType'
-            \   },
-            \   'tabline': {
-            \       'left': [ [ 'tabs' ] ],
-            \       'right': [ [ 'close' ] ]
-            \   },
-            \   'tab': {
-            \       'active': [ 'filetype', 'filename', 'modified' ],
-            \       'inactive': [ 'filetype', 'filename', 'modified' ],
-            \   },
-            \   'separator': { 'left': '', 'right': '' },
-            \   'subseparator': { 'left': '', 'right': '' }
-        \ }
-    " }}}
 " AutoGroups {{{
     " file type specific settings
     augroup configgroup
@@ -412,7 +381,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 
     " JSON {{{
         Plug 'elzr/vim-json', { 'for': 'json' }
-        let g:vim_json_syntax_conceal = 0
+       let g:vim_json_syntax_conceal = 0
     " }}}
 
     Plug 'ekalinin/Dockerfile.vim'

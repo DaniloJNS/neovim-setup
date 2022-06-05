@@ -36,7 +36,10 @@ set autochdir                           " Your working directory will always be 
 set termguicolors
 set textwidth=80
 set colorcolumn=80
-au ColorScheme * hi Normal ctermbg=none guibg=none
+set nocompatible
+set hidden
+" discomment for enable transparence
+" au ColorScheme * hi Normal ctermbg=none guibg=none  
 
 " Appearance {{{
 
