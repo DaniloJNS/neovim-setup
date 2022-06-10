@@ -1,6 +1,7 @@
 <h1 align="center">My personal config for neovim</h1>
 
 <div align="center">
+  
 [![Neovim Minimum Version](https://img.shields.io/badge/Neovim-0.7.0-blueviolet.svg?style=flat-square&logo=Neovim&color=90E59A&logoColor=white)](https://github.com/neovim/neovim)
 </div>
 
