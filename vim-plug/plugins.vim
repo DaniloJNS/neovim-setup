@@ -5,121 +5,126 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/autoload/plugged')
+    " Show color in buffer
     Plug 'ap/vim-css-color'
+
     " Color scheme
     Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+
     " Help insert documentation
     Plug 'danymat/neogen'
+
     " Gitbug copilot
     Plug 'github/copilot.vim'
     imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
     let g:copilot_no_tab_map = v:true
+
     " A personal wiki for vim
     Plug 'vimwiki/vimwiki'
     " For metrics of code
     Plug 'wakatime/vim-wakatime'
+
     " Doc in neovim
     Plug 'KabbAmine/zeavim.vim'
+
     " Git visualizatiion
     Plug 'kdheepak/lazygit.nvim'
+    
+    " Help indentation
     Plug 'Yggdroot/indentLine'
-    " Plug 'jparise/vim-graphql'
+
     " motion {
         Plug 'justinmk/vim-sneak'
         map m <Plug>Sneak_;
         Plug 'easymotion/vim-easymotion'
       " }
-    " git buffer
-    " Plug 'jreybert/vimagit'
     " Auto pairs for '(' '[' '{'
     Plug 'jiangmiao/auto-pairs'
+
     " Maneger tabs and buffers
     Plug 'vim-ctrlspace/vim-ctrlspace'
     let g:CtrlSpaceDefaultMappingKey = "<C-space> "
     nnoremap <silent><M-o> :CtrlSpace O<CR>
+
     " Airline
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
+
     " Ranger
     Plug 'kevinhwang91/rnvimr', {'do': 'make sync'}
-    " Top buffer/tab line
-    " Plug 'akinsho/nvim-bufferline.lua'
+
     " Comment stuff out
     Plug 'tpope/vim-commentary'
-    " Dracula
+    
+    " Dracula theme
     Plug 'dracula/vim', { 'as': 'dracula' }
+
     " Set root directory properly
     Plug 'airblade/vim-rooter'
+
     " Git in the gutter
     Plug 'mhinz/vim-signify'
+
     " Tags
     Plug 'preservim/tagbar'
+
     " Discord
     Plug 'vimsence/vimsence'
     let g:vimsence_small_text = 'NeoVim'
     let g:vimsence_small_image = 'neovim'
     let g:vimsence_file_explorer_text = 'In NERDTree'
     let g:vimsence_file_explorer_details = 'Looking for files'
+
     " tree-sitter {{
       Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
     "}}
+    "
     " dev-icons
     Plug 'kyazdani42/nvim-web-devicons'
+
     " telescope
     Plug 'nvim-lua/popup.nvim'
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
     Plug 'romgrk/fzy-lua-native'
     Plug 'nvim-telescope/telescope-fzy-native.nvim'
+
     " lsp stuff
     Plug 'neovim/nvim-lspconfig' 
-    " Plug 'williamboman/nvim-lsp-installer'
     Plug 'hrsh7th/cmp-nvim-lsp'
     Plug 'hrsh7th/cmp-buffer'
     Plug 'hrsh7th/cmp-path'
     Plug 'hrsh7th/cmp-cmdline'
     Plug 'hrsh7th/nvim-cmp'
-    set completeopt=menu,menuone,noselect
     Plug 'RishabhRD/popfix'
     Plug 'RishabhRD/nvim-lsputils'    
+
     " snippets
     Plug 'hrsh7th/vim-vsnip'
-    " Run Assync terminal commands
+
+    " Run Async terminal commands
     Plug 'skywind3000/asyncrun.vim'
+
+    " multiple cursors with visual mode
     Plug 'terryma/vim-multiple-cursors'
+
     " File explorer
     Plug 'preservim/nerdtree' 
     Plug 'Xuyuanp/nerdtree-git-plugin'
     Plug 'ryanoasis/vim-devicons'
     Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
     Plug 'PhilRunninger/nerdtree-visual-selection'
+
     " Load colorschemes
     Plug 'chriskempson/base16-vim'
     Plug 'joshdick/onedark.vim'
-  
-" AutoGroups {{{
-    " file type specific settings
-    augroup configgroup
-        autocmd!
-
-        " automatically resize panes on resize
-        autocmd VimResized * exe 'normal! \<c-w>='
-        autocmd BufWritePost .vimrc,.vimrc.local,init.vim source %
-        autocmd BufWritePost .vimrc.local source %
-        " save all files on focus lost, ignoring warnings about untitled buffers
-        autocmd FocusLost * silent! wa
-
-        " make quickfix windows take all the lower section of the screen
-        " when there are multiple windows open
-        autocmd FileType qf wincmd J
-        autocmd FileType qf nmap <buffer> q :q<cr>
-    augroup END
 " }}}
-" }}}
+
 " General Functionality {{{
     " better terminal integration
     Plug 'akinsho/toggleterm.nvim'
     nnoremap <expr> oo 'm`' . v:count1 . 'o<Esc>``'
+
     " substitute, search, and abbreviate multiple variants of a word
     Plug 'tpope/vim-abolish'
 
@@ -149,56 +154,9 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 
     " detect indent style (tabs vs. spaces)
     Plug 'tpope/vim-sleuth'
+
     " Startify: Fancy startup screen for vim {{{
-        Plug 'mhinz/vim-startify'
-        " returns all modified files of the current git repo
-        " `2>/dev/null` makes the command fail quietly, so that when we are not
-        " in a git repo, the list will be empty
-        function! s:gitModified()
-            let files = systemlist('git ls-files -m 2>/dev/null')
-            return map(files, "{'line': v:val, 'path': v:val}")
-        endfunction
-        " same as above, but show untracked files, honouring .gitignore
-        function! s:gitUntracked()
-            let files = systemlist('git ls-files -o --exclude-standard 2>/dev/null')
-            return map(files, "{'line': v:val, 'path': v:val}")
-        endfunction
-        function! s:gitCommits()
-          let commits = systemlist('git log --oneline | head -n10')
-          return map(commits, "{'line': v:val, 'path': v:val}")
-        endfunction
-        " Don't change to directory when selecting a file
-        let g:startify_files_number = 5
-        let g:startify_change_to_dir = 0
-        let g:startify_custom_header = [ ]
-        let g:startify_relative_path = 1
-        let g:startify_use_env = 1
-
-        " Custom startup list, only show MRU from current directory/project
-        let g:startify_lists = [
-        \  { 'type': 'dir',       'header': [ 'Files '. getcwd() ] },
-        \  { 'type': function('s:gitCommits'),  'header': ['   git commits']},
-        \  { 'type': function('s:gitModified'),  'header': ['   git modified']},
-        \  { 'type': function('s:gitUntracked'), 'header': ['   git untracked']},
-        \  { 'type': 'sessions',  'header': [ 'Sessions' ]       },
-        \  { 'type': 'bookmarks', 'header': [ 'Bookmarks' ]      },
-        \  { 'type': 'commands',  'header': [ 'Commands' ]       },
-        \ ]
-
-        let g:startify_commands = [
-        \   { 'up': [ 'Update Plugins', ':PlugUpdate' ] },
-        \   { 'ug': [ 'Upgrade Plugin Manager', ':PlugUpgrade' ] },
-        \   { 'uc': [ 'Update CoC Plugins', ':CocUpdate' ] },
-        \ ]
-
-        let g:startify_bookmarks = [
-            \ { 'c': '~/.config/nvim/init.vim' },
-            \ { 'g': '~/.gitconfig' },
-            \ { 'z': '~/.zshrc' }
-        \ ]
-
-        autocmd User Startified setlocal cursorline
-        nmap <leader>st :Startify<cr>
+      Plug 'mhinz/vim-startify'
     " }}}
 
     " Close buffers but keep splits
@@ -210,89 +168,13 @@ call plug#begin('~/.config/nvim/autoload/plugged')
         autocmd! User GoyoEnter nested call helpers#goyo#enter()
         autocmd! User GoyoLeave nested call helpers#goyo#leave()
     " }}}
+    "
     " context-aware pasting
     Plug 'sickill/vim-pasta'
-" FZF {{{
+
+    " FZF {{{
         Plug $HOMEBREW_PREFIX . '/opt/fzf'
         Plug 'junegunn/fzf.vim'
-
-        if isdirectory(".git")
-            " if in a git project, use :GFiles
-            nmap <silent> <leader>t :GitFiles --cached --others --exclude-standard<cr>
-        else
-            " otherwise, use :FZF
-            nmap <silent> <leader>t :FZF<cr>
-        endif
-
-        nmap <silent> <leader>s :GFiles?<cr>
-
-        nmap <silent> <leader>b :Buffers<cr>
-        nmap <silent> <leader>e :FZF<cr>
-        nmap <leader><tab> <plug>(fzf-maps-n)
-        xmap <leader><tab> <plug>(fzf-maps-x)
-        omap <leader><tab> <plug>(fzf-maps-o)
-
-        " Insert mode completion
-        imap <c-x><c-k> <plug>(fzf-complete-word)
-        imap <c-x><c-f> <plug>(fzf-complete-path)
-        imap <c-x><c-j> <plug>(fzf-complete-file-ag)
-        imap <c-x><c-l> <plug>(fzf-complete-line)
-        nnoremap <silent> <Leader>C :call fzf#run({
-        \   'source':
-        \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
-        \         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
-        \   'sink':    'colo',
-        \   'options': '+m',
-        \   'left':    30
-        \ })<CR>
-
-        command! FZFMru call fzf#run({
-        \  'source':  v:oldfiles,
-        \  'sink':    'e',
-        \  'options': '-m -x +s',
-        \  'down':    '40%'})
-
-        command! -bang -nargs=* Find call fzf#vim#grep(
-            \ 'rg --column --line-number --no-heading --follow --color=always '.<q-args>.' || true', 1,
-            \ <bang>0 ? fzf#vim#with_preview('up:60%') : fzf#vim#with_preview('right:50%:hidden', '?'), <bang>0)
-        " command! -bang -nargs=? -complete=dir Files
-            " \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-        command! -bang -nargs=? -complete=dir GitFiles
-            \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
-        function! RipgrepFzf(query, fullscreen)
-            let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
-            let initial_command = printf(command_fmt, shellescape(a:query))
-            let reload_command = printf(command_fmt, '{q}')
-            let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-            call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-        endfunction
-
-        function! FloatingFZF()
-            let buf = nvim_create_buf(v:true, v:true)
-            let height = float2nr(&lines * 0.5)
-            let width = float2nr(&columns * 0.7)
-            let horizontal = float2nr((&columns - width) / 2)
-            let vertical = 0
-            let opts = {
-                \ 'relative': 'editor',
-                \ 'row': vertical,
-                \ 'col': horizontal,
-                \ 'width': width,
-                \ 'height': height,
-                \ 'style': 'minimal'
-            \ }
-            call nvim_open_win(buf, v:true, opts)
-        endfunction
-
-        let $FZF_DEFAULT_OPTS= $FZF_DEFAULT_OPTS
-            \ . " --layout reverse"
-            \ . " --pointer ' '"
-            \ . " --info hidden"
-            \ . " --color 'bg+:0'"
-            \ . " --border rounded"
-
-        let g:fzf_preview_window = ['right:50%:hidden', '?']
-        let g:fzf_layout = { 'window': 'call FloatingFZF()' }
     " }}}
 
     " vim-fugitive {{{
@@ -387,6 +269,4 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'ekalinin/Dockerfile.vim'
     Plug 'jparise/vim-graphql'
 " }}}
-
-
 call plug#end()
