@@ -1,8 +1,29 @@
+# Snipptes for tests with Jest
+
+snippet ita "Description"
+it('$0', async () => {
+
+});
+endsnippet
+
+snippet it "Description"
+it('$0', () => {
+
+});
+endsnippet
+
+snippet desc "Description"
+describe('$0', () => {
+
+});
+endsnippet
+
 snippet func
 function ($0) {
 	$1
 };
 endsnippet
+
 snippet iff
 if ($1) {
 $2
@@ -12,6 +33,7 @@ endsnippet
 snippet log "Insert cosole.log"
 console.log($1);
 endsnippet
+
 snippet logc "Insert log with color"
 console.log('%c$1', 'font-weight:bold;color:${2:green};');
 endsnippet

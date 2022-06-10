@@ -5,6 +5,10 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/autoload/plugged')
+    Plug 'ap/vim-css-color'
+    " Color scheme
+    Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+    " Help insert documentation
     Plug 'danymat/neogen'
     " Gitbug copilot
     Plug 'github/copilot.vim'
@@ -303,6 +307,8 @@ call plug#begin('~/.config/nvim/autoload/plugged')
         nmap <leader>ge :Gedit<cr>
         nmap <silent><leader>gr :Gread<cr>
         nmap <silent><leader>gb :G blame<cr>
+        nmap <silent><leader>gd :Gvdiffsplit<cr>
+        nmap <silent><leader>gf :Flog<cr>
 
         Plug 'tpope/vim-rhubarb' " hub extension for fugitive
         Plug 'sodapopcan/vim-twiggy'
