@@ -62,10 +62,10 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     let g:vimsence_file_explorer_details = 'Looking for files'
     " tree-sitter {{
       Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-      "}}
+    "}}
     " dev-icons
     Plug 'kyazdani42/nvim-web-devicons'
-    " " telescope
+    " telescope
     Plug 'nvim-lua/popup.nvim'
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
@@ -80,24 +80,18 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'hrsh7th/cmp-cmdline'
     Plug 'hrsh7th/nvim-cmp'
     set completeopt=menu,menuone,noselect
-    " Plug 'neovim/nvim-lspconfig'
-    " Plug 'hrsh7th/nvim-compe'
     Plug 'RishabhRD/popfix'
     Plug 'RishabhRD/nvim-lsputils'    
     " snippets
     Plug 'hrsh7th/vim-vsnip'
-
     " Run Assync terminal commands
     Plug 'skywind3000/asyncrun.vim'
-
-    " Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'terryma/vim-multiple-cursors'
-    " Plug 'scrooloose/nerdtree'
+    " File explorer
     Plug 'preservim/nerdtree' 
     Plug 'Xuyuanp/nerdtree-git-plugin'
     Plug 'ryanoasis/vim-devicons'
     Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-    " Plug 'scrooloose/nerdtree-project-plugin'
     Plug 'PhilRunninger/nerdtree-visual-selection'
     " Load colorschemes
     Plug 'chriskempson/base16-vim'
