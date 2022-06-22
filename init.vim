@@ -21,6 +21,7 @@ else
     source $HOME/.config/nvim/plug-config/fzf.vim
 
     " lua
+    " luafile $HOME/.config/nvim/lua/config/general/settings.lua
     luafile $HOME/.config/nvim/plug-config/tree-sitter-config.lua
     luafile $HOME/.config/nvim/plug-config/cmp.lua
     luafile $HOME/.config/nvim/plug-config/lsps-config.lua

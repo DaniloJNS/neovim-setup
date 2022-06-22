@@ -34,10 +34,10 @@ set formatoptions-=cro                  " Stop newline continution of comments
 set clipboard=unnamedplus               " Copy paste between vim and everything else
 set autochdir                           " Your working directory will always be the same as your working directory
 set termguicolors
-set textwidth=80
-set colorcolumn=80
+" TODO: define textwidth and colorcolumn for 120 for ruby filetype
+set textwidth=100
+set colorcolumn=100
 set nocompatible
-set hidden
 set guifont=FiraCodeNerdFontMono
 set completeopt=menu,menuone,noselect
 " discomment for enable transparence

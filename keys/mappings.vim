@@ -74,9 +74,7 @@ nnoremap <M-h>    :vertical resize -2<CR>
 nnoremap <M-l>    :vertical resize +2<CR>
 " Escape redraws the screen and removes any search highlighting.
 nnoremap <esc> :noh<return><esc>
-nnoremap <M-r>    zR
-nnoremap <M-m>    zM
-nnoremap <M-a>    zA
+
 " folder close and up
 " Easy CAPS
 inoremap <c-u> <ESC>viwUi

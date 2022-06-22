@@ -8,7 +8,6 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true }
-
 local function nkeymap(key, map)
     keymap('n', key, map, opts)
 end
@@ -108,7 +107,6 @@ local function setupFlutterTools()
 end
 
 pcall(setupFlutterTools)
-
 -----------------------
 -- c/c++
 -----------------------
@@ -186,23 +184,28 @@ require("clangd_extensions").setup {
 -----------------------
 -- lua
 -----------------------
-nvim_lsp.sumneko_lua.setup{
-    cmd = {"lua-language-server"};
-    capabilities = capabilities;
-    settings = {
-        Lua = {
-          diagnostics = {
-            -- Get the language server to recognize the `vim` global
-            globals = {'vim'},
-          },
-          -- Do not send telemetry data containing a randomized but unique identifier
-          telemetry = {
-            enable = false,
-          },
-        },
+nvim_lsp.sumneko_lua.setup({
+  cmd = {"lua-language-server"};
+  capabilities = capabilities;
+  settings = {
+    Lua = {
+      runtime = {version = 'LuaJIT'},
+      diagnostics = {
+        enable = true,
+        globals = {"vim", "describe", "it", "before_each", "after_each"}
       },
-};
-
+      workspace = {
+        maxPreload = 10000,
+        preloadFileSize = 1000,
+        checkThirdParty = false,
+        library = {
+          [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+          [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true
+        }
+      }
+    }
+  }
+})
 -----------------------
 -- Ruby
 -----------------------
@@ -274,3 +277,4 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     update_in_insert = true,
   }
 )
+

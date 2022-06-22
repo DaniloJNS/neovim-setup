@@ -17,7 +17,6 @@ require('telescope').setup{
     command_palette = command_palette
   }
 }
-
 -- Load extensions
 require('telescope').load_extension('fzy_native')
 require('telescope').load_extension('gh')
@@ -46,4 +45,6 @@ require('telescope').load_extension('command_palette')
     tools.nkeymap('<space>C', '<Esc> :lua require("telescope.builtin").colorscheme()<CR>')
 
     tools.nkeymap('<Leader>ac', '<Esc> :lua require("telescope.builtin").builtin()<CR>')
+
+    tools.nkeymap('<Leader>h', '<Esc> :Cheatsheet')
 -- }}

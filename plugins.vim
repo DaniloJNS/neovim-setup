@@ -30,9 +30,12 @@ call plug#begin('~/.config/nvim/autoload/plugged')
           Plug 'hrsh7th/cmp-path'
           Plug 'hrsh7th/cmp-cmdline'
           Plug 'hrsh7th/nvim-cmp'
-          Plug 'RishabhRD/popfix'
-          Plug 'RishabhRD/nvim-lsputils'
+          " For developer plugins
+          " Plug 'RishabhRD/popfix'
+          " Plug 'RishabhRD/nvim-lsputils'
           Plug 'p00f/clangd_extensions.nvim'
+          " Better integration for lua
+            Plug 'tjdevries/nlua.nvim'
 
         " Debugging
           Plug 'mfussenegger/nvim-dap'
@@ -71,9 +74,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
           Plug 'Yggdroot/indentLine'
 
         " Automations for edit {{
-          " Use many cursos 
             Plug 'mg979/vim-visual-multi', {'branch': 'master'} 
-
           " Comment stuff out
             Plug 'tpope/vim-commentary'
 
@@ -81,7 +82,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
             Plug 'jiangmiao/auto-pairs'
 
           " multiple cursors with visual mode
-            Plug 'terryma/vim-multiple-cursors'
+            " Plug 'terryma/vim-multiple-cursors'
 
           " substitute, search, and abbreviate multiple variants of a word
             Plug 'tpope/vim-abolish'
