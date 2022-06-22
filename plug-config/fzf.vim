@@ -1,15 +1,11 @@
 if isdirectory(".git")
     " if in a git project, use :GFiles
-    nmap <silent> <leader>t :GitFiles --cached --others --exclude-standard<cr>
+    nmap <silent> <leader>e :GitFiles --cached --others --exclude-standard<cr>
 else
     " otherwise, use :FZF
-    nmap <silent> <leader>t :FZF<cr>
+    nmap <silent> <leader>e :FZF<cr>
 endif
 
-nmap <silent> <leader>s :GFiles?<cr>
-
-nmap <silent> <leader>b :Buffers<cr>
-nmap <silent> <leader>e :FZF<cr>
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
@@ -19,6 +15,7 @@ imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
+
 nnoremap <silent> <Leader>C :call fzf#run({
 \   'source':
 \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),

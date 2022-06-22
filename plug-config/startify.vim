@@ -37,7 +37,8 @@ let g:startify_bookmarks = [
     \ { 'c': '~/.config/nvim/init.vim' },
     \ { 'g': '~/.gitconfig' },
     \ { 'k': '~/.config/kitty/kitty.conf' },
-    \ { 'f': '~/.config/fish/config.fish' }
+    \ { 'f': '~/.config/fish/config.fish' },
+    \ { 'z': '~/.zshrc' }
 \ ]
 
 let g:startify_custom_header =

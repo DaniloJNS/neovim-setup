@@ -33,6 +33,7 @@ let g:airline#extensions#virtualenv#enabled = 0
 let g:airline#extensions#whitespace#enabled = 0
 let g:airline#extensions#nvimlsp#enabled = 1
 
+let g:airline_exclude_preview = 1
 let g:airline_symbols.linenr = ''
 let g:airline_symbols.paste = 'ρ'
 let g:airline_symbols.readonly = ''

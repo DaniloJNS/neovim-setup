@@ -5,9 +5,6 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/autoload/plugged')
-    " Show color in buffer
-    Plug 'ap/vim-css-color'
-
     " Color scheme
     Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 
@@ -21,6 +18,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 
     " A personal wiki for vim
     Plug 'vimwiki/vimwiki'
+
     " For metrics of code
     Plug 'wakatime/vim-wakatime'
 
@@ -34,10 +32,11 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'Yggdroot/indentLine'
 
     " motion {
-        Plug 'justinmk/vim-sneak'
-        map m <Plug>Sneak_;
-        Plug 'easymotion/vim-easymotion'
-      " }
+        " Plug 'justinmk/vim-sneak'
+        " map m <Plug>Sneak_;
+        " Plug 'easymotion/vim-easymotion'
+    " }
+
     " Auto pairs for '(' '[' '{'
     Plug 'jiangmiao/auto-pairs'
 
@@ -78,17 +77,28 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     " tree-sitter {{
       Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
     "}}
-    "
+
     " dev-icons
     Plug 'kyazdani42/nvim-web-devicons'
+
+    " Github integration
+    Plug 'pwntester/octo.nvim'
 
     " telescope
     Plug 'nvim-lua/popup.nvim'
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
-    Plug 'romgrk/fzy-lua-native'
-    Plug 'nvim-telescope/telescope-fzy-native.nvim'
-
+    " Telescope extensions {{
+        Plug 'romgrk/fzy-lua-native'
+        Plug 'nvim-telescope/telescope-fzy-native.nvim'
+        " Telescope Integetation with octo-github
+        Plug 'nvim-telescope/telescope-github.nvim'
+        " Create key-bindings and watch them with telescope
+        Plug 'LinArcX/telescope-command-palette.nvim'
+        " Cheatsheet plugin for neovim with Telescope as UI
+        Plug 'sudormrfbin/cheatsheet.nvim'
+    " }}
+    
     " lsp stuff
     Plug 'neovim/nvim-lspconfig' 
     Plug 'hrsh7th/cmp-nvim-lsp'
@@ -97,7 +107,13 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'hrsh7th/cmp-cmdline'
     Plug 'hrsh7th/nvim-cmp'
     Plug 'RishabhRD/popfix'
-    Plug 'RishabhRD/nvim-lsputils'    
+    Plug 'RishabhRD/nvim-lsputils'
+    Plug 'p00f/clangd_extensions.nvim'
+
+    "Debugging
+    Plug 'mfussenegger/nvim-dap'
+    Plug 'rcarriga/nvim-dap-ui'
+    Plug 'theHamsta/nvim-dap-virtual-text'
 
     " snippets
     Plug 'hrsh7th/vim-vsnip'
@@ -206,6 +222,10 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 
 
 " Language-Specific Configuration {{{
+"   " fish scripting {{{
+        Plug 'dag/vim-fish'
+    " }}}
+    "
     " html / templates {{{
         " emmet support for vim - easily create markdup wth CSS-like syntax
         Plug 'mattn/emmet-vim'
@@ -248,6 +268,8 @@ call plug#begin('~/.config/nvim/autoload/plugged')
         Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
         Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
         Plug 'stephenway/postcss.vim', { 'for': 'css' }
+        " Show color in buffer
+        Plug 'ap/vim-css-color'
     " " }}}
 
     " markdown {{{

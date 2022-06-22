@@ -33,3 +33,4 @@ function M.search_dotfiles()
 end
 
 return M
+

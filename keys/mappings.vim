@@ -15,11 +15,7 @@ nmap <space>x <C-Y>,
 nnoremap <c-o> :NERDTreeToggle<cr>
 "nnoremap <c-p> :files<cr>
 nmap <C-p> :RnvimrToggle<CR>
-" Tags NAV
-nmap  <F8> : TagbarToggle <CR>
 
-"" The-silver-search map
-nmap <M-f> :Ag <CR>
 "Zeal Mappings
 nmap <leader>z <Plug>Zeavim
 vmap <leader>z <Plug>ZVVisSelection
@@ -104,9 +100,9 @@ nnoremap <C-l> <C-w>l
 "    " set a map leader for more key combos
 
 "    " edit ~/.config/nvim/init.vim
-      map <leader>ev :e! ~/.config/nvim/init.vim<cr>
+    map <leader>ev :e! ~/.config/nvim/init.vim<cr>
      " edit gitconfig
-      map <leader>eg :e! ~/.gitconfig<cr>
+    map <leader>eg :e! ~/.gitconfig<cr>
 
 "    " markdown to html
     nmap <leader>md :%!markdown --html4tags <cr>
@@ -115,7 +111,6 @@ nnoremap <C-l> <C-w>l
     nmap <leader><space> :%s/\s\+$<cr>
     nmap <leader><space><space> :%s/\n\{2,}/\r\r/g<cr>
 
-
 "    " keep visual selection when indenting/outdenting
     vmap < <gv
     vmap > >gv
@@ -123,7 +118,7 @@ nnoremap <C-l> <C-w>l
     " Close windown but keep buffer
     map <leader>wc :wincmd q<cr>
 
-"    " toggle cursor line
+"    " toggle cursor line 
     nnoremap <leader>i :set cursorline!<cr>
 
     " scroll the viewport faster

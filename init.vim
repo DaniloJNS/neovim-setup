@@ -27,5 +27,6 @@ else
     luafile $HOME/.config/nvim/plug-config/telescope.lua
     luafile $HOME/.config/nvim/plug-config/toggleterm.lua
     luafile $HOME/.config/nvim/plug-config/tokyonight.lua
+    luafile $HOME/.config/nvim/plug-config/octo.lua
 
 endif
