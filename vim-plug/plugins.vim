@@ -30,6 +30,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
           Plug 'hrsh7th/cmp-path'
           Plug 'hrsh7th/cmp-cmdline'
           Plug 'hrsh7th/nvim-cmp'
+          " For developer plugins
           Plug 'RishabhRD/popfix'
           Plug 'RishabhRD/nvim-lsputils'
           Plug 'p00f/clangd_extensions.nvim'
@@ -57,10 +58,6 @@ call plug#begin('~/.config/nvim/autoload/plugged')
         " Help insert documentation
           Plug 'danymat/neogen'
 
-        " Gitbug copilot
-          Plug 'github/copilot.vim'
-          imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
-          let g:copilot_no_tab_map = v:true
         " detect indent style (tabs vs. spaces)
           Plug 'tpope/vim-sleuth'
 
@@ -71,9 +68,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
           Plug 'Yggdroot/indentLine'
 
         " Automations for edit {{
-          " Use many cursos 
             Plug 'mg979/vim-visual-multi', {'branch': 'master'} 
-
           " Comment stuff out
             Plug 'tpope/vim-commentary'
 
@@ -81,7 +76,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
             Plug 'jiangmiao/auto-pairs'
 
           " multiple cursors with visual mode
-            Plug 'terryma/vim-multiple-cursors'
+            " Plug 'terryma/vim-multiple-cursors'
 
           " substitute, search, and abbreviate multiple variants of a word
             Plug 'tpope/vim-abolish'
@@ -134,6 +129,8 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     " }}
     "
     " Git {{
+      " Better visualization of diffs
+        Plug 'sindrets/diffview.nvim'
       " Git visualizatiion
         Plug 'kdheepak/lazygit.nvim'
 
