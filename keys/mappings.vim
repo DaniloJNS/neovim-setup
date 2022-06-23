@@ -50,7 +50,6 @@ vmap <LocalLeader>vs "vy :call VimuxSlime()<CR>
 "" ruby {{
  nnoremap <F6> :AsyncRun -mode=term -pos=bottom -rows=30 ruby "$(VIM_FILEPATH)"<CR>
  map <Leader>rb :AsyncRun -mode=term -pos=bottom -rows=30 rspec "$(VIM_FILEPATH)"\| more <CR>
- map <Leader>rs :AsyncRun -mode=term -pos=bottom -rows=30 docker-compose exec web bash -c "rspec"\| more <CR>
  nnoremap <F5> :AsyncRun -mode=term -pos=bottom -rows=30 rspec \| more <CR>
  nnoremap <F4> :AsyncRun -mode=term -pos=bottom -rows=30 rubocop<CR>
  map <Leader>rp :AsyncRun -mode=term -pos=bottom -rows=30 rubocop "$(VIM_FILEPATH)"\| more <CR>
