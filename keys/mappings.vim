@@ -5,7 +5,8 @@ nnoremap <leader>ec :vsplit ~/.config/nvim/init.vim<cr>
 nnoremap <leader>we :vsplit <cr>
 nnoremap <leader>ws :split <cr>
 nnoremap <leader>sc :source ~/.config/nvim/init.vim<cr>
-nnoremap <Leader>q :Bdelete<CR>
+nnoremap Q :qall<CR>
+
   "commentary
 nnoremap <space>/ :Commentary<CR>
 vnoremap <space>/ :Commentary<CR>
@@ -21,7 +22,7 @@ nmap <leader>z <Plug>Zeavim
 vmap <leader>z <Plug>ZVVisSelection
 nmap gz <Plug>ZVOperator
 nmap <leader><leader>z <Plug>ZVKeyDocset
-set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
+" set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
 " Run the current file with rspec
 
 " Prompt for a command to run
@@ -64,8 +65,10 @@ nnoremap <F7> :AsyncRun -mode=term -pos=bottom -rows=10 node "$(VIM_FILEPATH)"<C
 nnoremap <F3> :VimuxOpenRunner<CR>
 nnoremap <F2> :AsyncRun -mode=term -pos=bottom -rows=10 bin/setup<CR>
 nnoremap <leader>go :AsyncRun -mode=term -pos=bottom -rows=10 go run "$(VIM_FILEPATH)"<CR>
+
 "" alternate way to save
 nnoremap <c-s> :w<cr>
+
 "" Use alt + hjkl to resize windows
 nnoremap <M-j>    :resize -2<CR>
 nnoremap <M-k>    :resize +2<CR>
@@ -115,7 +118,7 @@ nnoremap <C-l> <C-w>l
     " Close windown but keep buffer
     map <leader>wc :wincmd q<cr>
 
-"    " toggle cursor line 
+"    " toggle cursor line
     nnoremap <leader>i :set cursorline!<cr>
 
     " scroll the viewport faster
@@ -134,5 +137,5 @@ nnoremap <C-l> <C-w>l
     nmap <silent> <M-1> :tabprevious<cr>
     nmap <silent> <M-2> :tabfirst<cr>
     nmap <silent> <M-3> :tablast<cr>
-    
+
 "" }}}

@@ -33,6 +33,7 @@ set timeoutlen=500                      " By default timeoutlen is 1000 ms
 set formatoptions-=cro                  " Stop newline continution of comments
 set clipboard=unnamedplus               " Copy paste between vim and everything else
 set autochdir                           " Your working directory will always be the same as your working directory
+set scrolloff=9999                      " Keep cursor in mid screen
 set termguicolors
 " TODO: define textwidth and colorcolumn for 120 for ruby filetype
 set textwidth=100
@@ -81,10 +82,12 @@ set completeopt=menu,menuone,noselect
         autocmd BufWritePost .vimrc.local source %
         " save all files on focus lost, ignoring warnings about untitled buffers
         autocmd FocusLost * silent! wa
-
         " make quickfix windows take all the lower section of the screen
         " when there are multiple windows open
         autocmd FileType qf wincmd J
         autocmd FileType qf nmap <buffer> q :q<cr>
+
+        autocmd FileType ruby set textwidth=120
+        autocmd FileType ruby set colorcolumn=120
     augroup END
 " }}}

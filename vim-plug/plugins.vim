@@ -31,7 +31,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
           Plug 'hrsh7th/cmp-cmdline'
           Plug 'hrsh7th/nvim-cmp'
           " For developer plugins
-          Plug 'RishabhRD/popfix'
+            Plug 'RishabhRD/popfix'
           Plug 'RishabhRD/nvim-lsputils'
           Plug 'p00f/clangd_extensions.nvim'
 
@@ -126,6 +126,8 @@ call plug#begin('~/.config/nvim/autoload/plugged')
         " Close buffers but keep splits
           Plug 'moll/vim-bbye'
           nmap <leader>d :Bdelete<cr>
+        " Maximaze buffer
+          Plug 'szw/vim-maximizer'
     " }}
     "
     " Git {{
@@ -177,7 +179,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     " }}
 
     " motion {
-        " Plug 'justinmk/vim-sneak'
+        Plug 'justinmk/vim-sneak'
         " map m <Plug>Sneak_;
         " Plug 'easymotion/vim-easymotion'
     " }
@@ -225,6 +227,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
     " Telescope extensions {{
+      Plug 'nvim-telescope/telescope-ui-select.nvim' 
       Plug 'romgrk/fzy-lua-native'
       Plug 'nvim-telescope/telescope-fzy-native.nvim'
       " Telescope Integetation with octo-github

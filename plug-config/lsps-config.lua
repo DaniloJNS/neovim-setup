@@ -5,7 +5,6 @@ local vim = vim
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
-
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true }
 local function nkeymap(key, map)
@@ -17,7 +16,7 @@ nkeymap('gD', ':lua vim.lsp.buf.declaration()<cr>')
 nkeymap('gi', ':lua vim.lsp.buf.implementation()<cr>')
 nkeymap('gw', ':lua vim.lsp.buf.document_symbol()<cr>')
 nkeymap('gw', ':lua vim.lsp.buf.workspace_symbol()<cr>')
-nkeymap('gr', ':lua vim.lsp.buf.references()<cr>')
+nkeymap('gr', ':Telescope lsp_references<cr>')
 nkeymap('gt', ':lua vim.lsp.buf.type_definition()<cr>')
 nkeymap('ge', ':lua vim.lsp.diagnostic.goto_next()<cr>')
 nkeymap('gE', ':lua vim.lsp.diagnostic.goto_prev()<cr>')
@@ -30,6 +29,17 @@ nkeymap('<leader>rn', ':lua vim.lsp.buf.rename()<cr>')
 
 local nvim_lsp = require'lspconfig'
 local root_pattern = nvim_lsp.util.root_pattern
+
+-----------------------
+-- AWK
+-----------------------
+
+require'lspconfig'.awk_ls.setup{}
+-----------------------
+-- BASH
+-----------------------
+
+-- require'lspconfig'.bash_ls.setup{}
 -----------------------
 -- JS / TS
 -----------------------

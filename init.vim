@@ -16,7 +16,7 @@ else
     source $HOME/.config/nvim/plug-config/vim-commentary.vim
     source $HOME/.config/nvim/plug-config/nvim-tree.vim
     source $HOME/.config/nvim/plug-config/lazygit.vim
-    source $HOME/.config/nvim/plug-config/searching.vim
+    " source $HOME/.config/nvim/plug-config/searching.vim
     source $HOME/.config/nvim/plug-config/startify.vim
     source $HOME/.config/nvim/plug-config/fzf.vim
 

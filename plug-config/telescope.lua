@@ -13,14 +13,35 @@ require('telescope').setup{
       },
     },
   },
+  pickers = {
+    lsp_code_actions = {
+        theme = "cursor"
+    },
+    code_action = {
+        theme = "cursor"
+    },
+    lsp_workspace_diagnostics = {
+        theme = "dropdown"
+    },
+    rename = {
+        theme = "cursor"
+    }
+  },
   extensions = {
-    command_palette = command_palette
+    command_palette = command_palette,
+    ["ui-select"] = {
+        require("telescope.themes").get_cursor {
+        -- even more opts
+        }
+    }
   }
 }
 -- Load extensions
 require('telescope').load_extension('fzy_native')
 require('telescope').load_extension('gh')
 require('telescope').load_extension('command_palette')
+require("telescope").load_extension("ui-select")
+
 -- Keymaps {{
   -- buffers {{
     mappings.nkeymap('/', ':lua require("telescope-utils").search_in_buffer()<CR>')
@@ -32,6 +53,8 @@ require('telescope').load_extension('command_palette')
     mappings.nkeymap('<C-f>', ':lua require("telescope-utils").search_files()<CR>')
 
     mappings.nkeymap('<Leader>fg', '<Esc> :lua require("telescope.builtin").live_grep()<CR>')
+
+    mappings.nkeymap('<Leader><CR>', '<Esc> :lua vim.lsp.buf.code_action()<CR>')
 
     mappings.nkeymap('<Leader>b', '<Esc> :lua require("telescope.builtin").buffers()<CR>')
 

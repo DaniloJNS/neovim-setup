@@ -1,7 +1,5 @@
+local Terminal  = require('toggleterm.terminal').Terminal
+
 return function (opts)
-  local Terminal  = require('toggleterm.terminal').Terminal
-
-  Terminal.new(opts)
-
-  Terminal:toogle()
+  Terminal:new(opts):toggle()
 end
