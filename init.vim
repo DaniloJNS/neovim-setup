@@ -24,6 +24,7 @@ else
     " luafile $HOME/.config/nvim/lua/config/general/settings.lua
     luafile $HOME/.config/nvim/plug-config/tree-sitter-config.lua
     luafile $HOME/.config/nvim/plug-config/cmp.lua
+    luafile $HOME/.config/nvim/plug-config/cmp_git.lua
     luafile $HOME/.config/nvim/plug-config/lsps-config.lua
     luafile $HOME/.config/nvim/plug-config/telescope.lua
     luafile $HOME/.config/nvim/plug-config/toggleterm.lua

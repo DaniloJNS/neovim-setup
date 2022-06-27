@@ -30,6 +30,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
           Plug 'hrsh7th/cmp-path'
           Plug 'hrsh7th/cmp-cmdline'
           Plug 'hrsh7th/nvim-cmp'
+          Plug 'petertriho/cmp-git' " Complete git infos
           " For developer plugins
             Plug 'RishabhRD/popfix'
           Plug 'RishabhRD/nvim-lsputils'
