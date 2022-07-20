@@ -31,6 +31,11 @@ local nvim_lsp = require'lspconfig'
 local root_pattern = nvim_lsp.util.root_pattern
 
 -----------------------
+-- JAVA
+-----------------------
+-- require'lspconfig'.jdtls.setup{}
+
+-----------------------
 -- AWK
 -----------------------
 
@@ -219,6 +224,12 @@ nvim_lsp.sumneko_lua.setup({
 -----------------------
 -- Ruby
 -----------------------
+-- require'lspconfig'.sorbet.setup{
+--   cmd = { "bundle", "exec", "srb", "tc", "--lsp", "--disable-watchman"}
+-- }
+
+-- require'lspconfig'.steep.setup{}
+
 require'lspconfig'.solargraph.setup{
     cmd = { "solargraph", "stdio" },
     capabilities = capabilities;

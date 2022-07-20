@@ -19,14 +19,16 @@ else
     " source $HOME/.config/nvim/plug-config/searching.vim
     source $HOME/.config/nvim/plug-config/startify.vim
     source $HOME/.config/nvim/plug-config/fzf.vim
-
     " lua
     " luafile $HOME/.config/nvim/lua/config/general/settings.lua
     luafile $HOME/.config/nvim/plug-config/tree-sitter-config.lua
     luafile $HOME/.config/nvim/plug-config/cmp.lua
     luafile $HOME/.config/nvim/plug-config/cmp_git.lua
     luafile $HOME/.config/nvim/plug-config/lsps-config.lua
+    luafile $HOME/.config/nvim/plug-config/nvim_lsp_jdtls.lua
+    luafile $HOME/.config/nvim/plug-config/dap.lua
     luafile $HOME/.config/nvim/plug-config/telescope.lua
+    luafile $HOME/.config/nvim/plug-config/dressing.lua
     luafile $HOME/.config/nvim/plug-config/toggleterm.lua
     luafile $HOME/.config/nvim/plug-config/tokyonight.lua
     luafile $HOME/.config/nvim/plug-config/octo.lua

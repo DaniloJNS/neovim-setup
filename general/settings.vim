@@ -89,5 +89,8 @@ set completeopt=menu,menuone,noselect
 
         autocmd FileType ruby set textwidth=120
         autocmd FileType ruby set colorcolumn=120
+
+        autocmd FileType vimwiki set textwidth=120
+        autocmd FileType vimwiki set colorcolumn=120
     augroup END
 " }}}

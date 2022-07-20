@@ -1,0 +1,33 @@
+snippet DescInit "Initialize tests"
+var _ = Describe("$0", func() {
+
+	})
+endsnippet
+
+snippet Desc "Initialize tests"
+Describe("$0", func() {
+
+})
+endsnippet
+
+snippet Cont "Initialize tests"
+Context("$0", func() {
+
+})
+endsnippet
+
+snippet It "Initialize tests"
+It("$0", func() {
+
+})
+endsnippet
+
+snippet BeforeEach "Initialize tests"
+BeforeEach(func() {
+	$0
+})
+endsnippet
+
+snippet Exp "Initialize tests"
+Expect($0).To()
+endsnippet

@@ -6,6 +6,9 @@ endif
 
 call plug#begin('~/.config/nvim/autoload/plugged')
     " UI {{
+      " Custom builtin UI for select and input
+        Plug 'stevearc/dressing.nvim'
+        Plug 'MunifTanjim/nui.nvim'
       " Color scheme {{
         Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
         Plug 'dracula/vim', { 'as': 'dracula' }
@@ -35,11 +38,27 @@ call plug#begin('~/.config/nvim/autoload/plugged')
             Plug 'RishabhRD/popfix'
           Plug 'RishabhRD/nvim-lsputils'
           Plug 'p00f/clangd_extensions.nvim'
+          " For lsp java extension
+          Plug 'mfussenegger/nvim-jdtls'
 
-        " Debugging
+          " command! -buffer JdtCompile lua require('jdtls').compile()
+          " command! -buffer JdtUpdateConfig lua require('jdtls').update_project_config()
+          " command! -buffer JdtJol lua require('jdtls').jol()
+          " command! -buffer JdtBytecode lua require('jdtls').javap()
+          " command! -buffer JdtJshell lua require('jdtls').jshell()
+
+          " Debugging {{
           Plug 'mfussenegger/nvim-dap'
           Plug 'rcarriga/nvim-dap-ui'
           Plug 'theHamsta/nvim-dap-virtual-text'
+          Plug 'nvim-telescope/telescope-dap.nvim'
+            " For go {{
+            Plug 'DaniloJNS/nvim-dap-go'
+            " }}
+            " For ruby {{
+            Plug 'suketa/nvim-dap-ruby'
+            " }}
+          " }}
 
         " snippets
           Plug 'hrsh7th/vim-vsnip'
@@ -129,6 +148,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
           nmap <leader>d :Bdelete<cr>
         " Maximaze buffer
           Plug 'szw/vim-maximizer'
+          let g:maximizer_default_mapping_key = 'Z'
     " }}
     "
     " Git {{
@@ -203,6 +223,8 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 " }}}
 
 " General Functionality {{{
+    " Calendar with google integration
+      Plug 'itchyny/calendar.vim'
     " enables repeating other supported plugins with the . command
       Plug 'tpope/vim-repeat'
 
@@ -228,7 +250,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
     " Telescope extensions {{
-      Plug 'nvim-telescope/telescope-ui-select.nvim' 
+      Plug 'nvim-telescope/telescope-ui-select.nvim'
       Plug 'romgrk/fzy-lua-native'
       Plug 'nvim-telescope/telescope-fzy-native.nvim'
       " Telescope Integetation with octo-github

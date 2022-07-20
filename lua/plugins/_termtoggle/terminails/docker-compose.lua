@@ -1,7 +1,7 @@
 local Terminal = require('plugins._termtoggle.terminails.default')
 DOCKER_FILE = "docker-compose.yml"
 
-function Woorking_dir()
+local function woorking_dir()
   return vim.fn.getcwd()
 end
 
@@ -14,9 +14,8 @@ end
 -- TODO: Check containers
 
 return function(cmd, direction)
-  if file_exists(Woorking_dir() .. "/" .. DOCKER_FILE ) then
-    Terminal("docker-compose " .. cmd, direction)
-  else
-    print("docker-compose file not found in woorking dir")
-  end
+  assert(file_exists(woorking_dir() .. "/" .. DOCKER_FILE),
+  "docker-compose file not found in woorking dir")
+
+  Terminal("docker-compose " .. cmd, direction)
 end
