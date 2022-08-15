@@ -18,6 +18,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 
       " dev-icons
         Plug 'kyazdani42/nvim-web-devicons'
+        Plug 'powerman/vim-plugin-AnsiEsc'
 
       " Airline
         Plug 'vim-airline/vim-airline'
@@ -194,7 +195,10 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     " Study {{
       " A personal wiki for vim
         Plug 'vimwiki/vimwiki'
-
+      " Taskwarrior integration
+        Plug 'blindFS/vim-taskwarrior'
+      " Taskwarrior integration with vimwiki
+        Plug 'tools-life/taskwiki'
       " Doc in neovim
         Plug 'KabbAmine/zeavim.vim'
     " }}
@@ -289,7 +293,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
         Plug 'digitaltoad/vim-pug', { 'for': ['jade', 'pug'] }
 
         " nunjucks support
-        Plug 'niftylettuce/vim-jinja'
+        " Plug 'niftylettuce/vim-jinja'
 
         " liquid support
         Plug 'tpope/vim-liquid'
