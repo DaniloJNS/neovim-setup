@@ -1,16 +1,19 @@
 local mappings = require('mappings')
 local actions = require('telescope.actions')
 local command_palette = require('command-palette')
+local trouble = require("trouble.providers.telescope")
 
 require('telescope').setup{
   defaults = {
     mappings = {
       i = {
+        ["<c-t>"] = trouble.open_with_trouble,
         ["<C-k>"] = actions.move_selection_better,
         ["<C-j>"] = actions.move_selection_worse,
         ["<C-q>"] = actions.send_to_qflist,
         ["<Esc>"] = actions.close
       },
+      n = { ["<c-t>"] = trouble.open_with_trouble }
     },
   },
   pickers = {

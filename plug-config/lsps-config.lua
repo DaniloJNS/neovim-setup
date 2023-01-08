@@ -3,7 +3,7 @@ local vim = vim
 -- LspINfo
 -- enable snippets
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true }
@@ -31,6 +31,14 @@ local nvim_lsp = require'lspconfig'
 local root_pattern = nvim_lsp.util.root_pattern
 
 -----------------------
+-- SQL
+-----------------------
+nvim_lsp.sqls.setup{
+    on_attach = function(client, bufnr)
+        require('sqls').on_attach(client, bufnr)
+    end
+}
+-----------------------
 -- JAVA
 -----------------------
 -- require'lspconfig'.jdtls.setup{}
@@ -39,12 +47,23 @@ local root_pattern = nvim_lsp.util.root_pattern
 -- AWK
 -----------------------
 
-require'lspconfig'.awk_ls.setup{}
+nvim_lsp.awk_ls.setup{}
+
 -----------------------
 -- BASH
 -----------------------
 
 -- require'lspconfig'.bash_ls.setup{}
+--
+-----------------------
+-- HASKELL
+-----------------------
+
+-- nvim_lsp.hls.setup{
+--     filetypes = { 'haskell', 'lhaskell', 'cabal' },
+--     single_file_suppor = true,
+-- }
+
 -----------------------
 -- JS / TS
 -----------------------

@@ -145,7 +145,30 @@ local command_palette = {
          { "select_prev_entry", ":[q" },
          { "close_review_tab", ":<C-c>" },
          { "toggle_viewed", ":<leader><space>" },
-       }
+       },
+      {"Github",
+        { "github", ":lua require'telescope.builtin'.github()", 1 },
+        { "github issues", ":lua require'telescope.builtin'.github_issues()", 1 },
+        { "github pull requests", ":lua require'telescope.builtin'.github_pull_requests()", 1 },
+        { "github gist", ":lua require'telescope.builtin'.github_gist()", 1 },
+        { "github starred", ":lua require'telescope.builtin'.github_starred()", 1 },
+        { "github watched", ":lua require'telescope.builtin'.github_watched()", 1 },
+        { "github repositories", ":lua require'telescope.builtin'.github_repositories()", 1 },
+        { "github organizations", ":lua require'telescope.builtin'.github_organizations()", 1 },
+        { "github teams", ":lua require'telescope.builtin'.github_teams()", 1 },
+        { "github users", ":lua require'telescope.builtin'.github_users()", 1 },
+        { "github gists", ":lua require'telescope.builtin'.github_gists()", 1 },
+        { "github notifications", ":lua require'telescope.builtin'.github_notifications()", 1 },
+        { "github search", ":lua require'telescope.builtin'.github_search()", 1 },
+      },
+      {"Trouble",
+        { "toggle", ":TroubleToggle", 1},
+        { "worksapce diagnostics", ":TroubleToggle workspace_diagnostics", 1 },
+        { "document diagnostics", ":TroubleToggle document_diagnostics", 1},
+        { "loclist", ":TroubleToggle loclist", 1 },
+        { "quickfix", ":TroubleToggle quickfix", 1 },
+        { "lsp references", ":TroubleToggle lsp_references", 1 }
+      }
     }
 
 return command_palette

@@ -23,7 +23,13 @@ call plug#begin('~/.config/nvim/autoload/plugged')
       " Airline
         Plug 'vim-airline/vim-airline'
         Plug 'vim-airline/vim-airline-themes'
-    " }}
+
+       " Lsp 
+         Plug 'folke/trouble.nvim' 
+         Plug 'folke/lsp-colors.nvim'
+       " scroll bar customizable
+         Plug 'petertriho/nvim-scrollbar'
+       " }}
 
     " File {{
       " Code General {{
@@ -41,7 +47,10 @@ call plug#begin('~/.config/nvim/autoload/plugged')
           Plug 'p00f/clangd_extensions.nvim'
           " For lsp java extension
           Plug 'mfussenegger/nvim-jdtls'
-
+          " For lsp sql extension
+          Plug 'nanotee/sqls.nvim'
+          " Lsp tools for haskell
+          Plug 'MrcJkb/haskell-tools.nvim'
           " command! -buffer JdtCompile lua require('jdtls').compile()
           " command! -buffer JdtUpdateConfig lua require('jdtls').update_project_config()
           " command! -buffer JdtJol lua require('jdtls').jol()
@@ -84,9 +93,11 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 
         " Tags
           Plug 'preservim/tagbar'
+          Plug 'liuchengxu/vista.vim'
+          Plug 'simrat39/symbols-outline.nvim'
 
         " Help indentation
-          Plug 'Yggdroot/indentLine'
+          Plug 'lukas-reineke/indent-blankline.nvim'
 
         " Automations for edit {{
             Plug 'mg979/vim-visual-multi', {'branch': 'master'} 
@@ -159,7 +170,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
         Plug 'kdheepak/lazygit.nvim'
 
       " Git in the gutter
-        Plug 'mhinz/vim-signify'
+        Plug 'lewis6991/gitsigns.nvim'
 
       " Github integration
         Plug 'pwntester/octo.nvim'
@@ -320,8 +331,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
         Plug 'stephenway/postcss.vim', { 'for': 'css' }
         " Show color in buffer
         Plug 'ap/vim-css-color'
-    " " }}}
-
+    " " }}2
     " markdown {{{
         Plug 'tpope/vim-markdown', { 'for': 'markdown' }
         let g:markdown_fenced_languages = [ 'tsx=typescript.tsx' ]

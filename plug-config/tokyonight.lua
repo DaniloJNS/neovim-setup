@@ -7,9 +7,9 @@ vim.g.tokyonight_italic_functions = true  --Make functions italic
 vim.g.tokyonight_italic_variables = false --Make variables and identifiers italic
 
 --General Configure
-vim.g.tokyonight_transparent = false
+vim.g.tokyonight_transparent = true
 
 -- Change the "hint" color to the "orange" color, and make the "error" color bright red
 vim.g.tokyonight_colors = { hint = "orange", error = "#ff0000" }
 
-vim.cmd[[colorscheme tokyonight]]
+vim.cmd[[colorscheme tokyonight-night]]

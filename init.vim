@@ -33,5 +33,12 @@ else
     luafile $HOME/.config/nvim/plug-config/tokyonight.lua
     luafile $HOME/.config/nvim/plug-config/octo.lua
     luafile $HOME/.config/nvim/plug-config/diffview.lua
+    luafile $HOME/.config/nvim/plug-config/trouble.lua
+    luafile $HOME/.config/nvim/plug-config/lsp-colors.lua
+    luafile $HOME/.config/nvim/plug-config/indent-blankline.lua
+    luafile $HOME/.config/nvim/plug-config/scroll-bar.lua
+    luafile $HOME/.config/nvim/plug-config/gitsigns.lua
+    luafile $HOME/.config/nvim/plug-config/symbols-outline.lua
+    luafile $HOME/.config/nvim/plug-config/haskell-tool.lua
     luafile $HOME/.config/nvim/lua/init.lua
 endif
