@@ -3,13 +3,14 @@ local actions = require('telescope.actions')
 local command_palette = require('command-palette')
 local trouble = require("trouble.providers.telescope")
 
+
 require('telescope').setup{
   defaults = {
     mappings = {
       i = {
         ["<c-t>"] = trouble.open_with_trouble,
-        ["<C-k>"] = actions.move_selection_better,
-        ["<C-j>"] = actions.move_selection_worse,
+        ["<C-j>"] = actions.move_selection_better,
+        ["<C-k>"] = actions.move_selection_worse,
         ["<C-q>"] = actions.send_to_qflist,
         ["<Esc>"] = actions.close
       },
@@ -66,11 +67,11 @@ require("telescope").load_extension("ui-select")
 
     mappings.nkeymap('<Leader>fh', '<Esc> :lua require("telescope.builtin").help_tags()<CR>')
 
-    mappings.nkeymap('<space>c', '<Esc> :Telescope command_palette<CR>')
+    mappings.nkeymap('<space>k', '<Esc> :Telescope command_palette<CR>')
 
     mappings.nkeymap('<space>C', '<Esc> :lua require("telescope.builtin").colorscheme()<CR>')
 
     mappings.nkeymap('<Leader>ac', '<Esc> :lua require("telescope.builtin").builtin()<CR>')
 
-    mappings.nkeymap('<Leader>h', '<Esc> :Cheatsheet')
+    mappings.nkeymap('<Leader>ch', '<Esc> :Cheatsheet')
 -- }}

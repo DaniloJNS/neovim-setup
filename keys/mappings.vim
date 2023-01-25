@@ -11,6 +11,9 @@ nnoremap Q :qall<CR>
 nnoremap <space>/ :Commentary<CR>
 vnoremap <space>/ :Commentary<CR>
 
+" JSON fomatter
+nnoremap <Leader>js :%!python -m json.tool<CR>
+"EMMET
 nmap <space>x <C-Y>,
 " nav files
 nnoremap <c-o> :NERDTreeToggle<cr>

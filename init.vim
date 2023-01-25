@@ -40,5 +40,7 @@ else
     luafile $HOME/.config/nvim/plug-config/gitsigns.lua
     luafile $HOME/.config/nvim/plug-config/symbols-outline.lua
     luafile $HOME/.config/nvim/plug-config/haskell-tool.lua
+    luafile $HOME/.config/nvim/plug-config/iron.lua
+    luafile $HOME/.config/nvim/plug-config/dadbod.lua
     luafile $HOME/.config/nvim/lua/init.lua
 endif

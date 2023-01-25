@@ -53,7 +53,7 @@ nvim_lsp.awk_ls.setup{}
 -- BASH
 -----------------------
 
--- require'lspconfig'.bash_ls.setup{}
+nvim_lsp.bashls.setup{}
 --
 -----------------------
 -- HASKELL

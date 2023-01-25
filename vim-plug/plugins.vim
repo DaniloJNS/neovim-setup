@@ -51,6 +51,15 @@ call plug#begin('~/.config/nvim/autoload/plugged')
           Plug 'nanotee/sqls.nvim'
           " Lsp tools for haskell
           Plug 'MrcJkb/haskell-tools.nvim'
+          Plug 'hkupty/iron.nvim'
+          " Lsp tools for haskell
+          Plug 'MrcJkb/haskell-tools.nvim'
+          Plug 'hkupty/iron.nvim'
+          " Lsp tools for database
+          Plug 'tpope/vim-dadbod'
+          Plug 'kristijanhusak/vim-dadbod-ui'
+          Plug 'kristijanhusak/vim-dadbod-completion'
+
           " command! -buffer JdtCompile lua require('jdtls').compile()
           " command! -buffer JdtUpdateConfig lua require('jdtls').update_project_config()
           " command! -buffer JdtJol lua require('jdtls').jol()
@@ -132,7 +141,8 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 
       " File explorer {{
         " Nerdtree {{
-          Plug 'preservim/nerdtree' 
+          Plug 'preservim/nerdtree'
+
           Plug 'Xuyuanp/nerdtree-git-plugin'
           Plug 'ryanoasis/vim-devicons'
           Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
