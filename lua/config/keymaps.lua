@@ -10,7 +10,8 @@ local function map(mode, lhs, rhs, opts)
     vim.keymap.set(mode, lhs, rhs, opts)
   end
 end
-
+-- fast config
+map("n", "<leader>ec", "<cmd>vsplit ~/.config/nvim/init.vim<cr>", { desc = "jump for root file config" })
 -- better up/down
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -27,23 +28,31 @@ map("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
 map("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
 map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
 
+-- Resize window using <alt> arrow keys
+map("n", "<A-k>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
+map("n", "<A-j>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
+map("n", "<A-h>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
+map("n", "<A-l>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
+
 -- Move Lines
-map("n", "<A-j>", ":m .+1<cr>==", { desc = "Move down" })
-map("v", "<A-j>", ":m '>+1<cr>gv=gv", { desc = "Move down" })
-map("i", "<A-j>", "<Esc>:m .+1<cr>==gi", { desc = "Move down" })
-map("n", "<A-k>", ":m .-2<cr>==", { desc = "Move up" })
-map("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
-map("i", "<A-k>", "<Esc>:m .-2<cr>==gi", { desc = "Move up" })
+map("n", "<A-n>", ":m .+1<cr>==", { desc = "Move down" })
+map("v", "<A-n>", ":m '>+1<cr>gv=gv", { desc = "Move down" })
+map("i", "<A-n>", "<Esc>:m .+1<cr>==gi", { desc = "Move down" })
+map("n", "<A-m>", ":m .-2<cr>==", { desc = "Move up" })
+map("v", "<A-m>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
+map("i", "<A-m>", "<Esc>:m .-2<cr>==gi", { desc = "Move up" })
 
 -- buffers
 if Util.has("bufferline.nvim") then
   map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
   map("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
+  map("n", "<TAB>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
   map("n", "[b", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
   map("n", "]b", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
 else
   map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
   map("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+  map("n", "<TAB>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
   map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
   map("n", "]b", "<cmd>bnext<cr>", { desc = "Next buffer" })
 end
@@ -111,6 +120,7 @@ map("n", "<leader>gG", function() Util.float_term({ "lazygit" }) end, { desc = "
 
 -- quit
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
+map("n", "Q", "<cmd>qa<cr>", { desc = "Quit all" })
 
 -- highlights under cursor
 if vim.fn.has("nvim-0.9.0") == 1 then
@@ -124,9 +134,9 @@ map("t", "<esc><esc>", "<c-\\><c-n>", {desc = "Enter Normal Mode"})
 
 -- windows
 map("n", "<leader>ww", "<C-W>p", { desc = "Other window" })
-map("n", "<leader>wd", "<C-W>c", { desc = "Delete window" })
-map("n", "<leader>w-", "<C-W>s", { desc = "Split window below" })
-map("n", "<leader>w|", "<C-W>v", { desc = "Split window right" })
+map("n", "<leader>wc", "<C-W>c", { desc = "Delete window" })
+map("n", "<leader>ws", "<C-W>s", { desc = "Split window below" })
+map("n", "<leader>we", "<C-W>v", { desc = "Split window right" })
 map("n", "<leader>-", "<C-W>s", { desc = "Split window below" })
 map("n", "<leader>|", "<C-W>v", { desc = "Split window right" })
 
@@ -137,3 +147,8 @@ map("n", "<leader><tab><tab>", "<cmd>tabnew<cr>", { desc = "New Tab" })
 map("n", "<leader><tab>]", "<cmd>tabnext<cr>", { desc = "Next Tab" })
 map("n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
+-- my friendly tabs
+map("n", "<M-esc>", "<cmd>tabclose<cr>", { desc = "Close Tab" })
+map("n", "<M-'>", "<cmd>tab sb<cr>", { desc = "New Tab" })
+map("n", "<M-TAB>", "<cmd>tabnext<cr>", { desc = "Next Tab" })
+map("n", "<M-1>", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
