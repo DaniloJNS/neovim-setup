@@ -1,0 +1,63 @@
+snippet tag "Code ruby"
+<% ${0} %>
+endsnippet
+
+snippet ta "Code ruby with view" 
+<%= ${0} %>
+endsnippet
+
+
+
+
+
+
+
+
+#---- snip HTML
+
+snippet link_to "Gera um link" b
+<%= link_to "${title}", path %>
+endsnippet
+
+# --- snip for form
+snippet form_with "Formulario" 
+<%= form_with %>
+endsnippet
+
+snippet label "Description" b
+<%= ${0}.label :attr, "title" %>
+endsnippet
+
+snippet text_field "Campo de texto formulario" b
+<%= ${0}.text_field :attr %>
+endsnippet
+
+snippet number_field "Campo numerico de fomrulario" b
+<%= ${0}.number_field :attr %>
+endsnippet
+
+snippet date_field "Campo para datas" b
+<%= ${0}.date_field :attr %>
+endsnippet
+
+snippet check_box "Caixa de seleção" b
+<%= ${0}.check_box :attr %>
+endsnippet
+
+snippet  collection_select "Caixa de seleção" b
+<%= ${0}.collection_select :attr, MODEL.all, :attr_model-value,:attr_model-text,
+prompt: "Escolha um tipo"%>
+endsnippet
+
+snippet submit "Envia dados do formulario" b
+<%= ${0}.submit "${0}"%>
+endsnippet
+snippet label_tag "Description" b
+<%= label_tag :q, '${0}' %>
+endsnippet
+snippet text_field_tag "Description" b
+<%= text_field_tag :q %>
+endsnippet
+snippet submit_tag "Description" b
+<%= submit_tag '${0}' %>
+endsnippet

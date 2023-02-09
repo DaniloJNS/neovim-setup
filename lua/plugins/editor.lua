@@ -1,10 +1,18 @@
-local Util = require("lib.util")
-
 return {
+  {
+    "s1n7ax/nvim-window-picker",
+    config = function()
+      require("window-picker").setup()
+    end,
+    event = "VeryLazy",
+  },
 
   -- file explorer
   {
     "nvim-neo-tree/neo-tree.nvim",
+    dependencies = {
+      "s1n7ax/nvim-window-picker",
+    },
     cmd = "Neotree",
     keys = {
       {
@@ -16,7 +24,7 @@ return {
       },
       { "<leader>fE", "<cmd>Neotree toggle<CR>", desc = "Explorer NeoTree (cwd)" },
       { "<leader>e", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
-      { "<C-o>", "<leader>fE", desc = "Explorer NeoTree (root dir)", remap = true },
+      { "<C-o>", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
       { "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
     },
     deactivate = function()
@@ -48,86 +56,6 @@ return {
   },
 
   -- fuzzy finder
-  {
-    "nvim-telescope/telescope.nvim",
-    cmd = "Telescope",
-    version = false, -- telescope did only one release, so use HEAD for now
-    keys = {
-      { "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
-      { "<leader>/", Util.telescope("live_grep"), desc = "Find in Files (Grep)" },
-      { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
-      { "<leader><space>", Util.telescope("files"), desc = "Find Files (root dir)" },
-      -- find
-      { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-      { "<leader>ff", Util.telescope("files"), desc = "Find Files (root dir)" },
-      { "<leader>fF", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
-      { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent" },
-      -- git
-      { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
-      { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
-      -- search
-      { "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "Auto Commands" },
-      { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
-      { "<leader>sc", "<cmd>Telescope command_history<cr>", desc = "Command History" },
-      { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
-      { "<leader>sd", "<cmd>Telescope diagnostics<cr>", desc = "Diagnostics" },
-      { "<leader>sg", Util.telescope("live_grep"), desc = "Grep (root dir)" },
-      { "<leader>sG", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
-      { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
-      { "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
-      { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
-      { "<leader>sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
-      { "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Jump to Mark" },
-      { "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
-      { "<leader>sw", Util.telescope("grep_string"), desc = "Word (root dir)" },
-      { "<leader>sW", Util.telescope("grep_string", { cwd = false }), desc = "Word (cwd)" },
-      { "<leader>uC", Util.telescope("colorscheme", { enable_preview = true }), desc = "Colorscheme with preview" },
-      {
-        "<leader>ss",
-        Util.telescope("lsp_document_symbols", {
-          symbols = {
-            "Class",
-            "Function",
-            "Method",
-            "Constructor",
-            "Interface",
-            "Module",
-            "Struct",
-            "Trait",
-            "Field",
-            "Property",
-          },
-        }),
-        desc = "Goto Symbol",
-      },
-    },
-    opts = {
-      defaults = {
-        prompt_prefix = " ",
-        selection_caret = " ",
-        mappings = {
-          i = {
-            ["<c-t>"] = function(...)
-              return require("trouble.providers.telescope").open_with_trouble(...)
-            end,
-            ["<a-i>"] = function()
-              Util.telescope("find_files", { no_ignore = true })()
-            end,
-            ["<a-h>"] = function()
-              Util.telescope("find_files", { hidden = true })()
-            end,
-            ["<C-Down>"] = function(...)
-              return require("telescope.actions").cycle_history_next(...)
-            end,
-            ["<C-Up>"] = function(...)
-              return require("telescope.actions").cycle_history_prev(...)
-            end,
-          },
-        },
-      },
-    },
-  },
-
   -- easily jump to any location and enhanced f/t motions for Leap
   {
     "ggandor/leap.nvim",
@@ -164,53 +92,25 @@ return {
         ["<leader>f"] = { name = "+file/find" },
         ["<leader>g"] = { name = "+git" },
         ["<leader>gh"] = { name = "+hunks" },
+        ["<leader>gd"] = { name = "+diffview" },
         ["<leader>q"] = { name = "+quit/session" },
         ["<leader>s"] = { name = "+search" },
         ["<leader>sn"] = { name = "+noice" },
         ["<leader>u"] = { name = "+ui" },
         ["<leader>w"] = { name = "+windows" },
         ["<leader>x"] = { name = "+diagnostics/quickfix" },
+        ["<leader>n"] = { name = "+neogen" },
+        ["<C-p>"] = {
+          name = "Database",
+          u = { "<Cmd>DBUIToggle<Cr>", "Toggle UI" },
+          f = { "<Cmd>DBUIFindBuffer<Cr>", "Find buffer" },
+          r = { "<Cmd>DBUIRenameBuffer<Cr>", "Rename buffer" },
+          q = { "<Cmd>DBUILastQueryInfo<Cr>", "Last query info" },
+        },
       })
     end,
   },
-
   -- git signs
-  {
-    "lewis6991/gitsigns.nvim",
-    event = "BufReadPre",
-    opts = {
-      signs = {
-        add = { text = "▎" },
-        change = { text = "▎" },
-        delete = { text = "契" },
-        topdelete = { text = "契" },
-        changedelete = { text = "▎" },
-        untracked = { text = "▎" },
-      },
-      on_attach = function(buffer)
-        local gs = package.loaded.gitsigns
-
-        local function map(mode, l, r, desc)
-          vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
-        end
-
-        -- stylua: ignore start
-        map("n", "]h", gs.next_hunk, "Next Hunk")
-        map("n", "[h", gs.prev_hunk, "Prev Hunk")
-        map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
-        map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
-        map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
-        map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
-        map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
-        map("n", "<leader>ghp", gs.preview_hunk, "Preview Hunk")
-        map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
-        map("n", "<leader>ghd", gs.diffthis, "Diff This")
-        map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
-        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
-      end,
-    },
-  },
-
   -- references
   {
     "RRethy/vim-illuminate",
@@ -239,6 +139,7 @@ return {
     -- stylua: ignore
     keys = {
       { "<leader>bd", function() require("mini.bufremove").delete(0, false) end, desc = "Delete Buffer" },
+      { "<leader>d", function() require("mini.bufremove").delete(0, false) end, desc = "Delete Buffer" },
       { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
     },
   },
@@ -268,5 +169,169 @@ return {
       { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme (Trouble)" },
       { "<leader>st", "<cmd>TodoTelescope<cr>", desc = "Todo" },
     },
+
+    -- Help insert documentation
+    {
+      "danymat/neogen",
+      dependencies = "nvim-treesitter/nvim-treesitter",
+      config = function()
+        require("neogen").setup({ snippet_engine = "luasnip" })
+      end,
+      keys = function()
+        return {
+          -- { "<Leader>df", require("neogen").generate(), desc = "Insert notation for function" },
+        }
+      end,
+    },
+    {
+      "akinsho/toggleterm.nvim",
+      config = function(_, opts)
+        function _G.set_terminal_keymaps()
+          local op = { noremap = true }
+          vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], op)
+          vim.api.nvim_buf_set_keymap(0, "t", "jk", [[<C-\><C-n>]], op)
+          vim.api.nvim_buf_set_keymap(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], op)
+          vim.api.nvim_buf_set_keymap(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], op)
+          vim.api.nvim_buf_set_keymap(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], op)
+          vim.api.nvim_buf_set_keymap(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], op)
+        end
+
+        -- if you only want these mappings for toggle term use term://*toggleterm#* instead
+        vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
+        require("toggleterm").setup(opts)
+      end,
+      opts = {
+        -- size can be a number or function which is passed the current terminal
+        size = function(term)
+          if term.direction == "horizontal" then
+            return 15
+          elseif term.direction == "vertical" then
+            return vim.o.columns * 0.4
+          end
+        end,
+        open_mapping = [[<c-d>]],
+        hide_numbers = true, -- hide the number column in toggleterm buffers
+        shade_filetypes = {},
+        shade_terminals = false,
+        shading_factor = "3", -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
+        start_in_insert = true,
+        insert_mappings = true, -- whether or not the open mapping applies in insert mode
+        terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
+        persist_size = true,
+        direction = "float",
+        close_on_exit = true, -- close the terminal window when the process exits
+        shell = vim.o.shell, -- change the default shell
+        -- This field is only relevant if direction is set to 'float'
+        float_opts = {
+          -- The border key is *almost* the same as 'nvim_open_win'
+          -- see :h nvim_open_win for details on borders however
+          -- the 'curved' border is a custom border type
+          -- not natively supported but implemented in this plugin.
+          border = "curved",
+          winblend = 3,
+          highlights = {
+            border = "Normal",
+            background = "Normal",
+          },
+        },
+      },
+    },
+  },
+  {
+    "nvim-neotest/neotest",
+    event = "BufReadPost",
+    dependencies = {
+      "antoinemadec/FixCursorHold.nvim",
+      "DaniloJNS/neotest-rspec",
+    },
+    config = function()
+      require("neotest").setup({
+        adapters = {
+          require("neotest-rspec")({
+            rspec_cmd = "container-run-spec.sh",
+          }),
+        },
+      })
+    end,
+    keys = {
+      { "<leader>rc", "<cmd> lua require('neotest').run.run()<cr>", desc = "Run currrent test" },
+      { "<leader>rf", "<cmd> lua require('neotest').run.run(vim.fn.expand('%'))<cr>", desc = "Run currrent file" },
+      { "<leader>rl", "<cmd> lua require('neotest').run.last_run()()<cr>", desc = "Run last test" },
+      { "<leader>ra", "<cmd> lua require('neotest').run.attach()<cr>", desc = "Attach test" },
+      { "<leader>rg", "<cmd> lua require('neotest').run.run(vim.fn.getcwd())<cr>", desc = "Run all tests" },
+      { "<leader>ru", "<cmd> lua require('neotest').summary.toggle()<cr>", desc = "Toggle summary" },
+      { "<leader>ro", "<cmd> lua require('neotest').output_panel.toggle()<cr>", desc = "Toggle output" },
+    },
+  },
+  {
+    "tpope/vim-dadbod",
+    event = "VeryLazy",
+    dependencies = {
+      "kristijanhusak/vim-dadbod-ui",
+      "kristijanhusak/vim-dadbod-completion",
+    },
+    config = function()
+      local function db_completion()
+        require("cmp").setup.buffer({ sources = { { name = "vim-dadbod-completion" } } })
+      end
+
+      vim.g.db_ui_save_location = vim.fn.stdpath("config") .. require("plenary.path").path.sep .. "db_ui"
+      vim.g.db_ui_icons = {
+        expanded = {
+          db = "▾ ",
+          buffers = "▾ ",
+          saved_queries = "▾ ",
+          schemas = "▾ ",
+          schema = "▾ פּ",
+          tables = "▾ 藺",
+          table = "▾ ",
+        },
+        collapsed = {
+          db = "▸ ",
+          buffers = "▸ ",
+          saved_queries = "▸ ",
+          schemas = "▸ ",
+          schema = "▸ פּ",
+          tables = "▸ 藺",
+          table = "▸ ",
+        },
+        saved_query = "",
+        new_query = "璘",
+        tables = "離",
+        buffers = "﬘",
+        add_connection = "",
+        connection_ok = "✓",
+        connection_error = "✕",
+      }
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
+          "sql",
+        },
+        command = [[setlocal omnifunc=vim_dadbod_completion#omni]],
+      })
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
+          "sql",
+          "mysql",
+          "plsql",
+        },
+        callback = function()
+          vim.schedule(db_completion)
+        end,
+      })
+    end,
+  },
+  {
+    "beauwilliams/focus.nvim",
+    config = function()
+      require("focus").setup({
+        excluded_filetypes = { "toggleterm" },
+        cursorline = false,
+        signcolumn = false,
+        number = false,
+      })
+    end,
   },
 }

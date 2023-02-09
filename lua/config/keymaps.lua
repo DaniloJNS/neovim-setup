@@ -11,7 +11,7 @@ local function map(mode, lhs, rhs, opts)
   end
 end
 -- fast config
-map("n", "<leader>ec", "<cmd>vsplit ~/.config/nvim/init.vim<cr>", { desc = "jump for root file config" })
+map("n", "<leader>ec", "<cmd>vsplit ~/.config/nvim/init.lua<cr>", { desc = "jump for root file config" })
 -- better up/down
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -46,6 +46,7 @@ map("i", "<A-m>", "<Esc>:m .-2<cr>==gi", { desc = "Move up" })
 if Util.has("bufferline.nvim") then
   map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
   map("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
+  map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
   map("n", "<TAB>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
   map("n", "[b", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
   map("n", "]b", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
@@ -121,6 +122,7 @@ map("n", "<leader>gG", function() Util.float_term({ "lazygit" }) end, { desc = "
 -- quit
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
 map("n", "Q", "<cmd>qa<cr>", { desc = "Quit all" })
+map("n", "qq", "<cmd>bd<cr>", { desc = "Quit all" })
 
 -- highlights under cursor
 if vim.fn.has("nvim-0.9.0") == 1 then
@@ -152,3 +154,5 @@ map("n", "<M-esc>", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 map("n", "<M-'>", "<cmd>tab sb<cr>", { desc = "New Tab" })
 map("n", "<M-TAB>", "<cmd>tabnext<cr>", { desc = "Next Tab" })
 map("n", "<M-1>", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
+-- JSON FORMATTERS
+map("n", "<leader>js", "<cmd>%!python -m json.tool<cr>", { desc = "Formatter json file" })

@@ -1,32 +1,52 @@
 return {
 
   -- snippets
+  -- {
+  --   "L3MON4D3/LuaSnip",
+  --   dependencies = {
+  --     "rafamadriz/friendly-snippets",
+  --     config = function()
+  --
+  --       -- require("luasnip").filetype_extend("ruby", { "rails" })
+  --     end,
+  --   },
+  --   opts = {
+  --     history = true,
+  --     delete_check_events = "TextChanged",
+  --   },
+  --   -- stylua: ignore
+  --   keys = {
+  --     -- {
+  --     --   "<tab>",
+  --     --   function()
+  --     --     return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
+  --     --   end,
+  --     --   expr = true, silent = true, mode = "i",
+  --     -- },
+  --     -- { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
+  --     -- { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
+  --   },
+  -- },
   {
-    "L3MON4D3/LuaSnip",
+    "SirVer/ultisnips",
+    event = "InsertEnter",
     dependencies = {
-      "rafamadriz/friendly-snippets",
-      config = function()
-        require("luasnip.loaders.from_vscode").lazy_load()
-      end,
+      "honza/vim-snippets",
     },
-    opts = {
-      history = true,
-      delete_check_events = "TextChanged",
-    },
-    -- stylua: ignore
+    init = function()
+      vim.g.UltiSnipsExpandTrigger = "<C-l>"
+      vim.g.UltiSnipsJumpForwardTrigger = "<C-j>"
+      vim.g.UltiSnipsJumpBackwardTrigger = "<C-k>"
+      vim.g.UltiSnipsEditSplit = "vertical"
+      vim.g.UltiSnipsSnippetsDir = "/home/danilo/.config/nvim/UltiSnips"
+    end,
+    config = function()
+      vim.cmd("UltiSnipsAddFiletypes ruby.rails")
+    end,
     keys = {
-      {
-        "<tab>",
-        function()
-          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
-        end,
-        expr = true, silent = true, mode = "i",
-      },
-      { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
-      { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
+      { "<leader>sp", "<cmd>UltiSnipsEdit<cr>", desc = "Edit snippets" },
     },
   },
-
   -- auto completion
   {
     "hrsh7th/nvim-cmp",
@@ -36,17 +56,47 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
+      "hrsh7th/cmp-cmdline",
       "saadparwaiz1/cmp_luasnip",
+      "quangnguyen30192/cmp-nvim-ultisnips",
     },
     opts = function()
       local cmp = require("cmp")
+      local T = function(str)
+        return vim.api.nvim_replace_termcodes(str, true, true, true)
+      end
+      cmp.setup.cmdline(":", {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = "path" },
+        }, {
+          {
+            name = "cmdline",
+            option = {
+              ignore_cmds = { "Man", "!" },
+            },
+          },
+        }),
+      })
       return {
+        sorting = {
+          comparators = {
+            cmp.config.compare.offset,
+            cmp.config.compare.exact,
+            cmp.config.compare.recently_used,
+            cmp.config.compare.kind,
+            cmp.config.compare.sort_text,
+            cmp.config.compare.length,
+            cmp.config.compare.order,
+          },
+        },
         completion = {
           completeopt = "menu,menuone,noinsert",
         },
         snippet = {
           expand = function(args)
-            require("luasnip").lsp_expand(args.body)
+            -- require("luasnip").lsp_expand(args.body)
+            vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
           end,
         },
         mapping = cmp.mapping.preset.insert({
@@ -55,10 +105,29 @@ return {
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
           ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ["<TAB>"] = function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            -- elseif require("luasnip").jumpable(1) then
+            --   return T("<Plug>(luasnip-expand-or-jump)")
+            else
+              fallback()
+            end
+          end,
+          ["<S-Tab>"] = function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            -- elseif require("luasnip").jumpable(-1) then
+            --   return T("<Plug>(luasnip-jump-prev)")
+            else
+              fallback()
+            end
+          end,
         }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
-          { name = "luasnip" },
+          -- { name = "luasnip" },
+          { name = "ultisnips" }, -- For ultisnips users.
           { name = "buffer" },
           { name = "path" },
         }),
@@ -79,7 +148,6 @@ return {
       }
     end,
   },
-
   -- auto pairs
   {
     "echasnovski/mini.pairs",
@@ -174,5 +242,40 @@ return {
       local ai = require("mini.ai")
       ai.setup(opts)
     end,
+  },
+  -- single/multi line code handler: gS - split one line into multiple, gJ - combine multiple lines into one
+  {
+    event = "BufReadPre",
+    "andrewradev/splitjoin.vim",
+  },
+  -- detect indent style (tabs vs. spaces)
+  {
+    event = "BufReadPre",
+    "tpope/vim-sleuth",
+  },
+  -- endings for html, xml, etc. - ehances surround
+  {
+    event = "BufReadPre",
+    "tpope/vim-ragtag",
+  },
+  -- substitute, search, and abbreviate multiple variants of a word
+  {
+    event = "BufReadPre",
+    "tpope/vim-abolish",
+  },
+  -- context-aware pasting
+  {
+    "sickill/vim-pasta",
+    event = "BufReadPre",
+  },
+
+  -- context-aware pasting
+  {
+    event = "BufReadPre",
+    "mg979/vim-visual-multi",
+  },
+  {
+    "gennaro-tedesco/nvim-peekup",
+    event = "BufReadPost",
   },
 }

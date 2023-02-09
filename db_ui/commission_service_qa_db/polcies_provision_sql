@@ -1,0 +1,16 @@
+SELECT
+  installments."number" installment_number,
+  provisions."status" provision_status,
+  ap."type" agent_provision_status,
+  ap.amount agent_provison_amount
+FROM
+  policies
+JOIN installments
+  ON installments.policy_id = policies.id
+JOIN provisions
+  ON provisions.installment_id = installments.id
+JOIN agent_provisions ap
+  ON ap.provision_id = provisions.id
+WHERE
+  policies.number = '3003110005792'
+  AND provisions."status" = 'installment:fixed_commission'

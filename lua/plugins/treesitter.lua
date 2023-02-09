@@ -29,6 +29,9 @@ return {
         "typescript",
         "vim",
         "yaml",
+        "ruby",
+        "c",
+        "haskell",
       },
       incremental_selection = {
         enable = true,

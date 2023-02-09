@@ -1,0 +1,121 @@
+snippet DescInit "Initialize tests"
+var _ = Describe("$0", func() {
+
+	})
+endsnippet
+
+snippet Desc "Initialize tests"
+Describe("$0", func() {
+
+})
+endsnippet
+
+snippet Cont "Initialize tests"
+Context("$0", func() {
+
+})
+endsnippet
+
+snippet It "Initialize tests"
+It("$0", func() {
+
+})
+endsnippet
+
+snippet BeforeEach "Initialize tests"
+BeforeEach(func() {
+	$0
+})
+endsnippet
+
+snippet JustBeforeEach "Initialize tests"
+JustBeforeEach(func() {
+	$0
+})
+endsnippet
+snippet Exp "Initialize tests"
+Expect($0).To()
+endsnippet
+
+
+snippet block "Initialize tests"
+	// {{{
+
+	// }}}
+endsnippet
+
+snippet quote "Initialize tests"
+	/**
+
+	**/
+endsnippet
+
+snippet Store "Initialize tests"
+func ($0) Store() {
+
+}
+endsnippet
+
+snippet Status "Initialize tests"
+func ($0) Status() {
+
+}
+endsnippet
+
+
+snippet r0 "Initialize tests"
+When("And RZ is Read Only", func() {
+	BeforeEach(func() {
+		IR = 0x08011000
+	})
+
+	Context("#Execute", func() {
+		It("LS must be diferent of zero", func() {
+			Expect(add.LS).To(Equal(uint32(0xFFFFFFFE)))
+		})
+	})
+	
+	Context("#Status", func() {
+		It("must indicate CY", func() {
+			Expect(SR).To(Equal(uint32(0x00000019)))
+		})
+	})
+
+	Context("#Store", func() {
+		It("should not write LS in RZ", func() {
+			Expect(main.R[add.Z()].Get()).To(Equal(uint32(0x00000000)))
+		})
+	})
+
+	Context("#Print", func() {
+		It("Should view return instruction with SN in SR toggle", func() {
+			add.Print()
+			w.Close()
+			message, _ := ioutil.ReadAll(r)
+
+			Expect(string(message)).To(Equal("0x00000008:\tadd r0,r1,r2             \tR0=R1+R2=0x00000000,SR=0x00000019\n"))
+		})
+	})
+})
+endsnippet
+
+
+snippet shared "Initialize tests"
+Context("#Execute", func() {
+	It("LS must be diferent of zero", func() {
+		Expect(add.LS).To(Equal(uint32(0xFFFFFFFE)))
+	})
+})
+
+Context("#Status", func() {
+	It("must indicate CY", func() {
+		Expect(SR).To(Equal(uint32(0x00000019)))
+	})
+})
+
+Context("#Store", func() {
+	It("should write LS in RZ", func() {
+		Expect(main.R[add.Z()].Get()).To(Equal(uint32(0xFFFFFFFE)))
+	})
+})
+endsnippet

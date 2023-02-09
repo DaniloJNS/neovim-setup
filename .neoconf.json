@@ -11,5 +11,11 @@
         "enabled": true
       }
     }
+  },
+  "lspconfig": {
+    "solargraph": {
+      "solargraph.completion": false,
+      "solargraph.diagnostics": false
+    }
   }
 }

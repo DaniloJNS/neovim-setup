@@ -1,0 +1,118 @@
+#api
+snippet have_http_status "Verifca o status http retornado"
+have_http_status(${0})
+endsnippet
+snippet rescue_from "declara erro"
+rescue_from ${0}, with: :method
+endsnippet   
+# mail
+snippet mail "gera email" 
+mail(to: ${0}, from: , subject: )
+endsnippet
+# rspec system
+snippet travel_to_include "adicionar suporte ao travel to" 
+include ActiveSupport::Testing::TimeHelpers
+endsnippet
+snippet exp_have_http_status "Verificar o codigo da resposta da requisição"
+expect(response).to have_http_status(${0})
+endsnippet
+	
+snippet have_received "Description"
+have_received(:${0})
+endsnippet
+snippet exp_have_received "Description"
+expect(${0})to have_received(${1})
+endsnippet
+snippet creat "factorybot model" b
+${0} = create(:${0})
+endsnippet
+snippet user "cria model"
+create(:user)
+endsnippet
+snippet project "cria model"
+create(:project)
+endsnippet
+snippet proposal "cria model"
+create(:proposal)
+endsnippet
+snippet professional "danilo profissonal template" 
+${1} = create(:professional)
+create(:profile, professional: ${1})
+endsnippet
+snippet professional_with_login "danilo profissonal template com login" 
+${0} = create(:professional)
+create(:profile, professional: ${0})
+
+login_as ${0}, scope: :professional
+endsnippet
+snippet fill_in "preenche campo"
+fill_in "${1}", with: "${2}"
+endsnippet
+snippet check "Aperta checkbox" 
+check "${label}"
+endsnippet
+snippet click_on "Clica no botão" 
+click_on "${0}"
+endsnippet
+snippet have_content "texto na tela" 
+have_content("${0}")
+endsnippet
+snippet not_to_have_content "verifica se não aparece" 
+not_to_have_content("${0}")
+endsnippet
+snippet have_link "Verifica existencia de links" 
+have_link('${0}')
+endsnippet
+snippet exphave_content "Procura o conteudo na tela"
+expect(page).to have_content('${0}')
+endsnippet
+snippet exphave_link "Procura um link na tela" 
+expect(page).to have_link('${0}')
+endsnippet
+snippet expinclude "Procura um link na tela" 
+expect(page).to include('${0}')
+endsnippet
+
+# rspec requests
+snippet redi "Verifica a mudança de rota" 
+redirect_to(${0})
+endsnippet
+
+
+# rspec devise
+
+snippet login "Realiza o login" 
+login_as ${0}, scope: :model
+endsnippet
+
+# should machers {
+snippet enum "Valida a macro enum" b
+should define_enum_for(:${0})
+endsnippet
+snippet enum_with "Valida a macro enum with values" b
+should define_enum_for(:${0}).with_values([])
+endsnippet
+snippet has_many "Validação da associção has_many" 
+should have_many(:${0})
+endsnippet
+snippet belongs_to "Validação se pertence a" 
+should belong_to(:${0})
+endsnippet
+snippet has_one "Validação da associação has_one" b
+should have_one(:${0})
+endsnippet
+snippet presence "Valida prenseça" 
+should validate_presence_of(:${0})
+endsnippet
+snippet numericality "Ver se é numerico" 
+should validate_numericality_of(:${0})
+endsnippet
+# }
+
+snippet letter "testando"
+Dear $1,
+$0
+Yours sincerely,
+$2
+endsnippet
+

@@ -54,3 +54,18 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.spell = true
   end,
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "ruby" },
+  callback = function()
+    vim.opt_local.textwidth = 120
+    vim.opt_local.colorcolumn = { 120 }
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "guihua", "guihua_rust" },
+  callback = function()
+    require("cmp").setup.buffer({ enabled = false })
+  end,
+})

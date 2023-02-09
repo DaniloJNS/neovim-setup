@@ -1,0 +1,11 @@
+SELECT 
+  p1.billable_id p1_billable_id, p1.created_at p1_date,  p1.status p1_status,
+  p2.billable_id p2_billable_d, p2.created_at p2_date, p2.status p2_status
+FROM 
+  billing_plans p1 
+JOIN 
+  billing_plans p2 
+ON 
+  p1.billable_id= p2.billable_id AND p1.created_at <> p2.created_at
+ORDER BY p1.created_at DESC
+limit 10

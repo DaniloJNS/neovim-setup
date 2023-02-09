@@ -13,4 +13,12 @@ return {
     lazy = true,
     name = "catppuccin",
   },
+  {
+    "chriskempson/base16-vim",
+    lazy = true,
+  },
+  {
+    "joshdick/onedark.vim",
+    lazy = true,
+  },
 }
