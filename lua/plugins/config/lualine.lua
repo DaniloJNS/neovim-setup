@@ -141,10 +141,10 @@ ins_left({
   sources = { "nvim_diagnostic" },
   -- symbols = { error = " ", warn = " ", info = " " },
   symbols = {
-    error = icons.diagnostics.Error,
-    warn = icons.diagnostics.Warn,
-    info = icons.diagnostics.Info,
-    hint = icons.diagnostics.Hint,
+    error = neovim.get_icon("lualine", "DiagnosticsError"),
+    warn = neovim.get_icon("lualine", "DiagnosticsWarn"),
+    info = neovim.get_icon("lualine", "DiagnosticsInfo"),
+    hint = neovim.get_icon("lualine", "DiagnosticsHint"),
   },
   diagnostics_color = {
     color_error = { fg = colors.red },

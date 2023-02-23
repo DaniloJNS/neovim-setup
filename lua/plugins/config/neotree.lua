@@ -57,7 +57,8 @@ require("neo-tree").setup({
         h = "toggle_hidden",
       },
     },
-    -- commands = {
+    -- TODO: create function for open in github
+    -- commands = { 
     --   system_open = function(state)
     --     astronvim.system_open(state.tree:get_node():get_id())
     --   end,
