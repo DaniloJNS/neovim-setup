@@ -1,11 +1,9 @@
 local Util = require("lazy.core.util")
 
-local M = {}
-
-M.root_patterns = { ".git", "lua" }
+neovim.root_patterns = { ".git", "lua" }
 
 ---@param on_attach fun(client, buffer)
-function M.on_attach(on_attach)
+function neovim.on_attach(on_attach)
   vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
       local buffer = args.buf
@@ -16,12 +14,12 @@ function M.on_attach(on_attach)
 end
 
 ---@param plugin string
-function M.has(plugin)
+function neovim.has(plugin)
   return require("lazy.core.config").plugins[plugin] ~= nil
 end
 
 ---@param name string
-function M.opts(name)
+function neovim.opts(name)
   local plugin = require("lazy.core.config").plugins[name]
   if not plugin then
     return {}
@@ -36,7 +34,7 @@ end
 -- * root pattern of filename of the current buffer
 -- * root pattern of cwd
 ---@return string
-function M.get_root()
+function neovim.get_root()
   ---@type string?
   local path = vim.api.nvim_buf_get_name(0)
   path = path ~= "" and vim.loop.fs_realpath(path) or nil
@@ -64,84 +62,37 @@ function M.get_root()
   if not root then
     path = path and vim.fs.dirname(path) or vim.loop.cwd()
     ---@type string?
-    root = vim.fs.find(M.root_patterns, { path = path, upward = true })[1]
+    root = vim.fs.find(neovim.root_patterns, { path = path, upward = true })[1]
     root = root and vim.fs.dirname(root) or vim.loop.cwd()
   end
   ---@cast root string
   return root
 end
 
--- this will return a function that calls telescope.
--- cwd will defautlt to lazyvim.util.get_root
--- for `files`, git_files or find_files will be chosen depending on .git
-function M.telescope(builtin, opts)
-  local params = { builtin = builtin, opts = opts }
-  return function()
-    builtin = params.builtin
-    opts = params.opts
-    opts = vim.tbl_deep_extend("force", { cwd = M.get_root() }, opts or {})
-    if builtin == "files" then
-      if vim.loop.fs_stat((opts.cwd or vim.loop.cwd()) .. "/.git") then
-        opts.show_untracked = true
-        builtin = "git_files"
-      else
-        builtin = "find_files"
-      end
-    end
-    require("telescope.builtin")[builtin](opts)
+function neovim.load(name)
+  local Util = require("lazy.core.util")
+  -- always load lazyvim, then user file
+  for _, mod in ipairs({ "config." .. name, "config." .. name }) do
+    Util.try(function()
+      require(mod)
+    end, {
+      msg = "Failed loading " .. mod,
+      on_error = function(msg)
+        local modpath = require("lazy.core.cache").find(mod)
+        if modpath then
+          Util.error(msg)
+        end
+      end,
+    })
   end
-end
-
--- FIXME: create a togglable termiminal
--- Opens a floating terminal (interactive by default)
----@param cmd? string[]|string
----@param opts? LazyCmdOptions|{interactive?:boolean}
-function M.float_term(cmd, opts)
-  opts = vim.tbl_deep_extend("force", {
-    size = { width = 0.9, height = 0.9 },
-  }, opts or {})
-  require("lazy.util").float_term(cmd, opts)
-end
-
----@param silent boolean?
----@param values? {[1]:any, [2]:any}
-function M.toggle(option, silent, values)
-  if values then
-    if vim.opt_local[option]:get() == values[1] then
-      vim.opt_local[option] = values[2]
-    else
-      vim.opt_local[option] = values[1]
-    end
-    return Util.info("Set " .. option .. " to " .. vim.opt_local[option]:get(), { title = "Option" })
+  if vim.bo.filetype == "lazy" then
+    -- HACK: LazyVim may have overwritten options of the Lazy ui, so reset this herezyVim may have overwritten options of the Lazy ui, so reset this here
+    vim.cmd([[do VimResized]])
   end
-  vim.opt_local[option] = not vim.opt_local[option]:get()
-  if not silent then
-    if vim.opt_local[option]:get() then
-      Util.info("Enabled " .. option, { title = "Option" })
-    else
-      Util.warn("Disabled " .. option, { title = "Option" })
-    end
-  end
-end
-
-local enabled = true
-function M.toggle_diagnostics()
-  enabled = not enabled
-  if enabled then
-    vim.diagnostic.enable()
-    Util.info("Enabled diagnostics", { title = "Diagnostics" })
-  else
-    vim.diagnostic.disable()
-    Util.warn("Disabled diagnostics", { title = "Diagnostics" })
-  end
-end
-
-function M.deprecate(old, new)
-  Util.warn(("`%s` is deprecated. Please use `%s` instead"):format(old, new), { title = "LazyVim" })
 end
 
 -- delay notifications till vim.notify was replaced or after 500ms
-function M.lazy_notify()
+function neovim.lazy_notify()
   local notifs = {}
   local function temp(...)
     table.insert(notifs, vim.F.pack_len(...))
@@ -177,4 +128,43 @@ function M.lazy_notify()
   timer:start(500, 0, replay)
 end
 
-return M
+---@param silent boolean?
+---@param values? {[1]:any, [2]:any}
+function neovim.toggle_opt(option, silent, values)
+  if values then
+    if vim.opt_local[option]:get() == values[1] then
+      vim.opt_local[option] = values[2]
+    else
+      vim.opt_local[option] = values[1]
+    end
+    return Util.info("Set " .. option .. " to " .. vim.opt_local[option]:get(), { title = "Option" })
+  end
+  vim.opt_local[option] = not vim.opt_local[option]:get()
+  if not silent then
+    if vim.opt_local[option]:get() then
+      Util.info("Enabled " .. option, { title = "Option" })
+    else
+      Util.warn("Disabled " .. option, { title = "Option" })
+    end
+  end
+end
+
+--- Initialize icons used throughout the user interface
+function neovim.initialize_icons(plugin)
+  neovim.icons[plugin] = require("lua.core.icons." .. plugin)
+end
+
+--- Get an icon from `lspkind` if it is available and return it
+-- @param kind the kind of icon in `lspkind` to retrieve
+-- @return the icon
+function neovim.get_icon(plugin, kind)
+  if not neovim.icons then
+    neovim.icons = {}
+  end
+
+  if not neovim.icons[plugin] then
+    neovim.initialize_icons(plugin)
+  end
+
+  return neovim.icons[plugin] and neovim.icons[plugin][kind] or ""
+end

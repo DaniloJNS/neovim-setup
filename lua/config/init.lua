@@ -1,7 +1,6 @@
 ---@type LazyVimConfig
 local M = {}
 
-M.lazy_version = ">=9.1.0"
 ---@class LazyVimConfig
 local defaults = {
   -- colorscheme can be a string like `catppuccin` or a function that will load the colorscheme
@@ -101,12 +100,12 @@ function M.init()
   if not M.did_init then
     M.did_init = true
     -- delay notifications till vim.notify was replaced or after 500ms
-    require("lib.util").lazy_notify()
+    neovim.lazy_notify()
 
     -- load options here, before lazy init while sourcing plugin modules
     -- this is needed to make sure options will be correctly applied
     -- after installing missing plugins
-    require("config").load("options")
+    M.load("options")
   end
 end
 

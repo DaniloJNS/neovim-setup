@@ -11,7 +11,7 @@ return {
       {
         "hrsh7th/cmp-nvim-lsp",
         cond = function()
-          return require("lib.util").has("nvim-cmp")
+          return neovim.has("nvim-cmp")
         end,
       },
     },
@@ -69,7 +69,7 @@ return {
       -- setup autoformat
       require("plugins.lsp.format").autoformat = opts.autoformat
       -- setup formatting and keymaps
-      require("lib.util").on_attach(function(client, buffer)
+      neovim.on_attach(function(client, buffer)
         -- require("plugins.lsp.format").on_attach(client, buffer)
         require("plugins.lsp.keymaps").on_attach(client, buffer)
       end)

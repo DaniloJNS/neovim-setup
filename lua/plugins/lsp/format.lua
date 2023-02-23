@@ -26,7 +26,7 @@ function M.format()
       end
       return client.name ~= "null-ls"
     end,
-  }, require("lib.util").opts("nvim-lspconfig").format or {}))
+  }, neovim.opts("nvim-lspconfig").format or {}))
 end
 
 function M.on_attach(client, buf)

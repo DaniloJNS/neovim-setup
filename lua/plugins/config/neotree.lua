@@ -1,5 +1,3 @@
-local icons = require("core.icons")
-
 require("neo-tree").setup({
   close_if_last_window = true,
   enable_diagnostics = false,
@@ -12,31 +10,31 @@ require("neo-tree").setup({
     winbar = true,
     content_layout = "center",
     tab_labels = {
-      filesystem = icons.files.FolderClosed,
-      buffers = icons.files.DefaultFile,
-      git_status = icons.git.Git,
-      diagnostics = icons.lsp.Diagnostic,
+      filesystem = neovim.get_icon("neotree", "FolderClosed"),
+      buffers = neovim.get_icon("neotree", "DefaultFile"),
+      git_status = neovim.get_icon("neotree", "Git"),
+      diagnostics = neovim.get_icon("neotree", "Diagnostic"),
     },
   },
   default_component_configs = {
     indent = { padding = 0 },
     icon = {
-      folder_closed = icons.files.FolderClosed,
-      folder_open = icons.files.FolderOpen,
-      folder_empty = icons.files.FolderEmpty,
-      default = icons.files.DefaultFile,
+      folder_closed = neovim.get_icon("neotree", "FolderClosed"),
+      folder_open = neovim.get_icon("neotree", "FolderOpen"),
+      folder_empty = neovim.get_icon("neotree", "FolderEmpty"),
+      default = neovim.get_icon("neotree", "DefaultFile"),
     },
     git_status = {
       symbols = {
-        added = icons.GitAdd,
-        deleted = icons.GitDelete,
-        modified = icons.GitChange,
-        renamed = icons.GitRenamed,
-        untracked = icons.GitUntracked,
-        ignored = icons.GitIgnored,
-        unstaged = icons.GitUnstaged,
-        staged = icons.GitStaged,
-        conflict = icons.GitConflict,
+        added = neovim.get_icon("neotree", "GitAdd"),
+        deleted = neovim.get_icon("neotree", "GitDelete"),
+        modified = neovim.get_icon("neotree", "GitChange"),
+        renamed = neovim.get_icon("neotree", "GitRenamed"),
+        untracked = neovim.get_icon("neotree", "GitUntracked"),
+        ignored = neovim.get_icon("neotree", "GitIgnored"),
+        unstaged = neovim.get_icon("neotree", "GitUnstaged"),
+        staged = neovim.get_icon("neotree", "GitStaged"),
+        conflict = neovim.get_icon("neotree", "GitConflict"),
       },
     },
   },
@@ -55,7 +53,7 @@ require("neo-tree").setup({
     use_libuv_file_watcher = true,
     window = {
       mappings = {
-        O = "system_open",
+        -- O = "system_open",
         h = "toggle_hidden",
       },
     },
