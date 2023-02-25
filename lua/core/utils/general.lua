@@ -1,7 +1,6 @@
 local Util = require("lazy.core.util")
 
 neovim.root_patterns = { ".git", "lua" }
-neovim.icons = {}
 
 ---@param on_attach fun(client, buffer)
 function neovim.on_attach(on_attach)
@@ -152,13 +151,17 @@ end
 
 --- Initialize icons used throughout the user interface
 function neovim.initialize_icons(plugin)
-  neovim.icons[plugin] = require("lua.core.icons." .. plugin)
+  neovim.icons[plugin] = require("core.icons." .. plugin)
 end
 
 --- Get an icon from `lspkind` if it is available and return it
 -- @param kind the kind of icon in `lspkind` to retrieve
 -- @return the icon
 function neovim.get_icon(plugin, kind)
+  if not neovim.icons then
+    neovim.icons = {}
+  end
+
   if not neovim.icons[plugin] then
     neovim.initialize_icons(plugin)
   end

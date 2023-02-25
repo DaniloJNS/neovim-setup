@@ -135,7 +135,6 @@ ins_left({ "location" })
 
 ins_left({ "progress", color = { fg = colors.fg, gui = "bold" } })
 
-local icons = require("config").icons
 ins_left({
   "diagnostics",
   sources = { "nvim_diagnostic" },

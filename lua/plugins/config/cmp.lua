@@ -15,7 +15,7 @@ cmp.setup.cmdline(":", {
     },
   }),
 })
-return {
+cmp.setup({
   sorting = {
     comparators = {
       cmp.config.compare.offset,
@@ -70,9 +70,9 @@ return {
   }),
   formatting = {
     format = function(_, item)
-      local icons = require("config").icons.kinds
-      if icons[item.kind] then
-        item.kind = icons[item.kind] .. item.kind
+      local icon = neovim.get_icon("cmp", item.kind)
+      if icon then
+        item.kind = icon .. item.kind
       end
       return item
     end,
@@ -82,4 +82,4 @@ return {
       hl_group = "LspCodeLens",
     },
   },
-}
+})
