@@ -6,6 +6,13 @@ return {
     end,
     event = "VeryLazy",
   },
+  {
+    "mrjones2014/smart-splits.nvim",
+    name = "smart-splits",
+    config = function()
+      require("plugins.config.smart-splits")
+    end,
+  },
 
   -- file explorer
   {
@@ -14,19 +21,6 @@ return {
       "s1n7ax/nvim-window-picker",
     },
     cmd = "Neotree",
-    keys = {
-      {
-        "<leader>fe",
-        function()
-          require("neo-tree.command").execute({ toggle = true, dir = neovim.get_root() })
-        end,
-        desc = "Explorer NeoTree (root dir)",
-      },
-      { "<leader>fE", "<cmd>Neotree toggle<CR>", desc = "Explorer NeoTree (cwd)" },
-      { "<leader>e", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
-      { "<C-o>", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
-      { "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
-    },
     deactivate = function()
       vim.cmd([[Neotree close]])
     end,
@@ -47,25 +41,6 @@ return {
   -- search/replace in multiple files
   {
     "windwp/nvim-spectre",
-    -- stylua: ignore
-    keys = {
-      { "<leader>sr", function() require("spectre").open() end, desc = "Replace in files (Spectre)" },
-    },
-  },
-
-  -- fuzzy finder
-  -- easily jump to any location and enhanced f/t motions for Leap
-  {
-    "ggandor/leap.nvim",
-    event = "VeryLazy",
-    dependencies = { { "ggandor/flit.nvim", opts = { labeled_modes = "nv" } } },
-    config = function(_, opts)
-      local leap = require("leap")
-      for k, v in pairs(opts) do
-        leap.opts[k] = v
-      end
-      leap.add_default_mappings(true)
-    end,
   },
 
   -- which-key
@@ -134,103 +109,90 @@ return {
   -- buffer remove
   {
     "echasnovski/mini.bufremove",
-    -- stylua: ignore
-    keys = {
-      { "<leader>bd", function() require("mini.bufremove").delete(0, false) end, desc = "Delete Buffer" },
-      { "<leader>d", function() require("mini.bufremove").delete(0, false) end, desc = "Delete Buffer" },
-      { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
-    },
+    name = "mini.bufremove",
   },
 
-  -- better diagnostics list and others
+  -- better diagnosticslist and others
   {
     "folke/trouble.nvim",
     cmd = { "TroubleToggle", "Trouble" },
+    event = "BufReadPost",
     opts = { use_diagnostic_signs = true },
-    keys = {
-      { "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "Document Diagnostics (Trouble)" },
-      { "<leader>xX", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics (Trouble)" },
-    },
   },
 
-  -- todo comments
   {
     "folke/todo-comments.nvim",
     cmd = { "TodoTrouble", "TodoTelescope" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "folke/trouble.nvim",
+    },
     event = "BufReadPost",
     config = true,
-    -- stylua: ignore
-    keys = {
-      { "]t", function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
-      { "[t", function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
-      { "<leader>xt", "<cmd>TodoTrouble<cr>", desc = "Todo (Trouble)" },
-      { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme (Trouble)" },
-      { "<leader>st", "<cmd>TodoTelescope<cr>", desc = "Todo" },
-    },
+  },
 
-    -- Help insert documentation
-    {
-      "danymat/neogen",
-      dependencies = "nvim-treesitter/nvim-treesitter",
-      config = function()
-        require("neogen").setup({ snippet_engine = "luasnip" })
-      end,
-      keys = function()
-        return {
-          -- { "<Leader>df", require("neogen").generate(), desc = "Insert notation for function" },
-        }
-      end,
-    },
-    {
-      "akinsho/toggleterm.nvim",
-      config = function(_, opts)
-        function _G.set_terminal_keymaps()
-          local op = { noremap = true }
-          vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], op)
-          vim.api.nvim_buf_set_keymap(0, "t", "jk", [[<C-\><C-n>]], op)
-          vim.api.nvim_buf_set_keymap(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], op)
-          vim.api.nvim_buf_set_keymap(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], op)
-          vim.api.nvim_buf_set_keymap(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], op)
-          vim.api.nvim_buf_set_keymap(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], op)
+  -- Help insert documentation
+  {
+    "danymat/neogen",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    event = "BufReadPost",
+    config = function()
+      require("neogen").setup({
+        snippet_engine = "luasnip",
+        enabled = true,
+        input_after_comment = true,
+      })
+    end,
+  },
+  {
+    "akinsho/toggleterm.nvim",
+    config = function(_, opts)
+      function _G.set_terminal_keymaps()
+        local op = { noremap = true }
+        vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], op)
+        vim.api.nvim_buf_set_keymap(0, "t", "jk", [[<C-\><C-n>]], op)
+        vim.api.nvim_buf_set_keymap(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], op)
+        vim.api.nvim_buf_set_keymap(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], op)
+        vim.api.nvim_buf_set_keymap(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], op)
+        vim.api.nvim_buf_set_keymap(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], op)
+      end
+
+      -- if you only want these mappings for toggle term use term://*toggleterm#* instead
+      vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
+      require("toggleterm").setup(opts)
+    end,
+    opts = {
+      -- size can be a number or function which is passed the current terminal
+      size = function(term)
+        if term.direction == "horizontal" then
+          return 15
+        elseif term.direction == "vertical" then
+          return vim.o.columns * 0.4
         end
-
-        -- if you only want these mappings for toggle term use term://*toggleterm#* instead
-        vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
-        require("toggleterm").setup(opts)
       end,
-      opts = {
-        -- size can be a number or function which is passed the current terminal
-        size = function(term)
-          if term.direction == "horizontal" then
-            return 15
-          elseif term.direction == "vertical" then
-            return vim.o.columns * 0.4
-          end
-        end,
-        open_mapping = [[<c-d>]],
-        hide_numbers = true, -- hide the number column in toggleterm buffers
-        shade_filetypes = {},
-        shade_terminals = false,
-        shading_factor = "3", -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
-        start_in_insert = true,
-        insert_mappings = true, -- whether or not the open mapping applies in insert mode
-        terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
-        persist_size = true,
-        direction = "float",
-        close_on_exit = true, -- close the terminal window when the process exits
-        shell = vim.o.shell, -- change the default shell
-        -- This field is only relevant if direction is set to 'float'
-        float_opts = {
-          -- The border key is *almost* the same as 'nvim_open_win'
-          -- see :h nvim_open_win for details on borders however
-          -- the 'curved' border is a custom border type
-          -- not natively supported but implemented in this plugin.
-          border = "curved",
-          winblend = 3,
-          highlights = {
-            border = "Normal",
-            background = "Normal",
-          },
+      open_mapping = [[<c-d>]],
+      hide_numbers = true, -- hide the number column in toggleterm buffers
+      shade_filetypes = {},
+      shade_terminals = false,
+      shading_factor = "3", -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
+      start_in_insert = true,
+      insert_mappings = true, -- whether or not the open mapping applies in insert mode
+      terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
+      persist_size = true,
+      direction = "float",
+      close_on_exit = true, -- close the terminal window when the process exits
+      shell = vim.o.shell, -- change the default shell
+      -- This field is only relevant if direction is set to 'float'
+      float_opts = {
+        -- The border key is *almost* the same as 'nvim_open_win'
+        -- see :h nvim_open_win for details on borders however
+        -- the 'curved' border is a custom border type
+        -- not natively supported but implemented in this plugin.
+        border = "curved",
+        winblend = 3,
+        highlights = {
+          border = "Normal",
+          background = "Normal",
         },
       },
     },

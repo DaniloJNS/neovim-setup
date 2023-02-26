@@ -9,7 +9,7 @@ local servers_config = {
   -- LSP Server Settings
   servers = {
     jsonls = {},
-    sumneko_lua = {
+    lua_ls = {
       -- mason = false, -- set to false if you don't want this server to be installed with mason
       settings = {
         Lua = {
@@ -45,5 +45,5 @@ local function setup_handler(server)
 end
 
 local mlsp = require("mason-lspconfig")
-mlsp.setup({ ensure_installed = { "sumneko_lua", "jsonls", "solargraph" } })
+mlsp.setup({ ensure_installed = { "lua_ls", "jsonls", "solargraph" } })
 mlsp.setup_handlers({ setup_handler })

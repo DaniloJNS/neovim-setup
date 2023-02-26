@@ -17,8 +17,8 @@ return {
     },
     config = function()
       -- setup autoformat
-      require("lua.plugins.config.nvim_lsp_servers")
-      require("lua.plugins.config.nvim_lsp_diagnostics")
+      require("plugins.config.nvim_lsp_servers")
+      require("plugins.config.nvim_lsp_diagnostics")
     end,
   },
 
