@@ -1,163 +1,154 @@
 -- This file is automatically loaded by lazyvim.plugins.config
 
-local function map(mode, lhs, rhs, opts)
-  local keys = require("lazy.core.handler").handlers.keys
-  ---@cast keys LazyKeysHandler
-  -- do not create the keymap if a lazy keys handler exists
-  if not keys.active[keys.parse({ lhs, mode = mode }).id] then
-    vim.keymap.set(mode, lhs, rhs, opts)
-  end
-end
-
+local maps = { i = {}, n = {}, v = {}, x = {}, o = {}, s = {}, t = {} }
 -- fast config
-map("n", "<leader>ec", "<cmd>vsplit ~/.config/nvim/init.lua<cr>", { desc = "jump for root file config" })
+maps.n["<leader>ec"] = { "<cmd>vsplit ~/.config/nvim/init.lua<cr>", desc = "jump for root file config" }
 -- better up/down
-map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+maps.n["j"] = { "v:count == 0 ? 'gj' : 'j'", expr = true, silent = true }
+maps.n["k"] = { "v:count == 0 ? 'gk' : 'k'", expr = true, silent = true }
 
 -- Move to window using the <ctrl> hjkl keys
-map("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
-map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window" })
-map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window" })
-map("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
-
--- Resize window using <ctrl> arrow keys
-map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
-map("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
-map("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
-map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
+maps.n["<C-h>"] = { "<C-w>h", desc = "Go to left window" }
+maps.n["<C-j>"] = { "<C-w>j", desc = "Go to lower window" }
+maps.n["<C-k>"] = { "<C-w>k", desc = "Go to upper window" }
+maps.n["<C-l>"] = { "<C-w>l", desc = "Go to right window" }
 
 -- Resize window using <alt> arrow keys
-map("n", "<A-k>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
-map("n", "<A-j>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
-map("n", "<A-h>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
-map("n", "<A-l>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
+maps.n["<A-k>"] = { "<cmd>resize +2<cr>", desc = "Increase window height" }
+maps.n["<A-j>"] = { "<cmd>resize -2<cr>", desc = "Decrease window height" }
+maps.n["<A-h>"] = { "<cmd>vertical resize -2<cr>", desc = "Decrease window width" }
+maps.n["<A-l>"] = { "<cmd>vertical resize +2<cr>", desc = "Increase window width" }
 
 -- Move Lines
-map("n", "<A-n>", ":m .+1<cr>==", { desc = "Move down" })
-map("v", "<A-n>", ":m '>+1<cr>gv=gv", { desc = "Move down" })
-map("i", "<A-n>", "<Esc>:m .+1<cr>==gi", { desc = "Move down" })
-map("n", "<A-m>", ":m .-2<cr>==", { desc = "Move up" })
-map("v", "<A-m>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
-map("i", "<A-m>", "<Esc>:m .-2<cr>==gi", { desc = "Move up" })
+maps.n["<A-n>"] = { ":m .+1<cr>==", desc = "Move down" }
+maps.i["<A-n>"] = { "<Esc>:m .+1<cr>==gi", desc = "Move down" }
+maps.v["<A-n>"] = { ":m '>+1<cr>gv=gv", desc = "Move down" }
+maps.n["<A-m>"] = { ":m .-2<cr>==", desc = "Move up" }
+maps.v["<A-m>"] = { ":m '<-2<cr>gv=gv", desc = "Move up" }
+maps.i["<A-m>"] = { "<Esc>:m .-2<cr>==gi", desc = "Move up" }
+
+-- manager windows
+maps.n["<leader>ww"] = { "<C-W>p", desc = "Other window" }
+maps.n["<leader>wc"] = { "<C-W>c", desc = "Delete window" }
+maps.n["<leader>ws"] = { "<C-W>s", desc = "Split window below" }
+maps.n["<leader>we"] = { "<C-W>v", desc = "Split window right" }
+maps.n["<leader>-"] = { "<C-W>s", desc = "Split window below" }
+maps.n["<leader>|"] = { "<C-W>v", desc = "Split window right" }
+
+-- tabs
+maps.n["<leader><tab>l"] = { "<cmd>tablast<cr>", desc = "Last Tab" }
+maps.n["<leader><tab>f"] = { "<cmd>tabfirst<cr>", desc = "First Tab" }
+maps.n["<leader><tab><tab>"] = { "<cmd>tabnew<cr>", desc = "New Tab" }
+maps.n["<leader><tab>]"] = { "<cmd>tabnext<cr>", desc = "Next Tab" }
+maps.n["<leader><tab>d"] = { "<cmd>tabclose<cr>", desc = "Close Tab" }
+maps.n["<leader><tab>["] = { "<cmd>tabprevious<cr>", desc = "Previous Tab" }
+-- my friendly tabs
+maps.n["<M-esc>"] = { "<cmd>tabclose<cr>", desc = "Close Tab" }
+maps.n["<M-'>"] = { "<cmd>tab sb<cr>", desc = "New Tab" }
+maps.n["<M-TAB>"] = { "<cmd>tabnext<cr>", desc = "Next Tab" }
+maps.n["<M-1>"] = { "<cmd>tabprevious<cr>", desc = "Previous Tab" }
+-- -- -- JSON FORMATTERS
+maps.n["<leader>js"] = { "<cmd>%!python -m json.tool<cr>", desc = "Formatter json file" }
 
 -- buffers
 if neovim.has("bufferline.nvim") then
-  map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
-  map("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
-  map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
-  map("n", "<TAB>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
-  map("n", "[b", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
-  map("n", "]b", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
+  maps.n["<S-h>"] = { "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" }
+  maps.n["<S-l>"] = { "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" }
+  maps.n["<S-h>"] = { "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" }
+  maps.n["<TAB>"] = { "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" }
+  maps.n["[b"] = { "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" }
+  maps.n["]b"] = { "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" }
 else
-  map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
-  map("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
-  map("n", "<TAB>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
-  map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
-  map("n", "]b", "<cmd>bnext<cr>", { desc = "Next buffer" })
+  maps.n["<S-h>"] = { "<cmd>bprevious<cr>", desc = "Prev buffer" }
+  maps.n["<S-l>"] = { "<cmd>bnext<cr>", desc = "Next buffer" }
+  maps.n["<TAB>"] = { "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" }
+  maps.n["[b"] = { "<cmd>bprevious<cr>", desc = "Prev buffer" }
+  maps.n["]b"] = { "<cmd>bnext<cr>", desc = "Next buffer" }
 end
-map("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
-map("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
+maps.n["<leader>bb"] = { "<cmd>e #<cr>", desc = "Switch to Other Buffer" }
+maps.n["<leader>`"] = { "<cmd>e #<cr>", desc = "Switch to Other Buffer" }
 
 -- Clear search with <esc>
-map({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsearch" })
+maps.i["<esc>"] = { "<cmd>noh<cr><esc>", desc = "Escape and clear hlsearch" }
+maps.n["<esc>"] = { "<cmd>noh<cr><esc>", desc = "Escape and clear hlsearch" }
 
 -- Clear search, diff update and redraw
 -- taken from runtime/lua/_editor.lua
-map(
-  "n",
-  "<leader>ur",
+maps.n["<leader>ur"] = {
   "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
-  { desc = "Redraw / clear hlsearch / diff update" }
-)
-
-map("n", "gw", "*N")
-map("x", "gw", "*N")
+  desc = "Redraw / clear hlsearch / diff update",
+}
+--
+maps.n["gw"] = { "*N" }
+maps.x["gw"] = { "*N" }
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
-map("n", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
-map("x", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
-map("o", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
-map("n", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
-map("x", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
-map("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
+maps.n["n"] = { "'Nn'[v:searchforward]", expr = true, desc = "Next search result" }
+maps.x["n"] = { "'Nn'[v:searchforward]", expr = true, desc = "Next search result" }
+maps.o["n"] = { "'Nn'[v:searchforward]", expr = true, desc = "Next search result" }
+maps.n["N"] = { "'nN'[v:searchforward]", expr = true, desc = "Prev search result" }
+maps.x["N"] = { "'nN'[v:searchforward]", expr = true, desc = "Prev search result" }
+maps.o["N"] = { "'nN'[v:searchforward]", expr = true, desc = "Prev search result" }
 
 -- Add undo break-points
-map("i", ",", ",<c-g>u")
-map("i", ".", ".<c-g>u")
-map("i", ";", ";<c-g>u")
-
+maps.i[","] = { ",<c-g>u" }
+maps.i["."] = { ".<c-g>u" }
+maps.i[";"] = { ";<c-g>u" }
+--
 -- save file
-map({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
+maps.i["<C-s>"] = { "<cmd>w<cr><esc>", desc = "Save file" }
+maps.v["<C-s>"] = { "<cmd>w<cr><esc>", desc = "Save file" }
+maps.n["<C-s>"] = { "<cmd>w<cr><esc>", desc = "Save file" }
+maps.s["<C-s>"] = { "<cmd>w<cr><esc>", desc = "Save file" }
 
 -- better indenting
-map("v", "<", "<gv")
-map("v", ">", ">gv")
+maps.v["<"] = { "<gv" }
+maps.v[">"] = { ">gv" }
 
 -- lazy
-map("n", "<leader>l", "<cmd>:Lazy<cr>", { desc = "Lazy" })
+maps.n["<leader>l"] = { "<cmd>:Lazy<cr>", desc = "Lazy" }
 
 -- new file
-map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
+maps.n["<leader>fn"] = { "<cmd>enew<cr>", desc = "New File" }
 
-map("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Open Location List" })
-map("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Open Quickfix List" })
+maps.n["<leader>xl"] = { "<cmd>lopen<cr>", desc = "Open Location List" }
+maps.n["<leader>xq"] = { "<cmd>copen<cr>", desc = "Open Quickfix List" }
 
 -- stylua: ignore start
 
 -- toggle options
-map("n", "<leader>uf", require("plugins.lsp.format").toggle, { desc = "Toggle format on Save" })
-map("n", "<leader>us", function() neovim.toggle_opt("spell") end, { desc = "Toggle Spelling" })
-map("n", "<leader>uw", function() neovim.toggle_opt("wrap") end, { desc = "Toggle Word Wrap" })
-map("n", "<leader>ul", function()
+maps.n["<leader>uf"] = { require("plugins.lsp.format").toggle, desc = "Toggle format on Save" }
+maps.n["<leader>us"] = { function() neovim.toggle_opt("spell") end, desc = "Toggle Spelling" }
+maps.n["<leader>uw"] = { function() neovim.toggle_opt("wrap") end, desc = "Toggle Word Wrap" }
+maps.n["<leader>ul"] = { function()
   neovim.toggle_opt("relativenumber", true)
   neovim.toggle_opt("number")
-end, { desc = "Toggle Line Numbers" })
-map("n", "<leader>ud", neovim.toggle_diagnostics, { desc = "Toggle Diagnostics" })
+end, desc = "Toggle Line Numbers" }
+maps.n["<leader>ud"] = { neovim.toggle_diagnostics, desc = "Toggle Diagnostics" }
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
-map("n", "<leader>uc", function() neovim.toggle_opt("conceallevel", false, { 0, conceallevel }) end,
-  { desc = "Toggle Conceal" })
+maps.n["<leader>uc"] = { function() neovim.toggle_opt("conceallevel", false, { 0, conceallevel }) end
+  , desc = "Toggle Conceal" }
 
 -- lazygit
-map("n", "<leader>gg", function() neovim.float_term({ "lazygit" }, { cwd = neovim.get_root() }) end,
-  { desc = "Lazygit (root dir)" })
-map("n", "<leader>gG", function() neovim.float_term({ "lazygit" }) end, { desc = "Lazygit (cwd)" })
+maps.n["<leader>gg"] = { function() neovim.float_term({ "lazygit" }, { cwd = neovim.get_root() }) end
+  , desc = "Lazygit (root dir)" }
+maps.n["<leader>gG"] = { function() neovim.float_term({ "lazygit" }) end, desc = "Lazygit (cwd)" }
 
 -- quit
-map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
-map("n", "Q", "<cmd>qa<cr>", { desc = "Quit all" })
-map("n", "qq", "<cmd>bd<cr>", { desc = "Quit all" })
+maps.n["<leader>qq"] = { "<cmd>qa<cr>", desc = "Quit all" }
+maps.n["Q"] = { "<cmd>qa<cr>", desc = "Quit all" }
+maps.n["qq"] = { "<cmd>bd<cr>", desc = "Quit all" }
 
 -- highlights under cursor
 if vim.fn.has("nvim-0.9.0") == 1 then
-  map("n", "<leader>ui", vim.show_pos, { desc = "Inspect Pos" })
+  maps.n["<leader>ui"] = { vim.show_pos, desc = "Inspect Pos" }
 end
 
 -- floating terminal
-map("n", "<leader>ft", function() neovim.float_term(nil, { cwd = neovim.get_root() }) end,
-  { desc = "Terminal (root dir)" })
-map("n", "<leader>fT", function() neovim.float_term() end, { desc = "Terminal (cwd)" })
-map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
+maps.n["<leader>ft"] = { function() neovim.float_term(nil, { cwd = neovim.get_root() }) end,
+  desc = "Terminal (root dir)" }
+maps.n["<leader>fT"] = { function() neovim.float_term() end, desc = "Terminal (cwd)" }
+maps.t["<esc><esc>"] = { "<c-\\><c-n>", desc = "Enter Normal Mode" }
 
 -- windows
-map("n", "<leader>ww", "<C-W>p", { desc = "Other window" })
-map("n", "<leader>wc", "<C-W>c", { desc = "Delete window" })
-map("n", "<leader>ws", "<C-W>s", { desc = "Split window below" })
-map("n", "<leader>we", "<C-W>v", { desc = "Split window right" })
-map("n", "<leader>-", "<C-W>s", { desc = "Split window below" })
-map("n", "<leader>|", "<C-W>v", { desc = "Split window right" })
-
--- tabs
-map("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
-map("n", "<leader><tab>f", "<cmd>tabfirst<cr>", { desc = "First Tab" })
-map("n", "<leader><tab><tab>", "<cmd>tabnew<cr>", { desc = "New Tab" })
-map("n", "<leader><tab>]", "<cmd>tabnext<cr>", { desc = "Next Tab" })
-map("n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" })
-map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
--- my friendly tabs
-map("n", "<M-esc>", "<cmd>tabclose<cr>", { desc = "Close Tab" })
-map("n", "<M-'>", "<cmd>tab sb<cr>", { desc = "New Tab" })
-map("n", "<M-TAB>", "<cmd>tabnext<cr>", { desc = "Next Tab" })
-map("n", "<M-1>", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
--- JSON FORMATTERS
-map("n", "<leader>js", "<cmd>%!python -m json.tool<cr>", { desc = "Formatter json file" })
+neovim.set_mappings(maps)

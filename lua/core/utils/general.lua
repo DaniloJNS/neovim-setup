@@ -3,7 +3,7 @@ local Util = require("lazy.core.util")
 neovim.root_patterns = { ".git", "lua" }
 
 ---@param on_attach fun(client, buffer)
-function neovim.on_attach(on_attach)
+function neovim.lsp_on_attach(on_attach)
   vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
       local buffer = args.buf

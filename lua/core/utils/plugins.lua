@@ -1,15 +1,15 @@
 local Util = require("lazy.core.util")
 
-local enabled = true
 function neovim.toggle_diagnostics()
-  enabled = not enabled
-  if enabled then
+  vim.g.diagnostics_enabled = not vim.g.diagnostics_enabled
+  if vim.g.diagnostics_enabled then
     vim.diagnostic.enable()
     Util.info("Enabled diagnostics", { title = "Diagnostics" })
   else
     vim.diagnostic.disable()
     Util.warn("Disabled diagnostics", { title = "Diagnostics" })
   end
+  vim.diagnostic.config(neovim.lsp.diagnostics[vim.g.diagnostics_enabled and "on" or "off"])
 end
 
 -- this will return a function that calls telescope.

@@ -1,24 +1,25 @@
 -- This file is automatically loaded by plugins.init
 
+local cmd = vim.api.nvim_create_autocmd
 -- Check if we need to reload the file when it changed
-vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, { command = "checktime" })
+cmd({ "FocusGained", "TermClose", "TermLeave" }, { command = "checktime" })
 
 -- Highlight on yank
-vim.api.nvim_create_autocmd("TextYankPost", {
+cmd("TextYankPost", {
   callback = function()
     vim.highlight.on_yank()
   end,
 })
 
 -- resize splits if window got resized
-vim.api.nvim_create_autocmd({ "VimResized" }, {
+cmd({ "VimResized" }, {
   callback = function()
     vim.cmd("tabdo wincmd =")
   end,
 })
 
 -- go to last loc when opening a buffer
-vim.api.nvim_create_autocmd("BufReadPost", {
+cmd("BufReadPost", {
   callback = function()
     local mark = vim.api.nvim_buf_get_mark(0, '"')
     local lcount = vim.api.nvim_buf_line_count(0)
@@ -29,7 +30,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 -- close some filetypes with <q>
-vim.api.nvim_create_autocmd("FileType", {
+cmd("FileType", {
   pattern = {
     "qf",
     "help",
@@ -47,7 +48,7 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
+cmd("FileType", {
   pattern = { "gitcommit", "markdown" },
   callback = function()
     vim.opt_local.wrap = true
@@ -55,7 +56,7 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
+cmd("FileType", {
   pattern = { "ruby" },
   callback = function()
     vim.opt_local.textwidth = 120
@@ -63,9 +64,9 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
+cmd("FileType", {
   pattern = { "guihua", "guihua_rust" },
   callback = function()
-    require("cmp").setup.buffer({ enabled = false })
+    require("cmd").setup.buffer({ enabled = false })
   end,
 })
