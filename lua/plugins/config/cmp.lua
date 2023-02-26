@@ -45,8 +45,8 @@ cmp.setup({
     ["<TAB>"] = function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
-        -- elseif require("luasnip").jumpable(1) then
-        --   return T("<Plug>(luasnip-expand-or-jump)")
+      elseif require("luasnip").jumpable(1) then
+        return T("<Plug>(luasnip-expand-or-jump)")
       else
         fallback()
       end
@@ -54,8 +54,8 @@ cmp.setup({
     ["<S-Tab>"] = function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
-        -- elseif require("luasnip").jumpable(-1) then
-        --   return T("<Plug>(luasnip-jump-prev)")
+      elseif require("luasnip").jumpable(-1) then
+        return T("<Plug>(luasnip-jump-prev)")
       else
         fallback()
       end
@@ -63,7 +63,7 @@ cmp.setup({
   }),
   sources = cmp.config.sources({
     { name = "nvim_lsp" },
-    -- { name = "luasnip" },
+    { name = "luasnip" },
     { name = "ultisnips" }, -- For ultisnips users.
     { name = "buffer" },
     { name = "path" },
