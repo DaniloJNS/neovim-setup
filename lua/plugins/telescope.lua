@@ -2,6 +2,7 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     -- lazy = false,
+    name = 'telescope',
     event = "VeryLazy",
     version = false, -- telescope did only one release, so use HEAD for now
     dependencies = {

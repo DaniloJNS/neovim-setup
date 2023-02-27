@@ -77,8 +77,6 @@ local maps = { i = {}, n = {}, v = {}, x = {}, o = {}, s = {}, t = {} }
   end
 -- }}
 
--- JSON FORMATTERS
-  maps.n["<leader>js"] = { "<cmd>%!python -m json.tool<cr>", desc = "Formatter json file" }
 
 -- maneger tabs {{
   maps.n["<leader><tab>l"] = { "<cmd>tablast<cr>", desc = "Last Tab" }
@@ -210,6 +208,8 @@ local maps = { i = {}, n = {}, v = {}, x = {}, o = {}, s = {}, t = {} }
     maps.n["<Space>cl"] =  { require("navigator.codelens").run_action, desc = "run code lens action" }
     maps.n["<Space>cf"] = { vim.lsp.buf.format, desc = "format" }
     maps.n["<Space>cf"] = { vim.lsp.buf.range_formatting, desc = "range format" }
+    -- JSON FORMATTERS
+      maps.n["<leader>js"] = { "<cmd>%!python -m json.tool<cr>", desc = "Formatter json file" }
   -- Telescope providers 
     if neovim.has('telescope') then
       maps.n["<Space>cgd"] = { "<cmd>Telescope lsp_definitions<cr>", desc = "Goto Definition" }

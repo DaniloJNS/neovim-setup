@@ -115,6 +115,7 @@ return {
   -- better diagnosticslist and others
   {
     "folke/trouble.nvim",
+    name = 'trouble',
     cmd = { "TroubleToggle", "Trouble" },
     event = "BufReadPost",
     opts = { use_diagnostic_signs = true },
@@ -122,6 +123,7 @@ return {
 
   {
     "folke/todo-comments.nvim",
+    name= 'todo-comments',
     cmd = { "TodoTrouble", "TodoTelescope" },
     dependencies = {
       "nvim-lua/plenary.nvim",
