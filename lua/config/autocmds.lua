@@ -67,6 +67,6 @@ cmd("FileType", {
 cmd("FileType", {
   pattern = { "guihua", "guihua_rust" },
   callback = function()
-    require("cmd").setup.buffer({ enabled = false })
+    require("cmp").setup.buffer({ enabled = false })
   end,
 })
