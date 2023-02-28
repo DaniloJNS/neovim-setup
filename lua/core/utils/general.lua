@@ -168,3 +168,23 @@ function neovim.get_icon(plugin, kind)
 
   return neovim.icons[plugin] and neovim.icons[plugin][kind] or ""
 end
+
+--- Get an icon from `lspkind` if it is available and return it
+-- @param kind the kind of icon in `lspkind` to retrieve
+-- @return the icon
+function neovim.get_default_icon(kind)
+  if not neovim["default_icons"] then
+    neovim["default_icons"] = require("core.icons.general")
+  end
+
+  return neovim["default_icons"] and neovim["default_icons"][kind] or ""
+end
+
+--- Add left and/or right padding to a string
+-- @param str the string to add padding to
+-- @param padding a table of the format `{ left = 0, right = 0}` that defines the number of spaces to include to the left and the right of the string
+-- @return the padded string
+function neovim.pad_string(str, padding)
+  padding = padding or {}
+  return str and str ~= "" and string.rep(" ", padding.left or 0) .. str .. string.rep(" ", padding.right or 0) or ""
+end

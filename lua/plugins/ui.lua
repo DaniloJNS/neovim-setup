@@ -43,6 +43,7 @@ return {
   -- bufferline
   {
     "akinsho/bufferline.nvim",
+    name = 'bufferline',
     event = "VeryLazy",
     opts = function()
       return {
@@ -94,14 +95,23 @@ return {
       }
     end,
   },
-  -- statusline
   {
-    "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
-    opts = function(_)
-      require("plugins.config.lualine")
+    "rebelot/heirline.nvim",
+    event = "VimEnter",
+    config = function()
+      vim.notify('run  heirline !!!!!!!!!!!!!!')
+      require "plugins.config.heirline"
+      vim.notify('run  heirline !!!!!!!!!!!!!!')
     end,
   },
+  -- statusline
+  -- {
+  --   "nvim-lualine/lualine.nvim",
+  --   event = "VeryLazy",
+  --   opts = function(_)
+  --     require("plugins.config.lualine")
+  --   end,
+  -- },
 
   -- indent guides for Neovim
   -- Help indentation

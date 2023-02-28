@@ -1,1199 +1,310 @@
-local conditions = require("heirline.conditions")
-local utils = require("heirline.utils")
-
---- Blend two rgb colors using alpha
----@param color1 string | number first color
----@param color2 string | number second color
----@param alpha number (0, 1) float determining the weighted average
----@return string color hex string of the blended color
-local function blend(color1, color2, alpha)
-  color1 = type(color1) == "number" and string.format("#%06x", color1) or color1
-  color2 = type(color2) == "number" and string.format("#%06x", color2) or color2
-  local r1, g1, b1 = color1:match("#(%x%x)(%x%x)(%x%x)")
-  local r2, g2, b2 = color2:match("#(%x%x)(%x%x)(%x%x)")
-  local r = tonumber(r1, 16) * alpha + tonumber(r2, 16) * (1 - alpha)
-  local g = tonumber(g1, 16) * alpha + tonumber(g2, 16) * (1 - alpha)
-  local b = tonumber(b1, 16) * alpha + tonumber(b2, 16) * (1 - alpha)
-  return "#"
-    .. string.format("%02x", math.min(255, math.max(r, 0)))
-    .. string.format("%02x", math.min(255, math.max(g, 0)))
-    .. string.format("%02x", math.min(255, math.max(b, 0)))
-end
-
-local function dim(color, n)
-  return blend(color, "#000000", n)
-end
+local heirline = require "heirline"
+if not neovim.status then return end
+local C = require "default_theme.colors"
 
 local function setup_colors()
-  return {
-    bright_bg = utils.get_highlight("Folded").bg,
-    bright_fg = utils.get_highlight("Folded").fg,
-    red = utils.get_highlight("DiagnosticError").fg,
-    dark_red = utils.get_highlight("DiffDelete").bg,
-    green = utils.get_highlight("String").fg,
-    blue = utils.get_highlight("Function").fg,
-    gray = utils.get_highlight("NonText").fg,
-    orange = utils.get_highlight("Constant").fg,
-    purple = utils.get_highlight("Statement").fg,
-    cyan = utils.get_highlight("Special").fg,
-    diag_warn = utils.get_highlight("DiagnosticWarn").fg,
-    diag_error = utils.get_highlight("DiagnosticError").fg,
-    diag_hint = utils.get_highlight("DiagnosticHint").fg,
-    diag_info = utils.get_highlight("DiagnosticInfo").fg,
-    -- git_del = utils.get_highlight("diffDeleted").fg,
-    -- git_add = utils.get_highlight("diffAdded").fg,
-    -- git_change = utils.get_highlight("diffChanged").fg,
+  local Normal = neovim.get_hlgroup("Normal", { fg = C.fg, bg = C.bg })
+  local Comment = neovim.get_hlgroup("Comment", { fg = C.grey_2, bg = C.bg })
+  local Error = neovim.get_hlgroup("Error", { fg = C.red, bg = C.bg })
+  local StatusLine = neovim.get_hlgroup("StatusLine", { fg = C.fg, bg = C.grey_4 })
+  local TabLine = neovim.get_hlgroup("TabLine", { fg = C.grey, bg = C.none })
+  local TabLineSel = neovim.get_hlgroup("TabLineSel", { fg = C.fg, bg = C.none })
+  local WinBar = neovim.get_hlgroup("WinBar", { fg = C.grey_2, bg = C.bg })
+  local WinBarNC = neovim.get_hlgroup("WinBarNC", { fg = C.grey, bg = C.bg })
+  local Conditional = neovim.get_hlgroup("Conditional", { fg = C.purple_1, bg = C.grey_4 })
+  local String = neovim.get_hlgroup("String", { fg = C.green, bg = C.grey_4 })
+  local TypeDef = neovim.get_hlgroup("TypeDef", { fg = C.yellow, bg = C.grey_4 })
+  local GitSignsAdd = neovim.get_hlgroup("GitSignsAdd", { fg = C.green, bg = C.grey_4 })
+  local GitSignsChange = neovim.get_hlgroup("GitSignsChange", { fg = C.orange_1, bg = C.grey_4 })
+  local GitSignsDelete = neovim.get_hlgroup("GitSignsDelete", { fg = C.red_1, bg = C.grey_4 })
+  local DiagnosticError = neovim.get_hlgroup("DiagnosticError", { fg = C.red_1, bg = C.grey_4 })
+  local DiagnosticWarn = neovim.get_hlgroup("DiagnosticWarn", { fg = C.orange_1, bg = C.grey_4 })
+  local DiagnosticInfo = neovim.get_hlgroup("DiagnosticInfo", { fg = C.white_2, bg = C.grey_4 })
+  local DiagnosticHint = neovim.get_hlgroup("DiagnosticHint", { fg = C.yellow_1, bg = C.grey_4 })
+  local HeirlineInactive = neovim.get_hlgroup("HeirlineInactive", { fg = nil }).fg
+    or neovim.status.hl.lualine_mode("inactive", C.grey_7)
+  local HeirlineNormal = neovim.get_hlgroup("HeirlineNormal", { fg = nil }).fg
+    or neovim.status.hl.lualine_mode("normal", C.blue)
+  local HeirlineInsert = neovim.get_hlgroup("HeirlineInsert", { fg = nil }).fg
+    or neovim.status.hl.lualine_mode("insert", C.green)
+  local HeirlineVisual = neovim.get_hlgroup("HeirlineVisual", { fg = nil }).fg
+    or neovim.status.hl.lualine_mode("visual", C.purple)
+  local HeirlineReplace = neovim.get_hlgroup("HeirlineReplace", { fg = nil }).fg
+    or neovim.status.hl.lualine_mode("replace", C.red_1)
+  local HeirlineCommand = neovim.get_hlgroup("HeirlineCommand", { fg = nil }).fg
+    or neovim.status.hl.lualine_mode("command", C.yellow_1)
+  local HeirlineTerminal = neovim.get_hlgroup("HeirlineTerminal", { fg = nil }).fg
+    or neovim.status.hl.lualine_mode("inactive", HeirlineInsert)
+
+  local colors = {
+    close_fg = Error.fg,
+    fg = StatusLine.fg,
+    bg = StatusLine.bg,
+    section_fg = StatusLine.fg,
+    section_bg = StatusLine.bg,
+    git_branch_fg = Conditional.fg,
+    mode_fg = StatusLine.bg,
+    treesitter_fg = String.fg,
+    scrollbar = TypeDef.fg,
+    git_added = GitSignsAdd.fg,
+    git_changed = GitSignsChange.fg,
+    git_removed = GitSignsDelete.fg,
+    diag_ERROR = DiagnosticError.fg,
+    diag_WARN = DiagnosticWarn.fg,
+    diag_INFO = DiagnosticInfo.fg,
+    diag_HINT = DiagnosticHint.fg,
+    winbar_fg = WinBar.fg,
+    winbar_bg = WinBar.bg,
+    winbarnc_fg = WinBarNC.fg,
+    winbarnc_bg = WinBarNC.bg,
+    tabline_bg = StatusLine.bg,
+    tabline_fg = StatusLine.bg,
+    buffer_fg = Comment.fg,
+    buffer_path_fg = WinBarNC.fg,
+    buffer_close_fg = Comment.fg,
+    buffer_bg = StatusLine.bg,
+    buffer_active_fg = Normal.fg,
+    buffer_active_path_fg = WinBarNC.fg,
+    buffer_active_close_fg = Error.fg,
+    buffer_active_bg = Normal.bg,
+    buffer_visible_fg = Normal.fg,
+    buffer_visible_path_fg = WinBarNC.fg,
+    buffer_visible_close_fg = Error.fg,
+    buffer_visible_bg = Normal.bg,
+    buffer_overflow_fg = Comment.fg,
+    buffer_overflow_bg = StatusLine.bg,
+    buffer_picker_fg = Error.fg,
+    tab_close_fg = Error.fg,
+    tab_close_bg = StatusLine.bg,
+    tab_fg = TabLine.fg,
+    tab_bg = TabLine.bg,
+    tab_active_fg = TabLineSel.fg,
+    tab_active_bg = TabLineSel.bg,
+    inactive = HeirlineInactive,
+    normal = HeirlineNormal,
+    insert = HeirlineInsert,
+    visual = HeirlineVisual,
+    replace = HeirlineReplace,
+    command = HeirlineCommand,
+    terminal = HeirlineTerminal,
   }
+
+  for _, section in ipairs {
+    "git_branch",
+    "file_info",
+    "git_diff",
+    "diagnostics",
+    "lsp",
+    "macro_recording",
+    "mode",
+    "cmd_info",
+    "treesitter",
+    "nav",
+  } do
+    if not colors[section .. "_bg"] then colors[section .. "_bg"] = colors["section_bg"] end
+    if not colors[section .. "_fg"] then colors[section .. "_fg"] = colors["section_fg"] end
+  end
+  return colors
 end
 
-require("heirline").load_colors(setup_colors())
+--- a submodule of heirline specific functions and aliases
+neovim.status.heirline = {}
 
-local ViMode = {
-  init = function(self)
-    self.mode = vim.fn.mode(1)
-    if not self.once then
-      vim.cmd("au ModeChanged *:*o redrawstatus")
-    end
-    self.once = true
-  end,
-  static = {
-    mode_names = {
-      n = "N",
-      no = "N?",
-      nov = "N?",
-      noV = "N?",
-      ["no\22"] = "N?",
-      niI = "Ni",
-      niR = "Nr",
-      niV = "Nv",
-      nt = "Nt",
-      v = "V",
-      vs = "Vs",
-      V = "V_",
-      Vs = "Vs",
-      ["\22"] = "^V",
-      ["\22s"] = "^V",
-      s = "S",
-      S = "S_",
-      ["\19"] = "^S",
-      i = "I",
-      ic = "Ic",
-      ix = "Ix",
-      R = "R",
-      Rc = "Rc",
-      Rx = "Rx",
-      Rv = "Rv",
-      Rvc = "Rv",
-      Rvx = "Rv",
-      c = "C",
-      cv = "Ex",
-      r = "...",
-      rm = "M",
-      ["r?"] = "?",
-      ["!"] = "!",
-      t = "T",
-    },
-  },
-  provider = function(self)
-    return " %2(" .. self.mode_names[self.mode] .. "%)"
-  end,
-  hl = function(self)
-    local color = self:mode_color()
-    return { fg = color, bold = true }
-  end,
-  update = {
-    "ModeChanged",
-  },
-}
+--- A helper function to get the type a tab or buffer is
+-- @param self the self table from a heirline component function
+-- @param prefix the prefix of the type, either "tab" or "buffer" (Default: "buffer")
+-- @return the string of prefix with the type (i.e. "_active" or "_visible")
+function neovim.status.heirline.tab_type(self, prefix)
+  local tab_type = ""
+  if self.is_active then
+    tab_type = "_active"
+  elseif self.is_visible then
+    tab_type = "_visible"
+  end
+  return (prefix or "buffer") .. tab_type
+end
 
-local FileNameBlock = {
-  init = function(self)
-    self.filename = vim.api.nvim_buf_get_name(0)
-  end,
-}
-
-local FileIcon = {
-  init = function(self)
-    local filename = self.filename
-    local extension = vim.fn.fnamemodify(filename, ":e")
-    self.icon, self.icon_color = require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
-  end,
-  provider = function(self)
-    return self.icon and (self.icon .. " ")
-  end,
-  hl = function(self)
-    return { fg = self.icon_color }
-  end,
-}
-
-local FileName = {
-  init = function(self)
-    self.lfilename = vim.fn.fnamemodify(self.filename, ":.")
-    if self.lfilename == "" then
-      self.lfilename = "[No Name]"
-    end
-    if not conditions.width_percent_below(#self.lfilename, 0.27) then
-      self.lfilename = vim.fn.pathshorten(self.lfilename)
-    end
-  end,
-  hl = "Directory",
-  flexible = 2,
-  {
-    provider = function(self)
-      return self.lfilename
-    end,
-  },
-  {
-    provider = function(self)
-      return vim.fn.pathshorten(self.lfilename)
-    end,
-  },
-}
-
-local FileFlags = {
-  {
-    condition = function()
-      return vim.bo.modified
-    end,
-    provider = "[+]",
-    hl = { fg = "green" },
-  },
-  {
-    condition = function()
-      return not vim.bo.modifiable or vim.bo.readonly
-    end,
-    provider = "",
-    hl = { fg = "orange" },
-  },
-}
-
-local FileNameModifer = {
-  hl = function()
-    if vim.bo.modified then
-      return { fg = "cyan", bold = true, force = true }
-    end
-  end,
-}
-
-FileNameBlock = utils.insert(FileNameBlock, FileIcon, utils.insert(FileNameModifer, FileName), unpack(FileFlags))
-
-local FileType = {
-  provider = function()
-    return string.upper(vim.bo.filetype)
-  end,
-  hl = "Type",
-}
-
-local FileEncoding = {
-  provider = function()
-    local enc = (vim.bo.fenc ~= "" and vim.bo.fenc) or vim.o.enc -- :h 'enc'
-    return enc ~= "utf-8" and enc:upper()
-  end,
-}
-
-local FileFormat = {
-  provider = function()
-    local fmt = vim.bo.fileformat
-    return fmt ~= "unix" and fmt:upper()
-  end,
-}
-
-local FileSize = {
-  provider = function()
-    -- stackoverflow, compute human readable file size
-    local suffix = { "b", "k", "M", "G", "T", "P", "E" }
-    local fsize = vim.fn.getfsize(vim.api.nvim_buf_get_name(0))
-    fsize = (fsize < 0 and 0) or fsize
-    if fsize <= 0 then
-      return "0" .. suffix[1]
-    end
-    local i = math.floor((math.log(fsize) / math.log(1024)))
-    return string.format("%.2g%s", fsize / math.pow(1024, i), suffix[i])
-  end,
-}
-
-local FileLastModified = {
-  provider = function()
-    local ftime = vim.fn.getftime(vim.api.nvim_buf_get_name(0))
-    return (ftime > 0) and os.date("%c", ftime)
-  end,
-}
-
-local Ruler = {
-  -- %l = current line number
-  -- %L = number of lines in the buffer
-  -- %c = column number
-  -- %P = percentage through file of displayed window
-  provider = "%7(%l/%3L%):%2c %P",
-}
-
-local ScrollBar = {
-  static = {
-    -- sbar = { "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" },
-    sbar = { "🭶", "🭷", "🭸", "🭹", "🭺", "🭻" },
-  },
-  provider = function(self)
-    local curr_line = vim.api.nvim_win_get_cursor(0)[1]
-    local lines = vim.api.nvim_buf_line_count(0)
-    local i = math.floor(curr_line / lines * (#self.sbar - 1)) + 1
-    return string.rep(self.sbar[i], 2)
-  end,
-  hl = { fg = "blue", bg = "bright_bg" },
-}
-
-local LSPActive = {
-  condition = conditions.lsp_attached,
-  update = { "LspAttach", "LspDetach", "WinEnter" },
-
-  provider = " [LSP]",
-
-  -- Or complicate things a bit and get the servers names
-  -- provider  = function(self)
-  --     local names = {}
-  --     for i, server in pairs(vim.lsp.buf_get_active_clients({ bufnr = 0 })) do
-  --         table.insert(names, server.name)
-  --     end
-  --     return " [" .. table.concat(names, " ") .. "]"
-  -- end,
-  hl = { fg = "green", bold = true },
-  on_click = {
-    name = "heirline_LSP",
-    callback = function()
-      vim.schedule(function()
-        vim.cmd("LspInfo")
-      end)
-    end,
-  },
-}
-
-local Navic = {
-  condition = function()
-    return require("nvim-navic").is_available()
-  end,
-  static = {
-    type_hl = {
-      File = dim(utils.get_highlight("Directory").fg, 0.75),
-      Module = dim(utils.get_highlight("@include").fg, 0.75),
-      Namespace = dim(utils.get_highlight("@namespace").fg, 0.75),
-      Package = dim(utils.get_highlight("@include").fg, 0.75),
-      Class = dim(utils.get_highlight("@struct").fg, 0.75),
-      Method = dim(utils.get_highlight("@method").fg, 0.75),
-      Property = dim(utils.get_highlight("@property").fg, 0.75),
-      Field = dim(utils.get_highlight("@field").fg, 0.75),
-      Constructor = dim(utils.get_highlight("@constructor").fg, 0.75),
-      Enum = dim(utils.get_highlight("@field").fg, 0.75),
-      Interface = dim(utils.get_highlight("@type").fg, 0.75),
-      Function = dim(utils.get_highlight("@function").fg, 0.75),
-      Variable = dim(utils.get_highlight("@variable").fg, 0.75),
-      Constant = dim(utils.get_highlight("@constant").fg, 0.75),
-      String = dim(utils.get_highlight("@string").fg, 0.75),
-      Number = dim(utils.get_highlight("@number").fg, 0.75),
-      Boolean = dim(utils.get_highlight("@boolean").fg, 0.75),
-      Array = dim(utils.get_highlight("@field").fg, 0.75),
-      Object = dim(utils.get_highlight("@type").fg, 0.75),
-      Key = dim(utils.get_highlight("@keyword").fg, 0.75),
-      Null = dim(utils.get_highlight("@comment").fg, 0.75),
-      EnumMember = dim(utils.get_highlight("@field").fg, 0.75),
-      Struct = dim(utils.get_highlight("@struct").fg, 0.75),
-      Event = dim(utils.get_highlight("@keyword").fg, 0.75),
-      Operator = dim(utils.get_highlight("@operator").fg, 0.75),
-      TypeParameter = dim(utils.get_highlight("@type").fg, 0.75),
-    },
-    -- line: 16 bit (65536); col: 10 bit (1024); winnr: 6 bit (64)
-    -- local encdec = function(a,b,c) return dec(enc(a,b,c)) end; vim.pretty_print(encdec(2^16 - 1, 2^10 - 1, 2^6 - 1))
-    enc = function(line, col, winnr)
-      return bit.bor(bit.lshift(line, 16), bit.lshift(col, 6), winnr)
-    end,
-    dec = function(c)
-      local line = bit.rshift(c, 16)
-      local col = bit.band(bit.rshift(c, 6), 1023)
-      local winnr = bit.band(c, 63)
-      return line, col, winnr
-    end,
-  },
-  init = function(self)
-    local data = require("nvim-navic").get_data() or {}
-    local children = {}
-    for i, d in ipairs(data) do
-      local pos = self.enc(d.scope.start.line, d.scope.start.character, self.winnr)
-      local child = {
-        {
-          provider = d.icon,
-          hl = { fg = self.type_hl[d.type] },
+--- Make a list of buffers, rendering each buffer with the provided component
+---@param component table
+---@return table
+neovim.status.heirline.make_buflist = function(component)
+  local overflow_hl = neovim.status.hl.get_attributes("buffer_overflow", true)
+  return require("heirline.utils").make_buflist(
+    neovim.status.utils.surround(
+      "tab",
+      function(self)
+        return {
+          main = neovim.status.heirline.tab_type(self) .. "_bg",
+          left = "tabline_bg",
+          right = "tabline_bg",
+        }
+      end,
+      { -- bufferlist
+        init = function(self) self.tab_type = neovim.status.heirline.tab_type(self) end,
+        on_click = { -- add clickable component to each buffer
+          callback = function(_, minwid) vim.api.nvim_win_set_buf(0, minwid) end,
+          minwid = function(self) return self.bufnr end,
+          name = "heirline_tabline_buffer_callback",
         },
-        {
-          provider = d.name:gsub("%%", "%%%%"):gsub("%s*->%s*", ""),
-          hl = { fg = self.type_hl[d.type] },
-          -- hl = self.type_hl[d.type],
-          on_click = {
-            callback = function(_, minwid)
-              local line, col, winnr = self.dec(minwid)
-              vim.api.nvim_win_set_cursor(vim.fn.win_getid(winnr), { line, col })
+        { -- add buffer picker functionality to each buffer
+          condition = function(self) return self._show_picker end,
+          update = false,
+          init = function(self)
+            local bufname = neovim.status.provider.filename { fallback = "empty_file" }(self)
+            local label = bufname:sub(1, 1)
+            local i = 2
+            while label ~= " " and self._picker_labels[label] do
+              if i > #bufname then break end
+              label = bufname:sub(i, i)
+              i = i + 1
+            end
+            self._picker_labels[label] = self.bufnr
+            self.label = label
+          end,
+          provider = function(self)
+            return neovim.status.provider.str { str = self.label, padding = { left = 1, right = 1 } }
+          end,
+          hl = neovim.status.hl.get_attributes "buffer_picker",
+        },
+        component, -- create buffer component
+      },
+      false -- disable surrounding
+    ),
+    { provider = neovim.get_icon "ArrowLeft" .. " ", hl = overflow_hl },
+    { provider = neovim.get_icon "ArrowRight" .. " ", hl = overflow_hl },
+    function() return vim.t.bufs end, -- use neovim bufs variable
+    false -- disable internal caching
+  )
+end
+
+--- Alias to require("heirline.utils").make_tablist
+neovim.status.heirline.make_tablist = require("heirline.utils").make_tablist
+
+--- Run the buffer picker and execute the callback function on the selected buffer
+-- @param callback function with a single parameter of the buffer number
+function neovim.status.heirline.buffer_picker(callback)
+  local tabline = require("heirline").tabline
+  local buflist = tabline and tabline._buflist[1]
+  if buflist then
+    local prev_showtabline = vim.opt.showtabline
+    buflist._picker_labels = {}
+    buflist._show_picker = true
+    vim.opt.showtabline = 2
+    vim.cmd.redrawtabline()
+    local char = vim.fn.getcharstr()
+    local bufnr = buflist._picker_labels[char]
+    if bufnr then callback(bufnr) end
+    buflist._show_picker = false
+    vim.opt.showtabline = prev_showtabline
+    vim.cmd.redrawtabline()
+  end
+end
+
+heirline.load_colors(setup_colors())
+local heirline_opts = {
+  { -- statusline
+    hl = { fg = "fg", bg = "bg" },
+    neovim.status.component.mode(),
+    neovim.status.component.git_branch(),
+    -- TODO: REMOVE THIS WITH v3
+    -- neovim.status.component.file_info(
+    --   (neovim.has "bufferline" or vim.g.heirline_bufferline)
+    --       and { filetype = {}, filename = false, file_modified = false }
+    --     or nil
+    -- ),
+    -- neovim.status.component.file_info { filetype = {}, filename = false, file_modified = false },
+    neovim.status.component.git_diff(),
+    neovim.status.component.diagnostics(),
+    neovim.status.component.fill(),
+    neovim.status.component.cmd_info(),
+    neovim.status.component.fill(),
+    neovim.status.component.lsp(),
+    neovim.status.component.treesitter(),
+    neovim.status.component.nav(),
+    neovim.status.component.mode { surround = { separator = "right" } },
+  },
+  { -- winbar
+    static = {
+      disabled = {
+        buftype = { "terminal", "prompt", "nofile", "help", "quickfix" },
+        filetype = { "NvimTree", "neo%-tree", "dashboard", "Outline", "aerial" },
+      },
+    },
+    init = function(self) self.bufnr = vim.api.nvim_get_current_buf() end,
+    fallthrough = false,
+    {
+      condition = function(self)
+        return vim.opt.diff:get() or neovim.status.condition.buffer_matches(self.disabled or {})
+      end,
+      init = function() vim.opt_local.winbar = nil end,
+    },
+    neovim.status.component.file_info {
+      condition = function() return not neovim.status.condition.is_active() end,
+      unique_path = {},
+      file_icon = { hl = neovim.status.hl.file_icon "winbar" },
+      file_modified = false,
+      file_read_only = false,
+      hl = neovim.status.hl.get_attributes("winbarnc", true),
+      surround = false,
+      update = "BufEnter",
+    },
+    neovim.status.component.breadcrumbs { hl = neovim.status.hl.get_attributes("winbar", true) },
+  },
+  vim.g.heirline_bufferline -- TODO v3: remove this option and make bufferline default
+      and { -- bufferline
+        { -- file tree padding
+          condition = function(self)
+            self.winid = vim.api.nvim_tabpage_list_wins(0)[1]
+            return neovim.status.condition.buffer_matches(
+              { filetype = { "neo%-tree", "NvimTree" } },
+              vim.api.nvim_win_get_buf(self.winid)
+            )
+          end,
+          provider = function(self) return string.rep(" ", vim.api.nvim_win_get_width(self.winid)) end,
+          hl = { bg = "tabline_bg" },
+        },
+        neovim.status.heirline.make_buflist(neovim.status.component.tabline_file_info()), -- component for each buffer tab
+        neovim.status.component.fill { hl = { bg = "tabline_bg" } }, -- fill the rest of the tabline with background color
+        { -- tab list
+          condition = function() return #vim.api.nvim_list_tabpages() >= 2 end, -- only show tabs if there are more than one
+          neovim.status.heirline.make_tablist { -- component for each tab
+            provider = neovim.status.provider.tabnr(),
+            hl = function(self)
+              return neovim.status.hl.get_attributes(neovim.status.heirline.tab_type(self, "tab"), true)
             end,
-            minwid = pos,
-            name = "heirline_navic",
+          },
+          { -- close button for current tab
+            provider = neovim.status.provider.close_button { kind = "TabClose", padding = { left = 1, right = 1 } },
+            hl = neovim.status.hl.get_attributes("tab_close", true),
+            on_click = { callback = neovim.close_tab, name = "heirline_tabline_close_tab_callback" },
           },
         },
       }
-      if #data > 1 and i < #data then
-        table.insert(child, {
-          provider = " → ",
-          hl = { fg = "bright_fg" },
-        })
-      end
-      table.insert(children, child)
-    end
-    self[1] = self:new(children, 1)
-  end,
-  update = "CursorMoved",
-  hl = { fg = "gray" },
+    or nil,
 }
+-- heirline.setup(heirline_opts[1], heirline_opts[2], heirline_opts[3])
+heirline.setup(heirline_opts[1])
 
-local Diagnostics = {
-
-  condition = conditions.has_diagnostics,
-  update = { "DiagnosticChanged", "BufEnter" },
-  on_click = {
-    callback = function()
-      require("trouble").toggle({ mode = "document_diagnostics" })
-    end,
-    name = "heirline_diagnostics",
-  },
-
-  static = {
-    -- error_icon = vim.fn.sign_getdefined("DiagnosticSignError")[1].text,
-    -- warn_icon = vim.fn.sign_getdefined("DiagnosticSignWarn")[1].text,
-    -- info_icon = vim.fn.sign_getdefined("DiagnosticSignInfo")[1].text,
-    -- hint_icon = vim.fn.sign_getdefined("DiagnosticSignHint")[1].text,
-  },
-
-  init = function(self)
-    self.errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
-    self.warnings = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
-    self.hints = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
-    self.info = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
-  end,
-
-  {
-    provider = function(self)
-      return self.errors > 0 and (self.error_icon .. self.errors .. " ")
-    end,
-    hl = "DiagnosticError",
-  },
-  {
-    provider = function(self)
-      return self.warnings > 0 and (self.warn_icon .. self.warnings .. " ")
-    end,
-    hl = "DiagnosticWarn",
-  },
-  {
-    provider = function(self)
-      return self.info > 0 and (self.info_icon .. self.info .. " ")
-    end,
-    hl = "DiagnosticInfo",
-  },
-  {
-    provider = function(self)
-      return self.hints > 0 and (self.hint_icon .. self.hints)
-    end,
-    hl = "DiagnosticHint",
-  },
-}
-
-local Git = {
-  condition = conditions.is_git_repo,
-
-  init = function(self)
-    self.status_dict = vim.b.gitsigns_status_dict
-    self.has_changes = self.status_dict.added ~= 0 or self.status_dict.removed ~= 0 or self.status_dict.changed ~= 0
-  end,
-
-  on_click = {
-    callback = function(self, minwid, nclicks, button)
-      vim.defer_fn(function()
-        vim.cmd("Lazygit %:p:h")
-      end, 100)
-    end,
-    name = "heirline_git",
-    update = false,
-  },
-
-  hl = { fg = "orange" },
-
-  {
-    provider = function(self)
-      return " " .. self.status_dict.head
-    end,
-    hl = { bold = true },
-  },
-  {
-    condition = function(self)
-      return self.has_changes
-    end,
-    provider = "(",
-  },
-  {
-    provider = function(self)
-      local count = self.status_dict.added or 0
-      return count > 0 and ("+" .. count)
-    end,
-    hl = "diffAdded",
-  },
-  {
-    provider = function(self)
-      local count = self.status_dict.removed or 0
-      return count > 0 and ("-" .. count)
-    end,
-    hl = "diffDeleted",
-  },
-  {
-    provider = function(self)
-      local count = self.status_dict.changed or 0
-      return count > 0 and ("~" .. count)
-    end,
-    hl = "diffChanged",
-  },
-  {
-    condition = function(self)
-      return self.has_changes
-    end,
-    provider = ")",
-  },
-}
-
-local Snippets = {
-  condition = function()
-    return vim.tbl_contains({ "s", "i" }, vim.fn.mode())
-  end,
-  provider = function()
-    local forward = (vim.fn["UltiSnips#CanJumpForwards"]() == 1) and " " or ""
-    local backward = (vim.fn["UltiSnips#CanJumpBackwards"]() == 1) and " " or ""
-    return backward .. forward
-  end,
-  hl = { fg = "red", bold = true },
-}
-
-local DAPMessages = {
-  condition = function()
-    local session = require("dap").session()
-    return session ~= nil
-  end,
-  provider = function()
-    return " " .. require("dap").status() .. " "
-  end,
-  hl = "Debug",
-  {
-    provider = " ",
-    on_click = {
-      callback = function()
-        require("dap").step_into()
-      end,
-      name = "heirline_dap_step_into",
-    },
-  },
-  { provider = " " },
-  {
-    provider = " ",
-    on_click = {
-      callback = function()
-        require("dap").step_out()
-      end,
-      name = "heirline_dap_step_out",
-    },
-  },
-  { provider = " " },
-  {
-    provider = " ",
-    on_click = {
-      callback = function()
-        require("dap").step_over()
-      end,
-      name = "heirline_dap_step_over",
-    },
-  },
-  { provider = " " },
-  {
-    provider = " ",
-    hl = { fg = "green" },
-    on_click = {
-      callback = function()
-        require("dap").run_last()
-      end,
-      name = "heirline_dap_run_last",
-    },
-  },
-  { provider = " " },
-  {
-    provider = " ",
-    hl = { fg = "red" },
-    on_click = {
-      callback = function()
-        require("dap").terminate()
-        require("dapui").close({})
-      end,
-      name = "heirline_dap_close",
-    },
-  },
-  { provider = " " },
-  --       ﰇ  
-}
-
-local WorkDir = {
-  init = function(self)
-    self.icon = (vim.fn.haslocaldir(0) == 1 and "l" or "g") .. " " .. " "
-    local cwd = vim.fn.getcwd(0)
-    self.cwd = vim.fn.fnamemodify(cwd, ":~")
-    if not conditions.width_percent_below(#self.cwd, 0.27) then
-      self.cwd = vim.fn.pathshorten(self.cwd)
-    end
-  end,
-  hl = { fg = "blue", bold = true },
-  on_click = {
-    callback = function()
-      vim.cmd("NvimTreeToggle")
-    end,
-    name = "heirline_workdir",
-  },
-
-  flexible = 1,
-  {
-    provider = function(self)
-      local trail = self.cwd:sub(-1) == "/" and "" or "/"
-      return self.icon .. self.cwd .. trail .. " "
-    end,
-  },
-  {
-    provider = function(self)
-      local cwd = vim.fn.pathshorten(self.cwd)
-      local trail = self.cwd:sub(-1) == "/" and "" or "/"
-      return self.icon .. cwd .. trail .. " "
-    end,
-  },
-  {
-    provider = "",
-  },
-}
-
-local HelpFilename = {
-  condition = function()
-    return vim.bo.filetype == "help"
-  end,
-  provider = function()
-    local filename = vim.api.nvim_buf_get_name(0)
-    return vim.fn.fnamemodify(filename, ":t")
-  end,
-  hl = "Directory",
-}
-
-local TerminalName = {
-  -- icon = ' ', -- 
-  {
-    provider = function()
-      local tname, _ = vim.api.nvim_buf_get_name(0):gsub(".*:", "")
-      return " " .. tname
-    end,
-    hl = { fg = "blue", bold = true },
-  },
-  { provider = " - " },
-  {
-    provider = function()
-      return vim.b.term_title
-    end,
-  },
-  {
-    provider = function()
-      local id = require("terminal"):current_term_index()
-      return " " .. (id or "Exited")
-    end,
-    hl = { bold = true, fg = "blue" },
-  },
-}
-
-local Spell = {
-  condition = function()
-    return vim.wo.spell
-  end,
-  provider = "SPELL ",
-  hl = { bold = true, fg = "orange" },
-}
-
-local SearchCount = {
-  condition = function()
-    return vim.v.hlsearch ~= 0 and vim.o.cmdheight == 0
-  end,
-  init = function(self)
-    local ok, search = pcall(vim.fn.searchcount)
-    if ok and search.total then
-      self.search = search
-    end
-  end,
-  provider = function(self)
-    local search = self.search
-    return string.format("[%d/%d]", search.current, math.min(search.total, search.maxcount))
-  end,
-}
-
-local MacroRec = {
-  condition = function()
-    return vim.fn.reg_recording() ~= "" and vim.o.cmdheight == 0
-  end,
-  provider = " ",
-  hl = { fg = "orange", bold = true },
-  utils.surround({ "[", "]" }, nil, {
-    provider = function()
-      return vim.fn.reg_recording()
-    end,
-    hl = { fg = "green", bold = true },
-  }),
-}
-
-ViMode = utils.surround({ "", "" }, "bright_bg", { ViMode, Snippets })
-
-local Align = { provider = "%=" }
-local Space = { provider = " " }
-
-local DefaultStatusline = {
-  ViMode,
-  SearchCount,
-  MacroRec,
-  Space,
-  Spell,
-  WorkDir,
-  FileNameBlock,
-  { provider = "%<" },
-  Space,
-  Git,
-  Space,
-  Diagnostics,
-  Align,
-  { flexible = 3, { Navic, Space }, { provider = "" } },
-  Align,
-  DAPMessages,
-  LSPActive,
-  -- Space,
-  -- UltTest,
-  Space,
-  FileType,
-  { flexible = 3, { Space, FileEncoding }, { provider = "" } },
-  Space,
-  Ruler,
-  Space,
-  ScrollBar,
-  -- {
-  --     provider = function()
-  --         return vim.inspect(utils.get_highlight('StatusLine'))
-  --     end
-  -- }
-}
-
-local InactiveStatusline = {
-  condition = conditions.is_not_active,
-  { hl = { fg = "gray", force = true }, WorkDir },
-  FileNameBlock,
-  { provider = "%<" },
-  Align,
-}
-
-local SpecialStatusline = {
-  condition = function()
-    return conditions.buffer_matches({
-      buftype = { "nofile", "prompt", "help", "quickfix" },
-      filetype = { "^git.*", "fugitive" },
-    })
-  end,
-  FileType,
-  { provider = "%q" },
-  Space,
-  HelpFilename,
-  Align,
-}
-
-local GitStatusline = {
-  condition = function()
-    return conditions.buffer_matches({
-      filetype = { "^git.*", "fugitive" },
-    })
-  end,
-  FileType,
-  Space,
-  {
-    provider = function()
-      return vim.fn.FugitiveStatusline()
-    end,
-  },
-  Space,
-  Align,
-}
-
-local TerminalStatusline = {
-  condition = function()
-    return conditions.buffer_matches({ buftype = { "terminal" } })
-  end,
-  hl = { bg = "dark_red" },
-  { condition = conditions.is_active, ViMode, Space },
-  FileType,
-  Space,
-  TerminalName,
-  Align,
-}
-
-local StatusLines = {
-
-  hl = function()
-    if conditions.is_active() then
-      return "StatusLine"
-    else
-      return "StatusLineNC"
-    end
-  end,
-
-  static = {
-    mode_colors = {
-      n = "red",
-      i = "green",
-      v = "cyan",
-      V = "cyan",
-      ["\22"] = "cyan", -- this is an actual ^V, type <C-v><C-v> in insert mode
-      c = "orange",
-      s = "purple",
-      S = "purple",
-      ["\19"] = "purple", -- this is an actual ^S, type <C-v><C-s> in insert mode
-      R = "orange",
-      r = "orange",
-      ["!"] = "red",
-      t = "green",
-    },
-    mode_color = function(self)
-      local mode = conditions.is_active() and vim.fn.mode() or "n"
-      return self.mode_colors[mode]
-    end,
-  },
-
-  fallthrough = false,
-
-  -- GitStatusline,
-  SpecialStatusline,
-  TerminalStatusline,
-  InactiveStatusline,
-  DefaultStatusline,
-}
-
-local CloseButton = {
-  condition = function(self)
-    return not vim.bo.modified
-  end,
-  -- update = 'BufEnter',
-  update = { "WinNew", "WinClosed", "BufEnter" },
-  { provider = " " },
-  {
-    provider = " ",
-    hl = { fg = "gray" },
-    on_click = {
-      callback = function(_, minwid)
-        vim.api.nvim_win_close(minwid, true)
-      end,
-      minwid = function()
-        return vim.api.nvim_get_current_win()
-      end,
-      name = "heirline_winbar_close_button",
-    },
-  },
-}
-
-local WinBar = {
-  fallthrough = false,
-  {
-    condition = function()
-      return conditions.buffer_matches({
-        buftype = { "nofile", "prompt", "help", "quickfix" },
-        filetype = { "^git.*", "fugitive" },
-      })
-    end,
-    init = function()
-      vim.opt_local.winbar = nil
-    end,
-  },
-  {
-    condition = function()
-      return conditions.buffer_matches({ buftype = { "terminal" } })
-    end,
-    utils.surround({ "", "" }, "dark_red", {
-      FileType,
-      Space,
-      TerminalName,
-      CloseButton,
-    }),
-  },
-  utils.surround({ "", "" }, "bright_bg", {
-    hl = function()
-      if conditions.is_not_active() then
-        return { fg = "gray", force = true }
-      end
-    end,
-
-    FileNameBlock,
-    CloseButton,
-  }),
-}
-
-local TablineBufnr = {
-  provider = function(self)
-    return tostring(self.bufnr) .. ". "
-  end,
-  hl = "Comment",
-}
-
-local TablineFileName = {
-  provider = function(self)
-    local filename = self.filename
-    filename = filename == "" and "[No Name]" or vim.fn.fnamemodify(filename, ":t")
-    return filename
-  end,
-  hl = function(self)
-    return { bold = self.is_active or self.is_visible, italic = true }
-  end,
-}
-
-local TablineFileFlags = {
-  {
-    condition = function(self)
-      return vim.api.nvim_buf_get_option(self.bufnr, "modified")
-    end,
-    provider = "[+]",
-    hl = { fg = "green" },
-  },
-  {
-    condition = function(self)
-      return not vim.api.nvim_buf_get_option(self.bufnr, "modifiable")
-        or vim.api.nvim_buf_get_option(self.bufnr, "readonly")
-    end,
-    provider = function(self)
-      if vim.api.nvim_buf_get_option(self.bufnr, "buftype") == "terminal" then
-        return "  "
-      else
-        return ""
-      end
-    end,
-    hl = { fg = "orange" },
-  },
-  -- {
-  --     condition = function(self)
-  --         return not vim.api.nvim_buf_is_loaded(self.bufnr)
-  --     end,
-  --     -- a downright arrow
-  --     provider = "", -- 
-  --     hl = { fg = "gray" },
-  -- },
-}
-
-local TablineFileNameBlock = {
-  init = function(self)
-    self.filename = vim.api.nvim_buf_get_name(self.bufnr)
-  end,
-  hl = function(self)
-    if self.is_active then
-      return "TabLineSel"
-    elseif not vim.api.nvim_buf_is_loaded(self.bufnr) then
-      return { fg = "gray" }
-    else
-      return "TabLine"
-    end
-  end,
-  on_click = {
-    callback = function(_, minwid)
-      vim.api.nvim_win_set_buf(0, minwid)
-    end,
-    minwid = function(self)
-      return self.bufnr
-    end,
-    name = "heirline_tabline_buffer_callback",
-  },
-  TablineBufnr,
-  FileIcon,
-  TablineFileName,
-  TablineFileFlags,
-}
-
-local TablineCloseButton = {
-  condition = function(self)
-    -- return not vim.bo[self.bufnr].modified
-    return not vim.api.nvim_buf_get_option(self.bufnr, "modified")
-  end,
-  { provider = " " },
-  { -- ✗    
-    provider = " ",
-    hl = { fg = "gray" },
-    on_click = {
-      callback = function(_, minwid)
-        vim.api.nvim_buf_delete(minwid, { force = false })
-        vim.cmd.redrawtabline()
-      end,
-      minwid = function(self)
-        return self.bufnr
-      end,
-      name = "heirline_tabline_close_buffer_callback",
-    },
-  },
-}
-
-local TablinePicker = {
-  condition = function(self)
-    return self._show_picker
-  end,
-  init = function(self)
-    local bufname = vim.api.nvim_buf_get_name(self.bufnr)
-    bufname = vim.fn.fnamemodify(bufname, ":t")
-    local label = bufname:sub(1, 1)
-    local i = 2
-    while self._picker_labels[label] do
-      label = bufname:sub(i, i)
-      if i > #bufname then
-        break
-      end
-      i = i + 1
-    end
-    self._picker_labels[label] = self.bufnr
-    self.label = label
-  end,
-  provider = function(self)
-    return self.label
-  end,
-  hl = { fg = "red", bold = true },
-}
-
-vim.keymap.set("n", "gbp", function()
-  local tabline = require("heirline").tabline
-  local buflist = tabline._buflist[1]
-  buflist._picker_labels = {}
-  buflist._show_picker = true
-  vim.cmd.redrawtabline()
-  local char = vim.fn.getcharstr()
-  local bufnr = buflist._picker_labels[char]
-  if bufnr then
-    vim.api.nvim_win_set_buf(0, bufnr)
-  end
-  buflist._show_picker = false
-  vim.cmd.redrawtabline()
-end)
-
-local TablineBufferBlock = utils.surround({ "", "" }, function(self)
-  if self.is_active then
-    return utils.get_highlight("TabLineSel").bg
-  else
-    return utils.get_highlight("TabLine").bg
-  end
-end, { TablinePicker, TablineFileNameBlock, TablineCloseButton })
-
-local BufferLine = utils.make_buflist(
-  TablineBufferBlock,
-  { provider = " ", hl = { fg = "gray" } },
-  { provider = " ", hl = { fg = "gray" } }
-)
-
-local Tabpage = {
-  provider = function(self)
-    local n = #vim.api.nvim_tabpage_list_wins(self.tabpage)
-    return "%" .. self.tabnr .. "T " .. self.tabnr .. "(" .. n .. ")" .. " %T"
-  end,
-  hl = function(self)
-    if not self.is_active then
-      return "TabLine"
-    else
-      return "TabLineSel"
-    end
-  end,
-  update = { "TabNew", "TabClosed", "TabEnter", "TabLeave", "WinNew", "WinClosed" },
-}
-
-local TabpageClose = {
-  provider = " %999X %X",
-  hl = "TabLine",
-}
-
-local TabPages = {
-  condition = function()
-    return #vim.api.nvim_list_tabpages() >= 2
-  end,
-  {
-    provider = "%=",
-  },
-  utils.make_tablist(Tabpage),
-  TabpageClose,
-}
-
-local TabLineOffset = {
-  condition = function(self)
-    local win = vim.api.nvim_tabpage_list_wins(0)[1]
-    local bufnr = vim.api.nvim_win_get_buf(win)
-    self.winid = win
-
-    if vim.api.nvim_buf_get_option(bufnr, "filetype") == "NvimTree" then
-      self.title = "NvimTree"
-      return true
-    end
-  end,
-
-  provider = function(self)
-    local title = self.title
-    local width = vim.api.nvim_win_get_width(self.winid)
-    local pad = math.ceil((width - #title) / 2)
-    return string.rep(" ", pad) .. title .. string.rep(" ", pad)
-  end,
-
-  hl = function(self)
-    if vim.api.nvim_get_current_win() == self.winid then
-      return "TablineSel"
-    else
-      return "Tabline"
-    end
-  end,
-}
-
-local TabLine = {
-  -- update = {
-  --     "BufNew",
-  --     "BufDelete",
-  --     "WinEnter",
-  --     "BufEnter",
-  --     "BufModifiedSet",
-  --     callback = function()
-  --         -- print("callback")
-  --     end,
-  -- },
-  TabLineOffset,
-  BufferLine,
-  -- utils.make_flexible_component(1, {provider = 'aaaaaaaaaaaaaaaaaaa'}, {provider = 'bbbb'}),
-  TabPages,
-}
-
-local Stc = {
-  static = {
-    ---@return {name:string, text:string, texthl:string}[]
-    get_signs = function()
-      -- local buf = vim.api.nvim_get_current_buf()
-      local buf = vim.fn.expand("%")
-      return vim.tbl_map(function(sign)
-        return vim.fn.sign_getdefined(sign.name)[1]
-      end, vim.fn.sign_getplaced(buf, { group = "*", lnum = vim.v.lnum })[1].signs)
-    end,
-
-    resolve = function(self, name)
-      for pat, cb in pairs(self.handlers) do
-        if name:match(pat) then
-          return cb
-        end
-      end
-    end,
-
-    handlers = {
-      ["GitSigns.*"] = function(args)
-        require("gitsigns").preview_hunk_inline()
-      end,
-      -- ["Dap.*"] = function(args)
-      --   require("dap").toggle_breakpoint()
-      -- end,
-      -- ["Diagnostic.*"] = function(args)
-      --   vim.diagnostic.open_float() -- { pos = args.mousepos.line - 1, relative = "mouse" })
-      -- end,
-    },
-  },
-  -- init = function(self)
-  --     local signs = {}
-  --     for _, s in ipairs(self.get_signs()) do
-  --         if s.name:find("GitSign") then
-  --             self.git_sign = s
-  --         else
-  --             table.insert(signs, s)
-  --         end
-  --     end
-  --     self.signs = signs
-  -- end,
-  {
-    provider = "%s",
-    -- provider = function(self)
-    --     -- return vim.inspect({ self.signs, self.git_sign })
-    --     local children = {}
-    --     for _, sign in ipairs(self.signs) do
-    --         table.insert(children, {
-    --             provider = sign.text,
-    --             hl = sign.texthl,
-    --         })
-    --     end
-    --     self[1] = self:new(children, 1)
-    -- end,
-
-    on_click = {
-      callback = function(self, ...)
-        local mousepos = vim.fn.getmousepos()
-        vim.api.nvim_win_set_cursor(0, { mousepos.line, mousepos.column })
-        local sign_at_cursor = vim.fn.screenstring(mousepos.screenrow, mousepos.screencol)
-        if sign_at_cursor ~= "" then
-          local args = {
-            mousepos = mousepos,
-          }
-          local signs = vim.fn.sign_getdefined()
-          for _, sign in ipairs(signs) do
-            local glyph = sign.text:gsub(" ", "")
-            if sign_at_cursor == glyph then
-              vim.defer_fn(function()
-                self:resolve(sign.name)(args)
-              end, 10)
-              return
-            end
-          end
-        end
-      end,
-      name = "heirline_signcol_callback",
-      update = true,
-    },
-  },
-  {
-    provider = "%=%4{v:virtnum ? '' : &nu ? (&rnu && v:relnum ? v:relnum : v:lnum) . ' ' : ''}",
-  },
-  {
-    provider = "%{% &fdc ? '%C ' : '' %}",
-  },
-  -- {
-  --     provider = function(self)
-  --         return self.git_sign and self.git_sign.text
-  --     end,
-  --     hl = function(self)
-  --         return self.git_sign and self.git_sign.texthl
-  --     end,
-  -- },
-}
-
-require("heirline").setup({
-  statusline = StatusLines,
-  winbar = WinBar,
-  tabline = TabLine,
-  -- statuscolumn = Stc,
+local augroup = vim.api.nvim_create_augroup("Heirline", { clear = true })
+vim.api.nvim_create_autocmd("User", {
+  pattern = "AstroColorScheme",
+  group = augroup,
+  desc = "Refresh heirline colors",
+  callback = function() require("heirline.utils").on_colorscheme(setup_colors()) end,
 })
--- vim.o.statuscolumn = require("heirline").eval_statuscolumn()
-
-vim.api.nvim_create_augroup("Heirline", { clear = true })
-
-vim.cmd([[au Heirline FileType * if index(['wipe', 'delete'], &bufhidden) >= 0 | set nobuflisted | endif]])
-
--- vim.cmd("au BufWinEnter * if &bt != '' | setl stc= | endif")
-
--- vim.api.nvim_create_autocmd("User", {
---   pattern = "HeirlineInitWinbar",
---   callback = function(args)
---     local buf = args.buf
---     local buftype = vim.tbl_contains({ "prompt", "nofile", "help", "quickfix" }, vim.bo[buf].buftype)
---     local filetype = vim.tbl_contains({ "gitcommit", "fugitive", "Trouble", "packer" }, vim.bo[buf].filetype)
---     if buftype or filetype then
---       args.data.ok = false
---     end
---   end,
---   group = "Heirline",
--- })
-
-vim.api.nvim_create_autocmd("ColorScheme", {
+vim.api.nvim_create_autocmd("User", {
+  pattern = "HeirlineInitWinbar",
+  group = augroup,
+  desc = "Disable winbar for some filetypes",
   callback = function()
-    local colors = setup_colors()
-    utils.on_colorscheme(colors)
+    if
+      vim.opt.diff:get()
+      or neovim.status.condition.buffer_matches(require("heirline").winbar.disabled or {
+        buftype = { "terminal", "prompt", "nofile", "help", "quickfix" },
+        filetype = { "NvimTree", "neo%-tree", "dashboard", "Outline", "aerial" },
+      }) -- TODO v3: remove the default fallback here
+    then
+      vim.opt_local.winbar = nil
+    end
   end,
-  group = "Heirline",
 })

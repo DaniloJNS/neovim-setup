@@ -58,13 +58,34 @@ function neovim.vim_opts(options)
   end
 end
 
+--- Get highlight properties for a given highlight name
+-- @param name highlight group name
+-- @return table of highlight group properties
+function neovim.get_hlgroup(name, fallback)
+  if vim.fn.hlexists(name) == 1 then
+    local hl = vim.api.nvim_get_hl_by_name(name, vim.o.termguicolors)
+    if not hl["foreground"] then hl["foreground"] = "NONE" end
+    if not hl["background"] then hl["background"] = "NONE" end
+    hl.fg, hl.bg, hl.sp = hl.foreground, hl.background, hl.special
+    hl.ctermfg, hl.ctermbg = hl.foreground, hl.background
+    return hl
+  end
+  return fallback
+end
+
+--- Merge extended options with a default table of options
+-- @param opts the new options that should be merged with the default table
+-- @param default the default table that you want to merge into
+-- @return the merged table
+function neovim.default_tbl(opts, default)
+  opts = opts or {}
+  return default and vim.tbl_deep_extend("force", default, opts) or opts
+end
+
 local function map(mode, lhs, rhs, opts)
   local keys = require("lazy.core.handler").handlers.keys
   -- do not create the keymap if a lazy keys handler exists
   if not keys.active[keys.parse({ lhs, mode = mode }).id] then
-    -- vim.notify("mode = " .. mode)
-    -- vim.notify("lhs = " .. lhs)
-    -- vim.notify("rhs = " .. rhs)
     vim.keymap.set(mode, lhs, rhs, opts)
   end
 end
@@ -94,5 +115,6 @@ end
 require("core.utils.general")
 require("core.utils.lsp")
 require("core.utils.plugins")
+require("core.utils.status")
 
 return neovim
