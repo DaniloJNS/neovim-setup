@@ -554,7 +554,7 @@ function neovim.status.provider.lsp_progress(opts)
       Lsp
           and string.format(
             " %%<%s %s %s (%s%%%%) ",
-            neovim.get_icon("LSP" .. ((Lsp.percentage or 0) >= 70 and { "Loaded", "Loaded", "Loaded" } or {
+            neovim.get_default_icon("LSP" .. ((Lsp.percentage or 0) >= 70 and { "Loaded", "Loaded", "Loaded" } or {
               "Loading1",
               "Loading2",
               "Loading3",
@@ -928,7 +928,7 @@ function neovim.status.component.git_branch(opts)
     on_click = {
       name = "heirline_branch",
       callback = function()
-        if neovim.is_available "telescope.nvim" then
+        if neovim.has "telescope" then
           vim.defer_fn(function() require("telescope.builtin").git_branches() end, 100)
         end
       end,

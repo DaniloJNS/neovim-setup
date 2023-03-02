@@ -67,5 +67,6 @@ neovim.vim_opts({
     maplocalleader = " ",
     markdown_recommended_style = 0, -- Fix markdown indentation settings
     diagnostics_enabled = true, -- enable diagnostics at start
+    status_diagnostics_enabled = true,
   },
 })

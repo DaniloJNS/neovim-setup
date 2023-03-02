@@ -99,9 +99,7 @@ return {
     "rebelot/heirline.nvim",
     event = "VimEnter",
     config = function()
-      vim.notify('run  heirline !!!!!!!!!!!!!!')
       require "plugins.config.heirline"
-      vim.notify('run  heirline !!!!!!!!!!!!!!')
     end,
   },
   -- statusline
@@ -281,10 +279,8 @@ return {
           Hint = { color = colors.hint },
           Misc = { color = colors.purple },
         },
-        excluded_buftypes = {
-          "terminal",
-        },
         excluded_filetypes = {
+          "terminal",
           "prompt",
           "TelescopePrompt",
         },
@@ -314,4 +310,8 @@ return {
     end,
     event = "VeryLazy",
   },
+  {
+    "norcalli/nvim-colorizer.lua",
+    config = true
+  }
 }

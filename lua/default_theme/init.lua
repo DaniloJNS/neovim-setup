@@ -4,8 +4,6 @@ vim.o.background = "dark"
 vim.o.termguicolors = true
 vim.g.colors_name = "default_theme"
 
-local user_plugin_opts = astronvim.user_plugin_opts
-
 C = require "default_theme.colors"
 
 local highlights = {}
@@ -15,7 +13,7 @@ for _, module in ipairs { "base", "lsp" } do
 end
 
 for plugin, enabled in
-  pairs(user_plugin_opts("default_theme.plugins", {
+  pairs( {
     aerial = true,
     beacon = false,
     bufferline = true, -- TODO v3: make this false
@@ -35,18 +33,18 @@ for plugin, enabled in
     symbols_outline = false,
     telescope = true,
     treesitter = true,
-    vimwiki = false,
+    vimwiki = true,
     ["which-key"] = true,
-  }))
+  })
 do
   if enabled then highlights = vim.tbl_deep_extend("force", highlights, require("default_theme.plugins." .. plugin)) end
 end
 
-for group, spec in pairs(user_plugin_opts("default_theme.highlights", highlights)) do
+for group, spec in pairs( highlights) do
   vim.api.nvim_set_hl(0, group, spec)
 end
 
-astronvim.vim_opts {
+neovim.vim_opts {
   g = {
     terminal_color_0 = C.terminal_color_0 or C.bg,
     terminal_color_1 = C.terminal_color_1 or C.red,

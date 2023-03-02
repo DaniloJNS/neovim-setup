@@ -64,6 +64,7 @@ end
 function neovim.get_hlgroup(name, fallback)
   if vim.fn.hlexists(name) == 1 then
     local hl = vim.api.nvim_get_hl_by_name(name, vim.o.termguicolors)
+    -- vim.notify(name .. ' = ' .. vim.inspect(hl))
     if not hl["foreground"] then hl["foreground"] = "NONE" end
     if not hl["background"] then hl["background"] = "NONE" end
     hl.fg, hl.bg, hl.sp = hl.foreground, hl.background, hl.special
@@ -110,6 +111,36 @@ function neovim.set_mappings(map_table, base)
       end
     end
   end
+end
+
+--- Get a list of registered null-ls providers for a given filetype
+-- @param filetype the filetype to search null-ls for
+-- @return a list of null-ls sources
+function neovim.null_ls_providers(filetype)
+  local registered = {}
+  -- try to load null-ls
+  local sources_avail, sources = pcall(require, "null-ls.sources")
+  if sources_avail then
+    -- get the available sources of a given filetype
+    for _, source in ipairs(sources.get_available(filetype)) do
+      -- get each source name
+      for method in pairs(source.methods) do
+        registered[method] = registered[method] or {}
+        tbl_insert(registered[method], source.name)
+      end
+    end
+  end
+  -- return the found null-ls sources
+  return registered
+end
+
+--- Get the null-ls sources for a given null-ls method
+-- @param filetype the filetype to search null-ls for
+-- @param method the null-ls method (check null-ls documentation for available methods)
+-- @return the available sources for the given filetype and method
+function neovim.null_ls_sources(filetype, method)
+  local methods_avail, methods = pcall(require, "null-ls.methods")
+  return methods_avail and neovim.null_ls_providers(filetype)[methods.internal[method]] or {}
 end
 
 require("core.utils.general")
