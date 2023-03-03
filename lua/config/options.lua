@@ -68,5 +68,6 @@ neovim.vim_opts({
     markdown_recommended_style = 0, -- Fix markdown indentation settings
     diagnostics_enabled = true, -- enable diagnostics at start
     status_diagnostics_enabled = true,
+    lspkind_status_ok = true,
   },
 })
